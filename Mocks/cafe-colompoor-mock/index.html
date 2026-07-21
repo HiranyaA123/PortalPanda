@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cafe Colompoor — A Sri Lankan Day, Daw Park Adelaide</title>
+<meta name="description" content="Hoppers at dawn, rice & curry at noon, short eats at four, kottu at night. Sri Lankan cafe in Daw Park, Adelaide." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ivory:#f7f1e4; --ivory-2:#efe6d2; --paper:#fcf8ef;
+  --ink:#1b1713; --ink-soft:#3a332b;
+  --lotus:#b52e3c; --lotus-deep:#8e2230;
+  --leaf:#3f5d33; --leaf-deep:#2c4224;
+  --turmeric:#d9a441; --turmeric-soft:#ecd9ae;
+  --clay:#c07a4e; --muted:#8c8172;
+  --line:rgba(27,23,19,.15);
+  --rail:232px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Karla',system-ui,sans-serif;background:var(--ivory);color:var(--ink);line-height:1.6;overflow-x:hidden;
+  padding-left:var(--rail);padding-bottom:76px}
+h1,h2,h3{font-family:'Italiana',serif;font-weight:400;line-height:1.02;letter-spacing:.01em}
+.ital{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+.num{font-family:'Italiana',serif;font-variant-numeric:tabular-nums}
+
+/* ============ FIXED LEFT RAIL (replaces top nav) ============ */
+.rail{position:fixed;top:0;left:0;bottom:0;width:var(--rail);background:var(--paper);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding:26px 22px;z-index:70}
+.rail-brand{display:block;margin-bottom:34px}
+.rail-brand svg{width:34px;height:44px;margin-bottom:10px}
+.rail-brand .wm{font-family:'Italiana',serif;font-size:1.85rem;line-height:.95;color:var(--ink)}
+.rail-brand .sub{font-weight:700;font-size:.54rem;letter-spacing:.36em;text-transform:uppercase;color:var(--lotus);margin-top:5px}
+.rail-nav{display:flex;flex-direction:column;gap:2px}
+.rail-nav a{display:flex;align-items:baseline;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--line);
+  font-weight:600;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);transition:.16s}
+.rail-nav a .ix{font-family:'Italiana';font-size:.72rem;color:var(--turmeric);letter-spacing:0}
+.rail-nav a:hover{color:var(--lotus);padding-left:.35rem}
+.rail-nav a.active{color:var(--lotus)}
+.rail-nav a.active .ix{color:var(--lotus)}
+.rail-foot{margin-top:auto;font-size:.76rem;color:var(--muted);line-height:1.75}
+.rail-foot b{display:block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);margin-bottom:.4rem}
+.rail-foot a{color:var(--lotus);font-weight:600}
+.rail-status{display:flex;align-items:center;gap:.45rem;font-weight:700;font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--leaf);margin-bottom:1rem}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--leaf);box-shadow:0 0 0 0 rgba(63,93,51,.5);animation:pulse 2.4s infinite}
+.dot.shut{background:var(--muted);animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,93,51,.5)}70%{box-shadow:0 0 0 9px rgba(63,93,51,0)}100%{box-shadow:0 0 0 0 rgba(63,93,51,0)}}
+
+/* mobile rail */
+.rail-toggle{display:none}
+
+/* ============ PAGES ============ */
+.page{display:none}
+.page.active{display:block;animation:fade .5s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.pad{padding:0 clamp(1.4rem,4vw,3.5rem)}
+.cap{font-weight:800;font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--lotus)}
+/* keep content readable on wide monitors — sections stay full-bleed, contents are capped */
+.hero,.ch-inner,.avu-in,.mhead,.ohead,.bhead,.menu-split,.builder,#oBody,.bk,.bk-done,
+.heritage>.her-lead,.heritage>.her-grid{max-width:1160px;margin-inline:auto;width:100%}
+
+/* ============ HOME — hero with the DAY DIAL ============ */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,4vw,3.5rem);align-items:center;
+  padding-top:clamp(2.5rem,5vw,4rem);padding-bottom:clamp(2.5rem,5vw,4rem);position:relative}
+.hero h1{font-size:clamp(2.4rem,4.4vw,4.1rem);margin:.8rem 0 0;max-width:14ch}
+.hero h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;color:var(--lotus)}
+.hero .sinh{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.3rem;color:var(--muted)}
+.hero .lede{max-width:44ch;color:var(--ink-soft);margin:1.5rem 0 0;font-size:1.06rem}
+
+/* live "now serving" ticker-plate */
+.nowbar{margin:2rem 0 2.2rem;border:1px solid var(--line);background:var(--paper);display:flex;align-items:stretch;max-width:520px}
+.nowbar .clock{padding:.9rem 1.1rem;border-right:1px solid var(--line);text-align:center;min-width:104px;background:var(--ivory-2)}
+.nowbar .clock .t{font-family:'Italiana';font-size:1.7rem;line-height:1;font-variant-numeric:tabular-nums}
+.nowbar .clock .z{font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.nowbar .what{padding:.85rem 1.1rem;display:flex;flex-direction:column;justify-content:center}
+.nowbar .what .k{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+.nowbar .what .v{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:1.24rem;color:var(--ink);line-height:1.25}
+.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;border:none;font-weight:800;font-size:.76rem;
+  letter-spacing:.16em;text-transform:uppercase;padding:.95rem 1.7rem;transition:.18s;border-radius:0}
+.btn-lotus{background:var(--lotus);color:var(--ivory)}
+.btn-lotus:hover{background:var(--lotus-deep)}
+.btn-ink{background:var(--ink);color:var(--ivory)}
+.btn-ink:hover{background:#000}
+.btn-out{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn-out:hover{background:var(--ink);color:var(--ivory)}
+.btn-turm{background:var(--turmeric);color:var(--ink)}
+.btn-turm:hover{filter:brightness(.94)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* the dial */
+.dial-wrap{display:flex;flex-direction:column;align-items:center}
+.dial-stage{position:relative;display:grid;place-items:center;width:min(390px,72vw)}
+.dial{width:100%;display:block;overflow:visible}
+.dial .seg{transition:.22s;cursor:pointer}
+.dial .seg:hover{opacity:.9}
+/* hub is perfectly centred on the ring, and never intercepts segment clicks */
+.dial-hub{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none;padding:0 22%}
+.dial-hub .lab{font-size:.52rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+.dial-hub .big{font-family:'Italiana';font-size:1.95rem;line-height:1.05;margin-top:.35rem;color:var(--ink)}
+.dial-hub.shut .big{color:var(--muted)}
+.dial-cap{text-align:center;margin-top:1.1rem;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ============ DAY CHAPTERS ============ */
+.chapter{position:relative;padding:clamp(4rem,9vw,7rem) 0;border-top:1px solid var(--line)}
+.ch-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(1.5rem,4vw,4rem);align-items:start}
+.ch-time{font-family:'Italiana';font-size:clamp(2.6rem,4.6vw,4.4rem);line-height:.85;color:var(--turmeric);
+  writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.06em}
+.ch-body{max-width:60ch}
+.chapter h2{font-size:clamp(1.9rem,3.2vw,2.8rem);margin:.5rem 0 1rem}
+.chapter p{color:var(--ink-soft);margin-bottom:1.4rem}
+.ch-items{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.6rem}
+.chip{border:1px solid var(--line);padding:.45rem .85rem;font-size:.82rem;display:inline-flex;gap:.6rem;align-items:baseline;background:var(--paper)}
+.chip b{font-family:'Italiana';color:var(--lotus);font-size:.98rem}
+/* progressive day tint */
+.chapter.c1{background:linear-gradient(180deg,var(--ivory),#f4ecda)}
+.chapter.c2{background:linear-gradient(180deg,#f4ecda,#eee1c6)}
+.chapter.c3{background:linear-gradient(180deg,#eee1c6,#e2cfae)}
+.chapter.c4{background:linear-gradient(180deg,#4a3c2c,var(--ink));color:var(--ivory)}
+.chapter.c4 h2{color:var(--ivory)}
+.chapter.c4 p{color:rgba(247,241,228,.76)}
+.chapter.c4 .ch-time{color:var(--turmeric)}
+.chapter.c4 .chip{background:rgba(247,241,228,.07);border-color:rgba(247,241,228,.24);color:var(--ivory)}
+.chapter.c4 .chip b{color:var(--turmeric)}
+.chapter.c4 .cap{color:var(--turmeric)}
+.chapter.now::after{content:"serving now";position:absolute;top:1.4rem;right:clamp(1.6rem,5vw,5rem);font-size:.6rem;
+  font-weight:800;letter-spacing:.2em;text-transform:uppercase;background:var(--lotus);color:var(--ivory);padding:.3rem .7rem}
+
+/* heritage strip */
+.heritage{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:clamp(3rem,6vw,4.5rem) 0}
+.her-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);background:var(--line);gap:1px}
+.her-cell{background:var(--paper);padding:1.7rem 1.4rem}
+.her-cell .n{font-family:'Italiana';font-size:2.5rem;color:var(--lotus);line-height:1}
+.her-cell .l{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.her-lead{max-width:60ch;margin-bottom:2rem}
+.her-lead p{color:var(--ink-soft);margin-top:.9rem}
+
+/* avurudu band */
+.batik{height:9px;background:repeating-linear-gradient(90deg,var(--lotus) 0 16px,var(--turmeric) 16px 32px,var(--leaf) 32px 48px,var(--clay) 48px 64px)}
+.avu{background:var(--ivory-2);padding:clamp(3rem,6vw,4.5rem) 0}
+.avu-in{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.avu h2{font-size:clamp(1.9rem,4vw,3rem);margin:.5rem 0 1rem}
+.avu p{color:var(--ink-soft);margin-bottom:.8rem}
+.avu-card{border:1px solid var(--line);background:var(--paper);padding:2rem;text-align:center}
+.avu-card .ital{font-size:1.3rem;color:var(--ink-soft);display:block;margin:1.2rem 0}
+.swatches{display:flex;gap:.6rem;justify-content:center}
+.swatches i{width:46px;height:64px;display:block}
+
+/* ============ MENU — index + numbered ledger ============ */
+.mhead{padding:clamp(3rem,6vw,4.5rem) 0 2rem;border-bottom:1px solid var(--line)}
+.mhead h1{font-size:clamp(2.2rem,3.8vw,3.4rem);margin-top:.6rem}
+.mhead p{color:var(--muted);margin-top:.6rem;max-width:52ch}
+.menu-split{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(1.8rem,4vw,3.5rem);align-items:start;padding:2.5rem 0 5rem}
+#mBody{max-width:640px}
+.mindex{position:sticky;top:2.5rem}
+.mindex a{display:flex;gap:.7rem;align-items:baseline;padding:.55rem 0;border-bottom:1px solid var(--line);
+  font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-soft);transition:.16s}
+.mindex a .ix{font-family:'Italiana';color:var(--turmeric);font-size:.74rem}
+.mindex a:hover,.mindex a.on{color:var(--lotus)}
+.mindex a.on .ix{color:var(--lotus)}
+.msec{margin-bottom:3.4rem;scroll-margin-top:2rem}
+.msec h2{font-size:1.9rem;display:flex;align-items:baseline;gap:.8rem}
+.msec h2 .ix{font-family:'Italiana';font-size:1rem;color:var(--turmeric)}
+.msec .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;color:var(--muted);margin:.2rem 0 1.4rem}
+.row{display:grid;grid-template-columns:32px minmax(0,1fr);gap:.9rem;padding:.95rem 0;border-top:1px solid var(--line)}
+.row:last-child{border-bottom:1px solid var(--line)}
+.row .rn{font-family:'Italiana';color:var(--turmeric);font-size:.85rem;padding-top:.22rem}
+/* name …………… price on one line: the leader ties the two together */
+.rtop{display:flex;align-items:baseline;gap:.55rem}
+.rtop h4{font-family:'Karla';font-weight:700;font-size:1rem;flex:none}
+.leader{flex:1;min-width:18px;border-bottom:1px dotted rgba(27,23,19,.34);transform:translateY(-.28em)}
+.rp{flex:none;font-family:'Karla';font-weight:800;font-size:.98rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.row p{font-size:.85rem;color:var(--muted);margin-top:.25rem;max-width:52ch}
+.tags{margin-top:.45rem;display:flex;gap:.35rem;flex-wrap:wrap}
+.tag{font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;background:var(--ivory-2);color:var(--ink-soft)}
+.tag.v{background:#e3ead9;color:var(--leaf)} .tag.gf{background:var(--turmeric-soft);color:#8a6316}
+.tag.sig{background:var(--ink);color:var(--turmeric)}
+
+/* ============ ORDER — build your plate ============ */
+.ohead{padding:clamp(3rem,6vw,4.5rem) 0 2rem}
+.ohead h1{font-size:clamp(2.2rem,3.8vw,3.4rem);margin-top:.6rem}
+.ohead p{color:var(--muted);margin-top:.6rem;max-width:54ch}
+.builder{display:grid;grid-template-columns:1fr 380px;gap:clamp(2rem,4vw,3.5rem);align-items:start;
+  border:1px solid var(--line);background:var(--paper);padding:clamp(1.5rem,3vw,2.4rem);margin-bottom:4rem}
+.bstep{margin-bottom:1.8rem}
+.bstep .sh{display:flex;align-items:baseline;gap:.7rem;margin-bottom:.8rem}
+.bstep .sh .n{font-family:'Italiana';color:var(--turmeric);font-size:.9rem}
+.bstep .sh h3{font-size:1.25rem}
+.bstep .sh .hint{margin-left:auto;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.opt{border:1px solid var(--line);background:var(--ivory);padding:.55rem .9rem;cursor:pointer;font-size:.86rem;
+  display:inline-flex;align-items:center;gap:.55rem;transition:.15s;user-select:none}
+.opt:hover{border-color:var(--ink)}
+.opt .sw{width:11px;height:11px;border-radius:50%;flex:none}
+.opt.on{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+.opt.on .plus{color:var(--turmeric)}
+.opt.dim{opacity:.38;cursor:not-allowed}
+.opt .plus{font-size:.7rem;color:var(--lotus);font-weight:800}
+.plate-panel{position:sticky;top:2rem;text-align:center}
+.plate-panel svg{width:100%;max-width:300px}
+.plate-legend{margin-top:1rem;font-size:.8rem;color:var(--ink-soft);text-align:left;border-top:1px solid var(--line);padding-top:.9rem}
+.plate-legend div{display:flex;justify-content:space-between;gap:1rem;padding:.22rem 0}
+.plate-legend span:first-child{color:var(--muted);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase}
+.plate-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);
+  margin-top:.8rem;padding-top:.8rem}
+.plate-total .num{font-size:1.9rem;color:var(--lotus)}
+.plate-panel .btn{width:100%;justify-content:center;margin-top:.9rem}
+
+/* order ledger rows w/ add */
+.osec{margin-bottom:3rem}
+.osec h2{font-size:1.7rem;display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.2rem}
+.osec h2 .ix{font-family:'Italiana';font-size:.95rem;color:var(--turmeric)}
+.osec{max-width:720px}
+.orow{display:grid;grid-template-columns:32px minmax(0,1fr) auto auto;gap:.9rem;padding:.9rem 0;
+  border-top:1px solid var(--line);align-items:center}
+.orow:last-child{border-bottom:1px solid var(--line)}
+.orow .rn{font-family:'Italiana';color:var(--turmeric);font-size:.85rem}
+.orow h4{font-family:'Karla';font-weight:700;font-size:1rem}
+.orow p{font-size:.84rem;color:var(--muted);margin-top:.15rem;max-width:46ch}
+.orow .rp{font-family:'Karla';font-weight:800;font-size:.98rem;color:var(--ink);font-variant-numeric:tabular-nums;
+  min-width:62px;text-align:right}
+.addb{border:1px solid var(--ink);background:transparent;color:var(--ink);padding:.42rem .95rem;cursor:pointer;
+  font-weight:800;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;transition:.15s;white-space:nowrap}
+.addb:hover{background:var(--ink);color:var(--ivory)}
+.addb.done{background:var(--leaf);border-color:var(--leaf);color:var(--ivory)}
+
+/* ============ BOOKINGS — availability grid ============ */
+.bhead{padding:clamp(3rem,6vw,4.5rem) 0 2rem}
+.bhead h1{font-size:clamp(2.2rem,3.8vw,3.4rem);margin-top:.6rem}
+.bhead p{color:var(--muted);margin-top:.6rem;max-width:54ch}
+.bk{padding-bottom:5rem}
+.bk-step{border-top:1px solid var(--line);padding:2rem 0}
+.bk-step .sh{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.1rem}
+.bk-step .sh .n{font-family:'Italiana';color:var(--turmeric);font-size:.9rem}
+.bk-step .sh h3{font-size:1.3rem}
+.days{display:flex;gap:.5rem;flex-wrap:wrap}
+.day{border:1px solid var(--line);background:var(--paper);padding:.7rem 1rem;cursor:pointer;text-align:center;min-width:78px;transition:.15s}
+.day:hover{border-color:var(--ink)}
+.day.on{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+.day .dw{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.day.on .dw{color:var(--turmeric)}
+.day .dd{font-family:'Italiana';font-size:1.5rem;line-height:1.1}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:.5rem}
+.slot{border:1px solid var(--line);background:var(--paper);padding:.7rem .5rem;cursor:pointer;text-align:center;transition:.15s}
+.slot:hover:not(.full){border-color:var(--ink)}
+.slot .tm{font-family:'Italiana';font-size:1.15rem}
+.slot .st{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--leaf);margin-top:2px}
+.slot.few .st{color:var(--clay)}
+.slot.full{opacity:.42;cursor:not-allowed}
+.slot.full .st{color:var(--muted)}
+.slot.on{background:var(--lotus);border-color:var(--lotus);color:var(--ivory)}
+.slot.on .st{color:var(--turmeric)}
+.party{display:flex;gap:.5rem;flex-wrap:wrap}
+.pz{border:1px solid var(--line);background:var(--paper);width:56px;padding:.65rem 0;text-align:center;cursor:pointer;
+  font-family:'Italiana';font-size:1.25rem;transition:.15s}
+.pz:hover{border-color:var(--ink)}
+.pz.on{background:var(--leaf);color:var(--ivory);border-color:var(--leaf)}
+.bk-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;max-width:820px}
+.field label{display:block;font-weight:800;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem;color:var(--ink-soft)}
+.field input,.field textarea{width:100%;font-family:'Karla';font-size:1rem;padding:.75rem .9rem;border:1px solid var(--line);
+  background:var(--paper);color:var(--ink)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--lotus)}
+.bk-summary{display:flex;flex-wrap:wrap;gap:2rem;align-items:center;background:var(--ink);color:var(--ivory);padding:1.5rem 1.7rem;margin-top:2rem}
+.bk-summary .s{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--turmeric)}
+.bk-summary .v{font-family:'Italiana';font-size:1.5rem;line-height:1.2}
+.bk-summary .btn{margin-left:auto}
+.bk-done{display:none;text-align:center;padding:4rem 1rem}
+.bk-done.show{display:block;animation:fade .4s}
+.bk-done .tick{width:74px;height:74px;border:1px solid var(--leaf);color:var(--leaf);display:grid;place-items:center;
+  font-size:2rem;margin:0 auto 1.4rem;border-radius:50%}
+.bk-done h2{font-size:2.4rem;margin-bottom:.6rem}
+.bk-done p{color:var(--muted);margin-bottom:1.6rem}
+
+/* ============ DOCKED ORDER BAR (replaces side drawer) ============ */
+.dock{position:fixed;left:var(--rail);right:0;bottom:0;z-index:75;background:var(--ink);color:var(--ivory);
+  border-top:3px solid var(--turmeric);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.dock-bar{display:flex;align-items:center;gap:1.2rem;padding:1rem clamp(1.4rem,4vw,3.5rem);cursor:pointer;
+  max-width:1160px;margin-inline:auto}
+/* count in Karla — Italiana's "0" reads as a letter O */
+.dock-bar .cnt{font-family:'Karla';font-weight:800;font-size:1.05rem;color:var(--ink);background:var(--turmeric);
+  min-width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.dock-bar .lbl{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(247,241,228,.66)}
+.dock-bar .tot{margin-left:auto;font-family:'Italiana';font-size:1.5rem}
+.dock-bar .chev{font-size:.8rem;color:var(--turmeric);transition:transform .3s}
+.dock.open .chev{transform:rotate(180deg)}
+.dock-panel{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.4,0,.2,1);background:var(--ink)}
+.dock.open .dock-panel{max-height:62vh;overflow-y:auto}
+.dock-inner{padding:0 clamp(1.4rem,4vw,3.5rem) 1.6rem;border-top:1px solid rgba(247,241,228,.16);
+  max-width:1160px;margin-inline:auto}
+.dline{display:grid;grid-template-columns:1fr auto auto;gap:1.2rem;align-items:center;padding:.95rem 0;
+  border-bottom:1px solid rgba(247,241,228,.12)}
+.dline h5{font-family:'Karla';font-weight:700;font-size:.98rem}
+.dline .note{font-size:.78rem;color:rgba(247,241,228,.6);margin-top:.15rem}
+.dline .lp{font-family:'Italiana';font-size:1.15rem;color:var(--turmeric);min-width:64px;text-align:right}
+.qty{display:flex;align-items:center;gap:.55rem}
+.qty button{width:26px;height:26px;border:1px solid rgba(247,241,228,.3);background:transparent;color:var(--ivory);
+  cursor:pointer;font-weight:800;line-height:1}
+.qty button:hover{background:var(--turmeric);color:var(--ink);border-color:var(--turmeric)}
+.qty span{min-width:16px;text-align:center;font-weight:700;font-size:.9rem}
+.dock-foot{display:flex;align-items:center;gap:1.4rem;padding-top:1.2rem;flex-wrap:wrap}
+.dock-foot .pk{font-size:.72rem;color:rgba(247,241,228,.6);letter-spacing:.1em;text-transform:uppercase}
+.dock-foot .btn{margin-left:auto}
+.dock-empty{padding:2.4rem 0;text-align:center;color:rgba(247,241,228,.55);font-size:.9rem}
+
+/* toast */
+/* toast: fully hidden (not just translated) so an empty one can't show as a white box */
+.toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,14px);background:var(--paper);color:var(--ink);
+  padding:.85rem 1.4rem;font-weight:700;font-size:.86rem;z-index:100;border-left:4px solid var(--lotus);
+  box-shadow:0 20px 40px -18px rgba(27,23,19,.5);opacity:0;visibility:hidden;pointer-events:none;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility 0s linear .3s}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility 0s}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:1040px){
+  .hero{grid-template-columns:1fr;min-height:auto;gap:2.4rem}
+  .dial-wrap{order:-1}
+  .builder,.avu-in{grid-template-columns:1fr}
+  .plate-panel{position:static}
+  .menu-split{grid-template-columns:1fr}
+  .mindex{position:static;display:flex;flex-wrap:wrap;gap:.4rem;border-bottom:1px solid var(--line);padding-bottom:1rem}
+  .mindex a{border:1px solid var(--line);padding:.45rem .8rem;font-size:.7rem}
+  .her-grid{grid-template-columns:1fr 1fr}
+  .bk-fields{grid-template-columns:1fr}
+}
+@media(max-width:820px){
+  body{padding-left:0;padding-top:64px}
+  .rail{width:100%;height:64px;bottom:auto;flex-direction:row;align-items:center;padding:0 1.2rem;
+    border-right:none;border-bottom:1px solid var(--line)}
+  .rail-brand{margin:0;display:flex;align-items:center;gap:.6rem}
+  .rail-brand svg{width:24px;height:31px;margin:0}
+  .rail-brand .wm{font-size:1.35rem}
+  .rail-brand .sub{display:none}
+  .rail-toggle{display:block;margin-left:auto;background:none;border:none;cursor:pointer;font-weight:800;
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+  .rail-nav{position:fixed;top:64px;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);
+    padding:.6rem 1.2rem 1.2rem;transform:translateY(-140%);transition:.3s;z-index:69}
+  .rail-nav.open{transform:none}
+  .rail-status,.rail-foot{display:none}
+  .dock{left:0}
+  .ch-inner{grid-template-columns:1fr;gap:.6rem}
+  .ch-time{writing-mode:horizontal-tb;font-size:3.2rem}
+  .her-grid{grid-template-columns:1fr}
+  .row,.orow{grid-template-columns:30px 1fr auto;row-gap:.5rem}
+  .orow .addb{grid-column:3;justify-self:end}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= FIXED LEFT RAIL ================= -->
+<aside class="rail">
+  <a href="#home" class="rail-brand" data-tab="home" aria-label="Cafe Colompoor — home">
+    <svg viewBox="0 0 60 78" aria-hidden="true">
+      <line x1="30" y1="34" x2="30" y2="70" stroke="#3f5d33" stroke-width="4" stroke-linecap="round"/>
+      <path d="M30 66 Q40 62 46 68 Q38 74 30 70 Z" fill="#3f5d33"/>
+      <path d="M30 8 Q20 18 20 27 Q20 36 30 38 Q40 36 40 27 Q40 18 30 8 Z" fill="#b52e3c"/>
+      <path d="M30 14 Q25 20 25 27 Q25 33 30 35 Q35 33 35 27 Q35 20 30 14 Z" fill="#8e2230"/>
+      <path d="M18 20 Q14 26 16 32 Q21 34 24 30 Q22 24 18 20 Z" fill="#b52e3c"/>
+      <path d="M42 20 Q46 26 44 32 Q39 34 36 30 Q38 24 42 20 Z" fill="#b52e3c"/>
+    </svg>
+    <div class="wm">Colompoor</div>
+    <div class="sub">Cafe · Daw Park</div>
+  </a>
+  <button class="rail-toggle" id="railToggle">Menu</button>
+  <nav class="rail-nav" id="railNav">
+    <a href="#home"     data-tab="home"><span class="ix">01</span> The Day</a>
+    <a href="#menu"     data-tab="menu"><span class="ix">02</span> Menu</a>
+    <a href="#order"    data-tab="order"><span class="ix">03</span> Pre-Order</a>
+    <a href="#bookings" data-tab="bookings"><span class="ix">04</span> Bookings</a>
+  </nav>
+  <div class="rail-foot">
+    <div class="rail-status"><span class="dot" id="railDot"></span><span id="railState">Open</span></div>
+    <b>Find us</b>
+    Next to Foodland<br>Daw Park SA 5041<br>
+    <a href="tel:0870017919">(08) 7001 7919</a>
+  </div>
+</aside>
+
+<main>
+<!-- ================= 01 · THE DAY ================= -->
+<section class="page active" id="home">
+  <div class="hero pad">
+    <div>
+      <span class="cap">Sri Lankan · Daw Park, Adelaide</span>
+      <div class="sinh" style="margin-top:1rem">ආයුබෝවන්</div>
+      <h1>A day is measured<br>in <em>hoppers, rice</em><br>&amp; <em>kottu</em>.</h1>
+      <p class="lede">We don't run one menu — we run four. The kitchen turns over with the sun: lacy hoppers at opening, the curry table at noon, the cabinet at four, and the flat-top clanging till close.</p>
+
+      <div class="nowbar">
+        <div class="clock">
+          <div class="t num" id="clockTime">—</div>
+          <div class="z">Adelaide</div>
+        </div>
+        <div class="what">
+          <div class="k">Right now we're serving</div>
+          <div class="v" id="nowServing">…</div>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#order" class="btn btn-lotus" data-tab="order">Pre-Order Pickup</a>
+        <a href="#menu" class="btn btn-out" data-tab="menu">Read the Menu</a>
+      </div>
+    </div>
+
+    <div class="dial-wrap">
+      <div class="dial-stage">
+        <svg class="dial" id="dial" viewBox="0 0 320 320" aria-label="The Colompoor day dial"></svg>
+        <div class="dial-hub" id="dialHub">
+          <div class="lab">The Colompoor Day</div>
+          <div class="big" id="dialLabel">08–21</div>
+        </div>
+      </div>
+      <div class="dial-cap">Tap a segment to jump · open 8am–9pm</div>
+    </div>
+  </div>
+
+  <!-- four chapters of the day -->
+  <section class="chapter c1 pad" id="ch-morning" data-from="8" data-to="11">
+    <div class="ch-inner">
+      <div class="ch-time num">08:00</div>
+      <div class="ch-body">
+        <span class="cap">Morning</span>
+        <h2>Hoppers, fermented overnight</h2>
+        <p>The batter goes down the evening before — rice flour, coconut milk, a whisper of yeast — and by opening it's alive. Each one is swirled into a screaming-hot bowl-pan so the edges go lacy and brittle while the centre stays soft as custard. Crack an egg in, spoon lunu miris on the side, drink it with plain tea.</p>
+        <div class="ch-items">
+          <span class="chip">Egg Hopper <b>$7.50</b></span>
+          <span class="chip">Plain Hopper <b>$4.50</b></span>
+          <span class="chip">Milk Hopper <b>$5.50</b></span>
+          <span class="chip">String Hoppers <b>$14</b></span>
+        </div>
+        <a href="#order" class="btn btn-ink" data-tab="order">Order Breakfast</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter c2 pad" id="ch-midday" data-from="11" data-to="15">
+    <div class="ch-inner">
+      <div class="ch-time num">12:00</div>
+      <div class="ch-body">
+        <span class="cap">Midday</span>
+        <h2>The rice &amp; curry table</h2>
+        <p>Trays go into the bain-marie at eleven and come out when they're gone — no reheats, no tomorrow. You point, we plate: rice first, then your protein, then three vegetables, then a spoon of gravy over everything and a papadam on top. It's the way lunch has been eaten on the island for a very long time.</p>
+        <div class="ch-items">
+          <span class="chip">Rice &amp; Curry Plate <b>$16.90</b></span>
+          <span class="chip">Lamprais <b>$22</b></span>
+          <span class="chip">Fried Rice <b>$17</b></span>
+        </div>
+        <a href="#order" class="btn btn-ink" data-tab="order">Build Your Plate</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter c3 pad" id="ch-afternoon" data-from="15" data-to="18">
+    <div class="ch-inner">
+      <div class="ch-time num">16:00</div>
+      <div class="ch-body">
+        <span class="cap">Afternoon</span>
+        <h2>Short eats &amp; kiri thé</h2>
+        <p>Four o'clock belongs to the glass cabinet. Fish buns still warm, crumbed rolls, cutlets, patties — the things you eat standing up with a cup of milk tea, deciding whether to have a second. Buy them by the piece or take a box home; nobody has ever regretted the box.</p>
+        <div class="ch-items">
+          <span class="chip">Fish Bun <b>$5</b></span>
+          <span class="chip">Chicken Rolls <b>$8</b></span>
+          <span class="chip">Short Eats Box <b>$20</b></span>
+          <span class="chip">Spiced Milk Tea <b>$5.50</b></span>
+        </div>
+        <a href="#order" class="btn btn-ink" data-tab="order">Fill a Box</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter c4 pad" id="ch-night" data-from="18" data-to="21">
+    <div class="ch-inner">
+      <div class="ch-time num">19:00</div>
+      <div class="ch-body">
+        <span class="cap">Night</span>
+        <h2>Kottu on the flat-top</h2>
+        <p>You'll hear it from the carpark — two blades against steel, chopping roti through curry, egg and leek in a rhythm every Sri Lankan knows by heart. It's loud, it's late, it's the best thing to eat after a long day. Cheese kottu if you're feeling reckless.</p>
+        <div class="ch-items">
+          <span class="chip">Chicken Kottu <b>$19</b></span>
+          <span class="chip">Cheese Kottu <b>$21</b></span>
+          <span class="chip">Vegetable Kottu <b>$17</b></span>
+          <span class="chip">Wattalappam <b>$8</b></span>
+        </div>
+        <a href="#order" class="btn btn-turm" data-tab="order">Order Dinner</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- heritage -->
+  <section class="heritage pad">
+    <div class="her-lead">
+      <span class="cap">Why "Colompoor"</span>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--ink)">It's how home sounds when you say it fast.</p>
+      <p>Everything here is made the slow way — coconut milk squeezed each morning, spices roasted and ground in-house, sambols pounded rather than blitzed. Nothing arrives in a jar.</p>
+    </div>
+    <div class="her-grid">
+      <div class="her-cell"><div class="n num">12h</div><div class="l">Hopper ferment</div></div>
+      <div class="her-cell"><div class="n num">09</div><div class="l">Spices ground daily</div></div>
+      <div class="her-cell"><div class="n num">04</div><div class="l">Menus, one per shift</div></div>
+      <div class="her-cell"><div class="n num">00</div><div class="l">Jars, packets or shortcuts</div></div>
+    </div>
+  </section>
+
+  <!-- avurudu -->
+  <div class="batik"></div>
+  <section class="avu pad">
+    <div class="avu-in">
+      <div>
+        <span class="cap">More than food</span>
+        <h2>The Avurudu Collection</h2>
+        <p>Each new-year season we curate a small run of <b>handmade clothing and batik</b> — sarongs, wraps and tops, dyed by hand.</p>
+        <p style="color:var(--muted)"><span class="ital" style="font-size:1.15rem">Handmade with love, tradition and a modern touch.</span></p>
+        <p style="color:var(--muted)">In-cafe only, while stocks last. Follow <b>@cafe_colompoor</b> for the drop.</p>
+      </div>
+      <div class="avu-card">
+        <span class="cap">Season 2026</span>
+        <span class="ital">dyed by hand, worn once a year,<br>kept for a lifetime</span>
+        <div class="swatches">
+          <i style="background:var(--lotus)"></i><i style="background:var(--turmeric)"></i>
+          <i style="background:var(--leaf)"></i><i style="background:var(--clay)"></i><i style="background:var(--ink)"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="batik"></div>
+</section>
+
+<!-- ================= 02 · MENU ================= -->
+<section class="page" id="menu">
+  <div class="mhead pad">
+    <span class="cap">02 · The Menu</span>
+    <h1>Everything, in order.</h1>
+    <p>Made in-house daily. Items run out — that's the point of cooking fresh. Call ahead if you need something held.</p>
+  </div>
+  <div class="menu-split pad">
+    <nav class="mindex" id="mIndex"></nav>
+    <div id="mBody"></div>
+  </div>
+</section>
+
+<!-- ================= 03 · PRE-ORDER ================= -->
+<section class="page" id="order">
+  <div class="ohead pad">
+    <span class="cap">03 · Pre-Order for pickup</span>
+    <h1>Build your plate.</h1>
+    <p>Pickup only — ready in about 20 minutes, next to Foodland in Daw Park. Start with the curry plate, then add anything else from the day.</p>
+  </div>
+
+  <div class="pad">
+    <!-- BUILD YOUR PLATE -->
+    <div class="builder">
+      <div>
+        <div class="bstep">
+          <div class="sh"><span class="n">01</span><h3>Choose your rice</h3><span class="hint">pick one</span></div>
+          <div class="opts" id="optRice"></div>
+        </div>
+        <div class="bstep">
+          <div class="sh"><span class="n">02</span><h3>Choose a protein</h3><span class="hint">pick one</span></div>
+          <div class="opts" id="optProtein"></div>
+        </div>
+        <div class="bstep">
+          <div class="sh"><span class="n">03</span><h3>Choose three vegetables</h3><span class="hint" id="vegHint">0 of 3</span></div>
+          <div class="opts" id="optVeg"></div>
+        </div>
+        <div class="bstep" style="margin-bottom:0">
+          <div class="sh"><span class="n">04</span><h3>Always included</h3></div>
+          <div class="opts">
+            <span class="opt" style="cursor:default"><span class="sw" style="background:#f5efe2"></span>Pol sambol</span>
+            <span class="opt" style="cursor:default"><span class="sw" style="background:#e8d6a8"></span>Papadam</span>
+            <span class="opt" style="cursor:default"><span class="sw" style="background:#a8703a"></span>Gravy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="plate-panel">
+        <svg viewBox="0 0 240 240" id="plateSvg" aria-label="Your plate preview"></svg>
+        <div class="plate-legend" id="plateLegend"></div>
+        <div class="plate-total"><span class="cap">Plate total</span><span class="num" id="plateTotal">$16.90</span></div>
+        <button class="btn btn-lotus" id="addPlate">Add plate to order</button>
+      </div>
+    </div>
+
+    <!-- everything else -->
+    <div id="oBody"></div>
+  </div>
+</section>
+
+<!-- ================= 04 · BOOKINGS ================= -->
+<section class="page" id="bookings">
+  <div class="bhead pad">
+    <span class="cap">04 · Dine in</span>
+    <h1>Find a table.</h1>
+    <p>Pick a day, then a time that's still open. Weekend hopper mornings go first.</p>
+  </div>
+  <div class="bk pad" id="bkFlow">
+    <div class="bk-step">
+      <div class="sh"><span class="n">01</span><h3>Which day?</h3></div>
+      <div class="days" id="bkDays"></div>
+    </div>
+    <div class="bk-step">
+      <div class="sh"><span class="n">02</span><h3>What time?</h3></div>
+      <div class="slots" id="bkSlots"></div>
+    </div>
+    <div class="bk-step">
+      <div class="sh"><span class="n">03</span><h3>How many?</h3></div>
+      <div class="party" id="bkParty"></div>
+    </div>
+    <div class="bk-step">
+      <div class="sh"><span class="n">04</span><h3>Your details</h3></div>
+      <div class="bk-fields">
+        <div class="field"><label>Name</label><input id="bkName" placeholder="Nimali" /></div>
+        <div class="field"><label>Phone</label><input id="bkPhone" type="tel" placeholder="0400 000 000" /></div>
+        <div class="field"><label>Notes <span style="letter-spacing:0;text-transform:none;color:var(--muted)">(optional)</span></label><input id="bkNote" placeholder="Spice level, celebration…" /></div>
+      </div>
+    </div>
+    <div class="bk-summary">
+      <div><div class="s">Booking</div><div class="v" id="bkSummary">Pick a day &amp; time</div></div>
+      <button class="btn btn-turm" id="bkConfirm" disabled>Confirm booking</button>
+    </div>
+  </div>
+  <div class="bk-done pad" id="bkDone">
+    <div class="tick">✓</div>
+    <h2>Table booked.</h2>
+    <p id="bkDoneMsg">We've sent a confirmation text. ස්තුතියි — see you soon.</p>
+    <button class="btn btn-out" id="bkAgain">Make another booking</button>
+  </div>
+</section>
+</main>
+
+<!-- ================= DOCKED ORDER BAR ================= -->
+<div class="dock" id="dock">
+  <div class="dock-bar" id="dockBar">
+    <span class="cnt num" id="dockCount">0</span>
+    <span class="lbl">items in your pre-order</span>
+    <span class="tot num" id="dockTotal">$0</span>
+    <span class="chev">▲</span>
+  </div>
+  <div class="dock-panel">
+    <div class="dock-inner">
+      <div id="dockItems"></div>
+      <div class="dock-foot" id="dockFoot"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA ================= */
+const MENU={
+ hoppers:{label:"Hoppers",sub:"fermented overnight, cooked to order",items:[
+  {id:"plain",n:"Plain Hopper",d:"Crisp lacy edge, soft coconut centre.",p:4.5,tags:["v","gf"]},
+  {id:"egg",n:"Egg Hopper",d:"With a soft egg baked into the middle.",p:7.5,tags:["gf","sig"]},
+  {id:"milk",n:"Milk Hopper",d:"Extra coconut cream centre, lightly sweet.",p:5.5,tags:["v","gf"]},
+  {id:"stringh",n:"String Hoppers (10)",d:"Steamed rice-noodle nests, pol sambol & dhal.",p:14,tags:["v"]},
+  {id:"hopperset",n:"Hopper Set for Two",d:"6 hoppers, 2 egg hoppers, dhal, lunu miris, seeni sambol.",p:26,tags:["sig"]}]},
+ rice:{label:"Rice & Kottu",sub:"the curry table at noon, the flat-top at night",items:[
+  {id:"chkkottu",n:"Chicken Kottu",d:"Godhamba roti chopped with chicken curry, egg, leek, carrot.",p:19,tags:["sig"]},
+  {id:"cheesekottu",n:"Cheese Kottu",d:"The indulgent one — molten cheese folded through.",p:21,tags:[]},
+  {id:"vegkottu",n:"Vegetable Kottu",d:"Cabbage, leek, carrot and curry gravy.",p:17,tags:["v"]},
+  {id:"friedrice",n:"Sri Lankan Fried Rice",d:"With devilled chicken sauce on the side.",p:17,tags:[]},
+  {id:"lamprais",n:"Lamprais",d:"Dutch-Burgher classic baked in banana leaf. Weekends, limited.",p:22,tags:["sig"]}]},
+ shorteats:{label:"Short Eats",sub:"the glass cabinet, best at four o'clock",items:[
+  {id:"fishbun",n:"Fish Bun (Maalu Paan)",d:"Soft bun, spiced fish and potato.",p:5,tags:[]},
+  {id:"rolls",n:"Chicken Rolls (2)",d:"Crumbed, golden-fried pancake rolls.",p:8,tags:[]},
+  {id:"samosa",n:"Vegetable Samosa (2)",d:"Crisp pastry, curried potato and pea.",p:6,tags:["v"]},
+  {id:"cutlet",n:"Fish Cutlets (3)",d:"Spiced fish croquettes, island-style.",p:7.5,tags:[]},
+  {id:"mixbox",n:"Short Eats Box (8 pc)",d:"A mix of everything. Nobody regrets the box.",p:20,tags:["sig"]}]},
+ sweets:{label:"Sweets",sub:"jaggery, coconut, cardamom",items:[
+  {id:"watta",n:"Wattalappam",d:"Jaggery-coconut custard, cashew and nutmeg.",p:8,tags:["gf","sig"]},
+  {id:"caramel",n:"Caramel Pudding",d:"Silky baked custard, burnt caramel top.",p:7.5,tags:["gf"]},
+  {id:"curd",n:"Buffalo Curd & Treacle",d:"Thick curd with kithul palm treacle.",p:8.5,tags:["gf"]},
+  {id:"kokis",n:"Kokis & Kavum Plate",d:"Crunchy Avurudu treats. Seasonal.",p:9,tags:["v"]}]},
+ tea:{label:"Tea & Drinks",sub:"high-grown ceylon, brewed properly",items:[
+  {id:"ceylon",n:"Ceylon Black Tea",d:"Loose-leaf Dimbula, with or without milk.",p:4.5,tags:["v","gf"]},
+  {id:"masalatea",n:"Spiced Milk Tea (Kiri Thé)",d:"With cinnamon and cardamom.",p:5.5,tags:["v","gf"]},
+  {id:"faluda",n:"Faluda",d:"Rose syrup, basil seeds, jelly and ice cream.",p:8,tags:["v"]},
+  {id:"kingcoconut",n:"King Coconut (Thambili)",d:"Chilled, straight from the shell.",p:6.5,tags:["v","gf"]},
+  {id:"kola",n:"Kola Kanda",d:"Herbal green congee — the island's morning tonic.",p:7.5,tags:["v","gf"]}]},
+};
+const TAGL={v:"Veg",gf:"GF",sig:"Signature"};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const money=n=>'$'+(Math.round(n*100)/100).toFixed(2).replace(/\.00$/,'');
+
+/* ================= ROUTER ================= */
+function showTab(t){
+  $$('.page').forEach(p=>p.classList.toggle('active',p.id===t));
+  $$('.rail-nav a').forEach(a=>a.classList.toggle('active',a.dataset.tab===t));
+  $('#railNav').classList.remove('open');
+  window.scrollTo({top:0,behavior:'auto'});
+  if(location.hash.slice(1)!==t) history.replaceState(null,'','#'+t);
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){e.preventDefault();showTab(t.dataset.tab);}});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1)||'home';if(document.getElementById(h))showTab(h);});
+showTab(document.getElementById(location.hash.slice(1))?location.hash.slice(1):'home');
+$('#railToggle').onclick=()=>$('#railNav').classList.toggle('open');
+
+/* ================= THE DAY DIAL + LIVE CLOCK ================= */
+const SEGS=[
+ {from:8, to:11, name:'Hoppers & plain tea',      col:'#d9a441', anchor:'ch-morning'},
+ {from:11,to:15, name:'The rice & curry table',   col:'#c07a4e', anchor:'ch-midday'},
+ {from:15,to:18, name:'Short eats & kiri thé',    col:'#b52e3c', anchor:'ch-afternoon'},
+ {from:18,to:21, name:'Kottu on the flat-top',    col:'#3f5d33', anchor:'ch-night'},
+];
+const OPEN=8, CLOSE=21, SPAN=CLOSE-OPEN;
+/* Open "speedometer" arc: 280° of sweep starting lower-left, leaving an 80° gap at the
+   bottom. A full 360° would land 08 and 21 on the identical angle and overlap them. */
+const ARC_START=130, ARC_SWEEP=280;
+const ang=h=>ARC_START+((h-OPEN)/SPAN)*ARC_SWEEP;
+const pt=(cx,cy,r,a)=>[cx+r*Math.cos(a*Math.PI/180), cy+r*Math.sin(a*Math.PI/180)];
+function arc(cx,cy,rO,rI,a0,a1){
+  const [x0,y0]=pt(cx,cy,rO,a0),[x1,y1]=pt(cx,cy,rO,a1);
+  const [x2,y2]=pt(cx,cy,rI,a1),[x3,y3]=pt(cx,cy,rI,a0);
+  const lg=(a1-a0)>180?1:0;
+  return `M${x0} ${y0}A${rO} ${rO} 0 ${lg} 1 ${x1} ${y1}L${x2} ${y2}A${rI} ${rI} 0 ${lg} 0 ${x3} ${y3}Z`;
+}
+function adelaideHour(){
+  const s=new Intl.DateTimeFormat('en-AU',{timeZone:'Australia/Adelaide',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date());
+  const [h,m]=s.split(':').map(Number);
+  return {h,m,dec:h+m/60,label:s};
+}
+function currentSeg(dec){return SEGS.find(s=>dec>=s.from&&dec<s.to)||null;}
+const R_OUT=128, R_IN=104, R_MID=(R_OUT+R_IN)/2, R_LABEL=152;
+function drawDial(){
+  const t=adelaideHour(), seg=currentSeg(t.dec), cx=160, cy=160;
+  const open=!!seg;
+  let html='';
+  // faint full track behind the segments
+  html+=`<path d="${arc(cx,cy,R_OUT,R_IN,ang(OPEN),ang(CLOSE))}" fill="rgba(27,23,19,.055)"/>`;
+  SEGS.forEach(s=>{
+    const a0=ang(s.from)+1.4, a1=ang(s.to)-1.4;
+    const on=open&&seg.anchor===s.anchor;
+    // the live band is drawn thicker so it reads without a glow filter
+    html+=`<path class="seg${on?' on':''}" data-jump="${s.anchor}"
+      d="${arc(cx,cy,on?R_OUT+5:R_OUT,on?R_IN-5:R_IN,a0,a1)}"
+      fill="${s.col}" opacity="${on?1:.5}"><title>${s.from}:00–${s.to}:00 — ${s.name}</title></path>`;
+  });
+  // boundary numerals — 08,11,15,18,21 all sit at distinct angles thanks to the gap
+  [...SEGS.map(s=>s.from), CLOSE].forEach(h=>{
+    const [tx,ty]=pt(cx,cy,R_LABEL,ang(h));
+    html+=`<text x="${tx}" y="${ty}" font-family="Italiana,serif" font-size="14" fill="#8c8172"
+      text-anchor="middle" dominant-baseline="central">${String(h).padStart(2,'0')}</text>`;
+  });
+  // current time: a marker riding ON the ring (no centre hub, no stray dot)
+  if(open){
+    const a=ang(t.dec);
+    const [mx,my]=pt(cx,cy,R_MID,a);
+    const [t1x,t1y]=pt(cx,cy,R_OUT+9,a), [t2x,t2y]=pt(cx,cy,R_OUT+17,a);
+    html+=`<line x1="${t1x}" y1="${t1y}" x2="${t2x}" y2="${t2y}" stroke="#1b1713" stroke-width="2" stroke-linecap="round"/>`;
+    html+=`<circle cx="${mx}" cy="${my}" r="8.5" fill="#1b1713" stroke="#f7f1e4" stroke-width="3"/>`;
+  }
+  $('#dial').innerHTML=html;
+  $('#clockTime').textContent=t.label;
+  $('#dialLabel').textContent=open
+    ? String(seg.from).padStart(2,'0')+'–'+String(seg.to).padStart(2,'0')
+    : 'Closed';
+  $('#dialHub').classList.toggle('shut',!open);
+  $('#nowServing').textContent=open?seg.name:'Closed — we open at 8:00am';
+  $('#railDot').classList.toggle('shut',!open);
+  $('#railState').textContent=open?'Open now':'Closed';
+  $$('.chapter').forEach(c=>c.classList.toggle('now', open&&c.id===seg.anchor));
+}
+drawDial(); setInterval(drawDial,30000);
+$('#dial').addEventListener('click',e=>{
+  const p=e.target.closest('[data-jump]'); if(!p)return;
+  document.getElementById(p.dataset.jump).scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+/* ================= MENU (index + numbered ledger) ================= */
+let n=0;
+Object.entries(MENU).forEach(([k,c],i)=>{
+  const ix=String(i+1).padStart(2,'0');
+  $('#mIndex').insertAdjacentHTML('beforeend',`<a href="#mc-${k}" data-ix="${k}"><span class="ix">${ix}</span>${c.label}</a>`);
+  let rows='';
+  c.items.forEach(it=>{ n++;
+    rows+=`<div class="row"><span class="rn">${String(n).padStart(2,'0')}</span>
+      <div>
+        <div class="rtop"><h4>${it.n}</h4><span class="leader"></span><span class="rp">${money(it.p)}</span></div>
+        <p>${it.d}</p>
+        <div class="tags">${it.tags.map(t=>`<span class="tag ${t}">${TAGL[t]}</span>`).join('')}</div>
+      </div></div>`;
+  });
+  $('#mBody').insertAdjacentHTML('beforeend',
+    `<section class="msec" id="mc-${k}"><h2><span class="ix">${ix}</span>${c.label}</h2><div class="sub">${c.sub}</div>${rows}</section>`);
+});
+$('#mIndex').addEventListener('click',e=>{
+  const a=e.target.closest('a'); if(!a)return; e.preventDefault();
+  document.getElementById('mc-'+a.dataset.ix).scrollIntoView({behavior:'smooth',block:'start'});
+});
+// scroll-spy the index
+const spy=new IntersectionObserver(es=>{es.forEach(en=>{
+  if(en.isIntersecting){const id=en.target.id.replace('mc-','');
+    $$('#mIndex a').forEach(a=>a.classList.toggle('on',a.dataset.ix===id));}
+})},{rootMargin:'-15% 0px -70% 0px'});
+$$('.msec').forEach(s=>spy.observe(s));
+
+/* ================= BUILD YOUR PLATE ================= */
+const RICE=[{id:'white',n:'Steamed white',c:'#f5efe2',x:0},{id:'yellow',n:'Yellow rice',c:'#ecd9ae',x:0},{id:'red',n:'Red country rice',c:'#c9a98a',x:1}];
+const PROTEIN=[{id:'chicken',n:'Chicken curry',c:'#a8562c',x:0},{id:'devilled',n:'Devilled chicken',c:'#b52e3c',x:1.5},
+ {id:'fish',n:'Fish ambul thiyal',c:'#6b4632',x:2},{id:'dhal',n:'Dhal curry',c:'#d9a441',x:0}];
+const VEG=[{id:'beetroot',n:'Beetroot',c:'#8e2f52'},{id:'mallung',n:'Cabbage mallung',c:'#5d8a4d'},
+ {id:'brinjal',n:'Brinjal moju',c:'#4a3352'},{id:'polos',n:'Polos (jackfruit)',c:'#7a5a34'},
+ {id:'gotukola',n:'Gotu kola sambol',c:'#3f5d33'},{id:'pumpkin',n:'Pumpkin curry',c:'#d98a3f'}];
+const BASE=16.9;
+let plate={rice:'white',protein:'chicken',veg:[]};
+
+function optHTML(o,on,dim){
+  return `<span class="opt${on?' on':''}${dim?' dim':''}" data-o="${o.id}">
+    <span class="sw" style="background:${o.c}"></span>${o.n}${o.x?`<span class="plus">+${money(o.x)}</span>`:''}</span>`;
+}
+function renderOpts(){
+  $('#optRice').innerHTML=RICE.map(o=>optHTML(o,plate.rice===o.id)).join('');
+  $('#optProtein').innerHTML=PROTEIN.map(o=>optHTML(o,plate.protein===o.id)).join('');
+  const full=plate.veg.length>=3;
+  $('#optVeg').innerHTML=VEG.map(o=>optHTML(o,plate.veg.includes(o.id),full&&!plate.veg.includes(o.id))).join('');
+  $('#vegHint').textContent=plate.veg.length+' of 3';
+}
+function plateCost(){
+  const r=RICE.find(x=>x.id===plate.rice), p=PROTEIN.find(x=>x.id===plate.protein);
+  return BASE+(r?r.x:0)+(p?p.x:0);
+}
+function drawPlate(){
+  const cx=120,cy=120;
+  const r=RICE.find(x=>x.id===plate.rice), p=PROTEIN.find(x=>x.id===plate.protein);
+  let h=`<circle cx="${cx}" cy="${cy}" r="108" fill="#fcf8ef" stroke="rgba(27,23,19,.15)"/>
+         <circle cx="${cx}" cy="${cy}" r="94" fill="none" stroke="rgba(27,23,19,.10)"/>`;
+  // rice mound centre
+  h+=`<circle cx="${cx}" cy="${cy}" r="34" fill="${r?r.c:'#f5efe2'}" stroke="rgba(27,23,19,.14)"/>`;
+  h+=`<text x="${cx}" y="${cy+4}" text-anchor="middle" font-family="Karla" font-size="9" fill="rgba(27,23,19,.5)" letter-spacing="1">RICE</text>`;
+  // 4 pots around: protein first, then veg
+  const slots=[[120,44],[196,120],[120,196],[44,120]];
+  const fills=[p, ...plate.veg.map(v=>VEG.find(x=>x.id===v))];
+  slots.forEach((s,i)=>{
+    const f=fills[i];
+    if(f) h+=`<circle cx="${s[0]}" cy="${s[1]}" r="27" fill="${f.c}" stroke="rgba(27,23,19,.18)"><title>${f.n}</title></circle>`;
+    else  h+=`<circle cx="${s[0]}" cy="${s[1]}" r="27" fill="none" stroke="rgba(27,23,19,.22)" stroke-dasharray="4 5"/>`;
+  });
+  $('#plateSvg').innerHTML=h;
+  const veg=plate.veg.map(v=>VEG.find(x=>x.id===v).n);
+  $('#plateLegend').innerHTML=
+    `<div><span>Rice</span><span>${r.n}</span></div>
+     <div><span>Protein</span><span>${p.n}</span></div>
+     <div><span>Vegetables</span><span>${veg.length?veg.join(', '):'— pick three —'}</span></div>`;
+  $('#plateTotal').textContent=money(plateCost());
+  $('#addPlate').disabled=plate.veg.length!==3;
+  $('#addPlate').textContent=plate.veg.length!==3?`Pick ${3-plate.veg.length} more vegetable${3-plate.veg.length>1?'s':''}`:'Add plate to order';
+}
+function refreshPlate(){renderOpts();drawPlate();}
+$('#optRice').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o){plate.rice=o.dataset.o;refreshPlate();}});
+$('#optProtein').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o){plate.protein=o.dataset.o;refreshPlate();}});
+$('#optVeg').addEventListener('click',e=>{
+  const o=e.target.closest('[data-o]'); if(!o||o.classList.contains('dim'))return;
+  const id=o.dataset.o, i=plate.veg.indexOf(id);
+  if(i>-1) plate.veg.splice(i,1); else if(plate.veg.length<3) plate.veg.push(id);
+  refreshPlate();
+});
+refreshPlate();
+let plateSeq=0;
+$('#addPlate').onclick=()=>{
+  if(plate.veg.length!==3)return;
+  const r=RICE.find(x=>x.id===plate.rice),p=PROTEIN.find(x=>x.id===plate.protein);
+  const veg=plate.veg.map(v=>VEG.find(x=>x.id===v).n).join(', ');
+  addItem('plate-'+(++plateSeq),'Rice & Curry Plate',plateCost(),`${r.n} · ${p.n} · ${veg}`);
+  toast('Plate added to your pre-order');
+};
+
+/* ================= ORDER LEDGER ================= */
+let on=0;
+Object.entries(MENU).forEach(([k,c],i)=>{
+  const ix=String(i+1).padStart(2,'0');
+  let rows='';
+  c.items.forEach(it=>{ on++;
+    rows+=`<div class="orow"><span class="rn">${String(on).padStart(2,'0')}</span>
+      <div><h4>${it.n}</h4><p>${it.d}</p></div>
+      <span class="rp">${money(it.p)}</span>
+      <button class="addb" data-add="${it.id}">Add</button></div>`;
+  });
+  $('#oBody').insertAdjacentHTML('beforeend',`<section class="osec"><h2><span class="ix">${ix}</span>${c.label}</h2>${rows}</section>`);
+});
+const ALL=Object.values(MENU).flatMap(c=>c.items);
+$('#oBody').addEventListener('click',e=>{
+  const b=e.target.closest('[data-add]'); if(!b)return;
+  const it=ALL.find(x=>x.id===b.dataset.add);
+  addItem(it.id,it.n,it.p,'');
+  b.textContent='Added'; b.classList.add('done');
+  setTimeout(()=>{b.textContent='Add';b.classList.remove('done');},1000);
+  toast(it.n+' added');
+});
+
+/* ================= DOCKED ORDER ================= */
+let cart={};
+function addItem(id,name,price,note){
+  if(cart[id]) cart[id].q++;
+  else cart[id]={n:name,p:price,note,q:1};
+  renderDock();
+}
+function renderDock(){
+  const ids=Object.keys(cart);
+  const count=ids.reduce((s,i)=>s+cart[i].q,0);
+  const total=ids.reduce((s,i)=>s+cart[i].p*cart[i].q,0);
+  $('#dockCount').textContent=count;
+  $('#dockTotal').textContent=money(total);
+  if(!count){
+    $('#dockItems').innerHTML=`<div class="dock-empty">Nothing here yet — build a plate or add something from the day.</div>`;
+    $('#dockFoot').innerHTML='';
+    return;
+  }
+  $('#dockItems').innerHTML=ids.map(i=>`<div class="dline">
+    <div><h5>${cart[i].n}</h5>${cart[i].note?`<div class="note">${cart[i].note}</div>`:''}</div>
+    <div class="qty"><button data-dec="${i}">−</button><span>${cart[i].q}</span><button data-inc="${i}">＋</button></div>
+    <span class="lp">${money(cart[i].p*cart[i].q)}</span></div>`).join('');
+  $('#dockFoot').innerHTML=`<span class="pk">Pickup · next to Foodland, Daw Park · ready in ~20 min</span>
+    <button class="btn btn-turm" id="place">Place pre-order · ${money(total)}</button>`;
+}
+$('#dockBar').onclick=()=>$('#dock').classList.toggle('open');
+$('#dock').addEventListener('click',e=>{
+  const inc=e.target.closest('[data-inc]'), dec=e.target.closest('[data-dec]');
+  if(inc){cart[inc.dataset.inc].q++;renderDock();}
+  if(dec){const k=dec.dataset.dec;cart[k].q--;if(cart[k].q<=0)delete cart[k];renderDock();}
+  if(e.target.id==='place'){
+    toast('Pre-order placed (demo) — ස්තුතියි, see you soon');
+    cart={};renderDock();$('#dock').classList.remove('open');
+  }
+});
+renderDock();
+
+/* ================= TOAST ================= */
+let tT;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),2400);}
+
+/* ================= BOOKINGS — availability grid ================= */
+const TIMES=['8:30','9:00','9:30','10:00','11:00','12:00','12:30','1:00','5:30','6:00','6:30','7:00','7:30','8:00'];
+let bk={day:null,time:null,party:2};
+// deterministic pseudo-availability so it stays stable per day
+const avail=(dayIx,i)=>{const s=(dayIx*7+i*13)%10; return s<1?'full':(s<3?'few':'ok');};
+function buildDays(){
+  const out=[];const now=new Date();
+  for(let i=0;i<7;i++){
+    const d=new Date(now); d.setDate(now.getDate()+i);
+    out.push({ix:i,dw:i===0?'Today':d.toLocaleDateString('en-AU',{weekday:'short'}),dd:d.getDate(),
+      full:d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long'})});
+  }
+  $('#bkDays').innerHTML=out.map(d=>`<div class="day${bk.day===d.ix?' on':''}" data-day="${d.ix}" data-full="${d.full}">
+    <div class="dw">${d.dw}</div><div class="dd num">${d.dd}</div></div>`).join('');
+  return out;
+}
+function buildSlots(){
+  if(bk.day===null){$('#bkSlots').innerHTML=`<div style="color:var(--muted);font-size:.9rem">Choose a day first.</div>`;return;}
+  $('#bkSlots').innerHTML=TIMES.map((t,i)=>{
+    const a=avail(bk.day,i);
+    const lbl=a==='full'?'Booked out':(a==='few'?'2 left':'Available');
+    return `<div class="slot ${a==='few'?'few':''}${a==='full'?' full':''}${bk.time===t?' on':''}" data-time="${t}">
+      <div class="tm num">${t}</div><div class="st">${lbl}</div></div>`;
+  }).join('');
+}
+function buildParty(){
+  $('#bkParty').innerHTML=[1,2,3,4,5,6,8].map(p=>
+    `<div class="pz${bk.party===p?' on':''}" data-p="${p}">${p===8?'8+':p}</div>`).join('');
+}
+function summary(){
+  const dEl=$(`#bkDays .day[data-day="${bk.day}"]`);
+  const ok=bk.day!==null&&bk.time;
+  $('#bkSummary').textContent= ok
+    ? `${dEl.dataset.full} · ${bk.time} · ${bk.party} ${bk.party===1?'guest':'guests'}`
+    : 'Pick a day & time';
+  $('#bkConfirm').disabled=!ok;
+}
+let days=buildDays(); buildSlots(); buildParty(); summary();
+$('#bkDays').addEventListener('click',e=>{const d=e.target.closest('[data-day]');if(!d)return;
+  bk.day=+d.dataset.day; bk.time=null; buildDays(); buildSlots(); summary();});
+$('#bkSlots').addEventListener('click',e=>{const s=e.target.closest('[data-time]');
+  if(!s||s.classList.contains('full'))return; bk.time=s.dataset.time; buildSlots(); summary();});
+$('#bkParty').addEventListener('click',e=>{const p=e.target.closest('[data-p]');if(!p)return;
+  bk.party=+p.dataset.p; buildParty(); summary();});
+$('#bkConfirm').onclick=()=>{
+  const nm=$('#bkName').value.trim();
+  $('#bkDoneMsg').textContent=`${nm?nm+', we':'We'}'ve got you for ${$('#bkSummary').textContent}. A confirmation text is on its way. ස්තුතියි!`;
+  $('#bkFlow').style.display='none'; $('#bkDone').classList.add('show');
+};
+$('#bkAgain').onclick=()=>{
+  bk={day:null,time:null,party:2}; $('#bkName').value='';$('#bkPhone').value='';$('#bkNote').value='';
+  buildDays();buildSlots();buildParty();summary();
+  $('#bkDone').classList.remove('show'); $('#bkFlow').style.display='';
+};
+</script>
+</body>
+</html>

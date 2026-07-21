@@ -1,14 +1,17 @@
-# PayPanda marketing site
+# Portal Panda marketing site
 
-Static marketing website for PayPanda (working name) — commission-free,
-custom-designed online ordering for independent restaurants and caffes.
+Static marketing website for **Portal Panda** — the all-in-one, commission-free
+ordering platform for independent restaurants and caffes (custom ordering site,
+admin dashboard, staff portal, kitchen + receipt printing, table bookings and
+Uber Direct delivery).
 
 Built with **React 18 + Vite + React Router v6** and plain CSS. No backend, no
 CMS, no analytics. `vite build` produces a fully static site deployable to any
 static host.
 
-> **Renaming the business is a one-file edit.** Every brand-specific string,
-> colour and contact detail comes from [`src/brand.js`](src/brand.js). See
+> **Renaming the business is a one-file edit.** Every brand-specific string and
+> contact detail comes from [`src/brand.js`](src/brand.js); the design tokens
+> (colours) live in the `:root` block of [`src/index.css`](src/index.css). See
 > [Changing the brand](#changing-the-brand).
 
 ## Requirements
@@ -28,21 +31,24 @@ npm run preview  # serve the built dist/ locally to check it
 
 ```
 src/
-  brand.js                 # single source of truth for name/contact/colour/form
+  brand.js                 # single source of truth for name/contact/form/colours
   index.css                # design tokens (:root) + all styles
   main.jsx                 # app entry (BrowserRouter)
   App.jsx                  # routes, page title, scroll-to-top
   components/
-    Header.jsx             # sticky header, anchor nav, burger menu < 720px
+    Header.jsx             # sticky header, multi-page nav, burger menu < 860px
     Footer.jsx
+    Logo.jsx               # the Portal Panda mark (panda face + portal ring, SVG)
     ContactForm.jsx        # submits to the form endpoint; degrades gracefully
     DeviceFrame.jsx        # phone/tablet/desktop frames + screenshot fallback
     Reveal.jsx             # IntersectionObserver scroll-reveal
     icons.jsx              # inline SVG icons (no icon library)
   pages/
-    Landing.jsx            # "/"  — the full pitch (§5)
-    CaseStudy.jsx          # "/case-study"
-    Contact.jsx            # "/contact"
+    Home.jsx               # "/"         — the flagship pitch
+    Platform.jsx           # "/platform" — the full six-module platform
+    Pricing.jsx            # "/pricing"  — plans + call-for-quote panel
+    Live.jsx               # "/live"     — Caffe Primo Firle (running today)
+    Contact.jsx            # "/contact"  — book-a-demo form
   assets/
     screenshots/           # drop real screenshots here (see below)
 ```
@@ -53,21 +59,23 @@ Edit **only** [`src/brand.js`](src/brand.js):
 
 ```js
 export const BRAND = {
-  name: 'PayPanda',
-  tagline: 'Online ordering that looks like your restaurant.',
+  name: 'Portal Panda',
+  tagline: 'The whole restaurant, run from one portal.',
+  pitch: '…',                          // one-liner used in hero + meta
   contactEmail: 'you@example.com',
-  contactPhone: '0452145196',        // used for tel: links (no spaces)
+  contactPhone: '0452145196',          // used for tel: links (no spaces)
   contactPhoneDisplay: '0452 145 196', // shown to humans
-  formEndpoint: '',                   // see "Contact form endpoint" below
-  accent: '#0F9D6E',                  // keep in sync with --accent in index.css
+  formEndpoint: '',                    // see "Contact form endpoint" below
   location: 'Adelaide, South Australia',
+  colors: { … },                       // reference copy of the brand palette
 };
 ```
 
-No component hardcodes the name, email or phone number. If you change the
-accent colour, also update `--accent` (and the related `--accent-dark` /
-`--accent-soft`) in [`src/index.css`](src/index.css), where the CSS-driven
-styling reads it.
+No component hardcodes the name, email or phone number. The **colours** used for
+styling live in the `:root` block of [`src/index.css`](src/index.css) — the
+"portal spectrum" is `--violet` / `--coral` / `--cyan`, composed into
+`--grad-brand`, `--grad-portal` and `--grad-text`. Change them there to re-theme
+the whole site.
 
 ## Contact form endpoint
 

@@ -100,3 +100,99 @@ export const IconClose = () => (
     <line x1="6" y1="6" x2="18" y2="18" />
   </svg>
 );
+
+export const IconArrowRight = () => (
+  <svg {...base}>
+    <line x1="5" y1="12" x2="19" y2="12" />
+    <polyline points="12 5 19 12 12 19" />
+  </svg>
+);
+
+export const IconStore = () => (
+  <svg {...base}>
+    <path d="M3 9l1.5-5h15L21 9" />
+    <path d="M4 9v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9" />
+    <path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" />
+    <path d="M9 21v-6h6v6" />
+  </svg>
+);
+
+export const IconLayout = () => (
+  <svg {...base}>
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <line x1="3" y1="9" x2="21" y2="9" />
+    <line x1="9" y1="21" x2="9" y2="9" />
+  </svg>
+);
+
+export const IconStaff = () => (
+  <svg {...base}>
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <circle cx="9" cy="10" r="2.4" />
+    <path d="M5.5 16a3.5 3.5 0 0 1 7 0" />
+    <line x1="15" y1="9" x2="18" y2="9" />
+    <line x1="15" y1="13" x2="18" y2="13" />
+  </svg>
+);
+
+export const IconTruck = () => (
+  <svg {...base}>
+    <rect x="1" y="6" width="13" height="11" rx="1" />
+    <path d="M14 9h4l3 3v5h-7" />
+    <circle cx="6" cy="18.5" r="2" />
+    <circle cx="17.5" cy="18.5" r="2" />
+  </svg>
+);
+
+export const IconChef = () => (
+  <svg {...base}>
+    <path d="M6 14a4 4 0 0 1-1-7.9A4.5 4.5 0 0 1 14 5a4 4 0 0 1 4 9" />
+    <path d="M6 13v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-6" />
+    <line x1="9" y1="16" x2="9" y2="19" />
+    <line x1="15" y1="16" x2="15" y2="19" />
+  </svg>
+);
+
+export const IconChart = () => (
+  <svg {...base}>
+    <line x1="4" y1="20" x2="20" y2="20" />
+    <rect x="5" y="12" width="3" height="6" />
+    <rect x="10.5" y="8" width="3" height="10" />
+    <rect x="16" y="4" width="3" height="14" />
+  </svg>
+);
+
+export const IconShield = () => (
+  <svg {...base}>
+    <path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5l8-3z" />
+    <polyline points="9 12 11 14 15 10" />
+  </svg>
+);
+
+export const IconSparkle = () => (
+  <svg {...base}>
+    <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z" />
+    <path d="M19 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" />
+  </svg>
+);
+
+export const IconGlobe = () => (
+  <svg {...base}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="2" y1="12" x2="22" y2="12" />
+    <path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" />
+  </svg>
+);
+
+export const IconRefresh = () => (
+  <svg {...base}>
+    <path d="M21 12a9 9 0 1 1-3-6.7" />
+    <polyline points="21 3 21 8 16 8" />
+  </svg>
+);
+
+export const IconChat = () => (
+  <svg {...base}>
+    <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
+  </svg>
+);

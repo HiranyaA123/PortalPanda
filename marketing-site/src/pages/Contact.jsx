@@ -1,4 +1,6 @@
+import { BRAND } from '../brand.js';
 import ContactForm from '../components/ContactForm.jsx';
+import { IconPhone, IconMail } from '../components/icons.jsx';
 
 export default function Contact() {
   return (
@@ -7,15 +9,30 @@ export default function Contact() {
         <div className="container">
           <div className="contact__grid">
             <div className="contact__aside">
-              <span className="eyebrow">Get started</span>
-              <h1 style={{ fontSize: 'clamp(2rem, 4.5vw, 3rem)', marginBottom: 18 }}>
-                Tell us about your venue.
-              </h1>
+              <span className="eyebrow">Book a demo</span>
+              <h1>Tell us about your venue.</h1>
               <p>
-                Custom-designed, done-for-you online ordering. Tell us what you
-                serve and what you need — we'll be in touch within one business
-                day.
+                We’ll show you Portal Panda running a real venue, answer your
+                questions, and put together a straight quote for yours. Usually a
+                reply within one business day.
               </p>
+
+              <div className="contact-lines">
+                <a href={`tel:${BRAND.contactPhone}`} className="contact-card">
+                  <span className="contact-card__icon"><IconPhone /></span>
+                  <span>
+                    {BRAND.contactPhoneDisplay}
+                    <small>Call for a demo &amp; quote</small>
+                  </span>
+                </a>
+                <a href={`mailto:${BRAND.contactEmail}`} className="contact-card">
+                  <span className="contact-card__icon"><IconMail /></span>
+                  <span>
+                    {BRAND.contactEmail}
+                    <small>Email us any time</small>
+                  </span>
+                </a>
+              </div>
             </div>
             <ContactForm />
           </div>

@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Café Presto — Fullarton, Adelaide</title>
+<meta name="description" content="Modern Australian all-day breakfast, brunch and lunch on Glen Osmond Road. Own-roasted coffee. Fullarton, Adelaide." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#1a2544;
+  --navy-deep:#111834;
+  --navy-soft:#2b385a;
+  --grey-script:#7a7a7a;
+  --paper:#f5efe0;
+  --paper-2:#ebe1cd;
+  --cream:#efe6d1;
+  --ink:#1a1815;
+  --ink-soft:#3d3a34;
+  --muted:#8b8577;
+  --terra:#c26b3f;
+  --amber:#d9a441;
+  --line:rgba(26,37,68,.14);
+  --line-soft:rgba(26,37,68,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Archivo Black','Inter',sans-serif;font-weight:normal;line-height:.95;letter-spacing:-.02em}
+.script{font-family:'Caveat',cursive;font-weight:600;color:var(--grey-script);line-height:1}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+img{max-width:100%;display:block}
+
+.wrap{width:min(1200px,94vw);margin-inline:auto}
+.pad{padding:0 clamp(1.4rem,3.5vw,3rem)}
+.cap{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--terra)}
+
+/* ============ TOP RIBBON ============ */
+.ribbon{background:var(--navy-deep);color:var(--paper);overflow:hidden;font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding:.55rem 0;border-bottom:1px solid rgba(245,239,224,.1)}
+.ribbon-track{display:inline-flex;gap:2.5rem;animation:march 45s linear infinite;white-space:nowrap}
+.ribbon-track span{display:inline-flex;align-items:center;gap:2.5rem;color:rgba(245,239,224,.85)}
+.ribbon-track span::after{content:"◆";color:var(--amber);font-size:.68rem}
+@keyframes march{to{transform:translateX(-50%)}}
+
+/* ============ NAV — matches logo exactly ============ */
+.nav{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:60}
+.nav-inner{display:flex;align-items:center;height:82px;gap:2rem}
+.brand{display:flex;flex-direction:column;line-height:.9;position:relative;padding-right:.5rem}
+.brand .cafe{font-family:'Caveat',cursive;font-weight:600;font-size:1.5rem;color:var(--grey-script);
+  transform:translate(4px,4px) rotate(-4deg);margin-bottom:-.3rem}
+.brand .presto{font-family:'Archivo Black',sans-serif;font-size:1.9rem;color:var(--navy);letter-spacing:-.03em}
+.brand .presto .dot{color:var(--terra);margin-left:-.02em}
+.nav-mid{display:flex;gap:.1rem;margin-left:auto}
+.nav-mid a{padding:.55rem 1.05rem;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.75rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);transition:.15s;position:relative}
+.nav-mid a:hover{color:var(--navy)}
+.nav-mid a.active{color:var(--navy)}
+.nav-mid a.active::after{content:"";position:absolute;left:1.05rem;right:1.05rem;bottom:-2px;height:2px;background:var(--terra)}
+.nav-mid a .ix{color:var(--terra);margin-right:.4rem;font-weight:500}
+.nav-cta{background:var(--navy);color:var(--paper);padding:.68rem 1.15rem;font-family:'JetBrains Mono',monospace;
+  font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  border:none;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:.6rem;border-radius:0}
+.nav-cta:hover{background:var(--navy-deep)}
+.nav-cta .cnt{background:var(--amber);color:var(--navy);font-family:'JetBrains Mono',monospace;font-weight:700;
+  font-size:.7rem;padding:.05rem .42rem;min-width:20px;text-align:center;letter-spacing:0}
+.hamb{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
+.hamb span{width:24px;height:2px;background:var(--navy)}
+
+.page{display:none}
+.page.active{display:block;animation:fade .45s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ============ MAGAZINE COVER HERO ============ */
+.cover{padding:clamp(2.5rem,5vw,4rem) 0 0;position:relative}
+.cover-in{max-width:1200px;margin:0 auto;position:relative}
+.issue-strip{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);padding-bottom:.9rem;
+  border-bottom:1.5px solid var(--navy);margin-bottom:1.4rem}
+.issue-strip span:first-child{color:var(--navy);font-weight:600}
+.masthead{font-family:'Archivo Black',sans-serif;font-size:clamp(4rem,15vw,10rem);color:var(--navy);
+  line-height:.82;letter-spacing:-.04em;margin:0 -.03em;position:relative}
+.masthead .dot{color:var(--terra)}
+.masthead .stamp{position:absolute;right:0;top:.5em;font-family:'Caveat',cursive;font-weight:600;font-size:.16em;
+  color:var(--grey-script);transform:rotate(-6deg);letter-spacing:0;line-height:1}
+.cover-underline{border-bottom:1.5px solid var(--navy);margin-top:.4rem;padding-bottom:.9rem}
+.cover-underline .foot-line{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.cover-underline .foot-line b{color:var(--navy);font-weight:700}
+
+/* editorial columns below masthead */
+.editorial{display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(2rem,4vw,3.5rem);padding:clamp(2rem,4vw,3rem) 0 clamp(3rem,6vw,5rem);align-items:start}
+.ed-l{padding-top:.4rem}
+.ed-kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--terra);font-weight:600}
+.ed-headline{font-family:'Archivo Black',sans-serif;font-size:clamp(2.2rem,4vw,3.4rem);line-height:.98;color:var(--navy);margin:.7rem 0 1.4rem;letter-spacing:-.02em}
+.ed-headline .script-accent{font-family:'Caveat',cursive;font-weight:600;color:var(--grey-script);font-size:1.1em;
+  display:inline-block;transform:translateY(.1em) rotate(-3deg);letter-spacing:0;margin:0 .05em}
+.ed-body{font-size:1.02rem;color:var(--ink-soft);max-width:52ch;margin-bottom:1rem}
+.ed-body .dropcap{font-family:'Archivo Black',sans-serif;color:var(--navy);float:left;font-size:3.3rem;line-height:.85;
+  padding:.2rem .55rem 0 0;letter-spacing:-.04em}
+.ed-btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem}
+.btn{display:inline-flex;align-items:center;gap:.55rem;cursor:pointer;border:none;font-family:'JetBrains Mono',monospace;
+  font-weight:700;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 1.4rem;transition:.18s;border-radius:0}
+.btn-navy{background:var(--navy);color:var(--paper)}
+.btn-navy:hover{background:var(--navy-deep)}
+.btn-terra{background:var(--terra);color:#fff}
+.btn-terra:hover{filter:brightness(.92)}
+.btn-out{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-out:hover{background:var(--navy);color:var(--paper)}
+.btn-amber{background:var(--amber);color:var(--navy)}
+.btn-amber:hover{filter:brightness(.94)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* right column: today card + pull quote */
+.today-card{background:var(--navy);color:var(--paper);padding:1.6rem;position:relative;overflow:hidden}
+.today-card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--amber) 0 40%,var(--terra) 40% 70%,var(--paper) 70%)}
+.today-card .row{display:flex;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(245,239,224,.14);gap:1rem}
+.today-card .row:last-child{border-bottom:none}
+.today-card .row .k{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,239,224,.62)}
+.today-card .row .v{font-weight:600;font-size:.94rem;color:var(--paper);text-align:right}
+.today-card .row .v.open{color:var(--amber)}
+.today-card .row .v.closed{color:var(--terra)}
+.today-card .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem;padding-top:.5rem}
+.today-card .top .lb{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.today-card .top .now{font-family:'JetBrains Mono',monospace;font-size:1.1rem;color:var(--paper);font-weight:600;letter-spacing:.05em}
+
+.pull-quote{margin-top:1.4rem;padding:1.4rem 1.5rem;background:var(--cream);border-left:4px solid var(--terra);position:relative}
+.pull-quote::before{content:"“";font-family:'Archivo Black',sans-serif;font-size:5rem;position:absolute;top:-.3rem;left:.3rem;color:rgba(194,107,63,.18);line-height:1}
+.pull-quote p{font-family:'Caveat',cursive;font-weight:600;font-size:1.35rem;color:var(--navy);line-height:1.35;position:relative}
+.pull-quote cite{display:block;margin-top:.7rem;font-family:'JetBrains Mono',monospace;font-style:normal;font-size:.64rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* ============ FEATURE STRIPS ============ */
+.strip{padding:clamp(3rem,6vw,5rem) 0;border-top:1.5px solid var(--navy)}
+.strip.dark{background:var(--navy);color:var(--paper);border:none}
+.strip.dark h2, .strip.dark .ed-headline{color:var(--paper)}
+.strip.cream{background:var(--paper-2)}
+
+/* Section-title with folio number */
+.folio{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.6rem;padding-bottom:.8rem;border-bottom:1px solid var(--line)}
+.folio .n{font-family:'Archivo Black',sans-serif;font-size:1.4rem;color:var(--terra);letter-spacing:-.02em}
+.folio .l{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.folio.dark{border-color:rgba(245,239,224,.24)}
+.folio.dark .l{color:var(--amber)}
+
+/* Roast feature — asymmetric layout */
+.roast{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(2.4rem,4vw,4rem);align-items:center;max-width:1200px;margin:0 auto}
+.roast h2{font-family:'Archivo Black',sans-serif;font-size:clamp(2rem,4vw,3.2rem);color:var(--paper);letter-spacing:-.02em;margin-bottom:1.4rem;line-height:1}
+.roast h2 .script-accent{font-family:'Caveat',cursive;color:var(--amber);font-size:1.1em;display:inline-block;transform:translateY(.1em) rotate(-4deg);margin:0 .04em}
+.roast .lede{color:rgba(245,239,224,.78);font-size:1.02rem;max-width:52ch;margin-bottom:1.1rem}
+.roast .sig{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--amber);margin-top:1.5rem}
+.batch-card{background:var(--navy-deep);border:1px solid rgba(245,239,224,.14);padding:1.6rem;position:relative}
+.batch-card::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--amber) 0 33%,var(--terra) 33% 66%,var(--paper) 66%)}
+.batch-card .lot{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.batch-card h3{font-family:'Archivo Black',sans-serif;font-size:1.8rem;color:var(--paper);margin:.5rem 0 1rem;letter-spacing:-.02em}
+.flavours{display:flex;flex-wrap:wrap;gap:.35rem;margin:.8rem 0 1.2rem}
+.flavours span{border:1px solid rgba(245,239,224,.28);padding:.28rem .65rem;font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper);font-weight:500}
+.batch-meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,239,224,.14);margin-top:1rem}
+.batch-meta div{background:var(--navy-deep);padding:.75rem .9rem}
+.batch-meta div .k{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+.batch-meta div .v{color:var(--paper);font-family:'Archivo Black',sans-serif;font-size:1.05rem;margin-top:.15rem;letter-spacing:-.01em}
+
+/* Cabinet */
+.cabinet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;max-width:1200px;margin:0 auto}
+.jar{background:var(--paper);border:1px solid var(--line);padding:1.3rem 1.3rem 1.4rem;position:relative;transition:.2s}
+.jar:hover{transform:translateY(-3px);border-color:var(--navy)}
+.jar .band{position:absolute;top:0;left:0;right:0;height:6px}
+.jar .no{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;font-weight:600}
+.jar h4{font-family:'Archivo Black',sans-serif;font-size:1.15rem;margin:.35rem 0 .55rem;color:var(--navy);letter-spacing:-.02em}
+.jar .name-script{font-family:'Caveat',cursive;color:var(--grey-script);font-size:1rem;line-height:1;margin-bottom:-.1rem}
+.jar p{font-size:.83rem;color:var(--muted);min-height:2.8em}
+.jar .p{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.86rem;font-weight:700;color:var(--navy);
+  padding-top:.7rem;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center}
+.jar .p .stock{font-size:.6rem;letter-spacing:.14em;color:var(--terra)}
+
+/* Locate */
+.locate{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(2rem,4vw,4rem);align-items:stretch;max-width:1200px;margin:0 auto}
+.locate .info h2{font-family:'Archivo Black',sans-serif;font-size:clamp(1.8rem,3.2vw,2.6rem);color:var(--navy);margin:.6rem 0 1rem;letter-spacing:-.02em}
+.locate .info h2 .script-accent{font-family:'Caveat',cursive;color:var(--grey-script);font-size:1.05em;display:inline-block;transform:translateY(.08em) rotate(-4deg)}
+.locate p{color:var(--ink-soft);margin-bottom:1.2rem;max-width:44ch}
+.addr-list{list-style:none;margin-top:1.6rem}
+.addr-list li{padding:1rem 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;align-items:baseline}
+.addr-list li:last-child{border-bottom:1px solid var(--line)}
+.addr-list .k{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.addr-list .v{text-align:right;font-weight:600;color:var(--navy)}
+.addr-list .v.open{color:var(--terra)}
+.map-box{background:var(--navy);color:var(--paper);position:relative;overflow:hidden;padding:1.6rem;min-height:340px}
+.map-lines{position:absolute;inset:0;background-image:
+  linear-gradient(90deg,rgba(245,239,224,.05) 1px,transparent 1px),
+  linear-gradient(0deg,rgba(245,239,224,.05) 1px,transparent 1px);
+  background-size:32px 32px}
+.map-road{position:absolute;top:52%;left:-8%;right:-8%;height:24px;background:var(--navy-deep);transform:rotate(-6deg);
+  border-top:1px dashed rgba(245,239,224,.2);border-bottom:1px dashed rgba(245,239,224,.2)}
+.map-road .r{position:absolute;top:50%;transform:translateY(-50%);left:1rem;font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.map-pin{position:absolute;top:34%;left:44%;text-align:center;z-index:2}
+.map-pin .p{width:36px;height:36px;background:var(--terra);border-radius:50% 50% 50% 0;transform:rotate(-45deg);
+  margin:0 auto;box-shadow:0 8px 18px -6px rgba(194,107,63,.65);position:relative}
+.map-pin .p::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;background:var(--paper);border-radius:50%}
+.map-pin .l{margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--navy);background:var(--paper);padding:.4rem .65rem;white-space:nowrap;font-weight:700}
+.map-badge{position:absolute;bottom:1.4rem;left:1.4rem;font-family:'Caveat',cursive;font-size:1.5rem;color:var(--amber);
+  transform:rotate(-5deg);line-height:1;z-index:2}
+
+/* ============ MENU PAGE ============ */
+.pgtop{padding:clamp(2.5rem,5vw,4rem) 0 2rem;border-bottom:1.5px solid var(--navy)}
+.pgtop .issue-strip{margin-bottom:1rem;border-bottom:none;padding-bottom:0}
+.pgtop h1{font-family:'Archivo Black',sans-serif;font-size:clamp(2.6rem,5vw,4.4rem);color:var(--navy);letter-spacing:-.03em;line-height:.95}
+.pgtop h1 .script-accent{font-family:'Caveat',cursive;color:var(--grey-script);font-size:.9em;display:inline-block;transform:translateY(.08em) rotate(-4deg);margin:0 .04em}
+.pgtop p{color:var(--ink-soft);margin-top:1rem;max-width:56ch}
+
+.filter-bar{background:var(--paper);border-bottom:1px solid var(--line);padding:1rem 0;position:sticky;top:82px;z-index:40}
+.filter-bar-in{display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;max-width:1200px;margin:0 auto}
+.filter-bar .lb{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tf{display:flex;gap:.35rem;flex-wrap:wrap}
+.tf button{background:var(--paper-2);border:1px solid var(--line);padding:.42rem .85rem;cursor:pointer;
+  font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);transition:.15s}
+.tf button:hover{border-color:var(--navy)}
+.tf button.on{background:var(--navy);color:var(--paper);border-color:var(--navy)}
+.match-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.match-count b{color:var(--terra);font-weight:700}
+
+.menu-body{padding:2.5rem 0 5rem;max-width:900px;margin:0 auto}
+.msec{margin-bottom:2rem;border:1px solid var(--line);background:var(--paper)}
+.msec-head{display:grid;grid-template-columns:auto 1fr auto auto;gap:1rem;align-items:center;padding:1.1rem 1.4rem;cursor:pointer;
+  background:var(--paper-2);border-bottom:1px solid var(--line);transition:.15s;user-select:none}
+.msec-head:hover{background:var(--cream)}
+.msec-head .ix{font-family:'Archivo Black',sans-serif;font-size:1.05rem;color:var(--terra);letter-spacing:-.02em}
+.msec-head h3{font-family:'Archivo Black',sans-serif;font-size:1.35rem;color:var(--navy);letter-spacing:-.02em}
+.msec-head .meta{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.msec-head .caret{transition:transform .25s;color:var(--navy);font-size:.9rem}
+.msec.open .msec-head .caret{transform:rotate(90deg)}
+.msec-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1)}
+.msec.open .msec-body{max-height:2400px}
+.msec-body-in{padding:.4rem 1.4rem 1.4rem}
+.mrow{display:grid;grid-template-columns:34px minmax(0,1fr);gap:.9rem;padding:1rem 0;border-top:1px solid var(--line-soft)}
+.mrow:first-child{border-top:none}
+.mrow.hidden{display:none}
+.mrow .rn{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--terra);padding-top:.22rem;font-weight:600}
+.rline{display:flex;align-items:baseline;gap:.55rem}
+.rline h4{font-family:'Inter';font-weight:700;font-size:1rem;flex:none;color:var(--navy)}
+.rline .dots{flex:1;min-width:20px;border-bottom:1px dotted rgba(26,37,68,.34);transform:translateY(-.28em)}
+.rline .rp{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem;color:var(--ink)}
+.mrow p{font-size:.86rem;color:var(--muted);margin-top:.3rem;max-width:56ch}
+.mrow .tags{margin-top:.5rem;display:flex;gap:.35rem;flex-wrap:wrap;align-items:center}
+.mrow .meal-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .55rem;font-weight:600;background:var(--navy);color:var(--paper)}
+.mrow .meal-tag.b{background:var(--terra)}
+.mrow .meal-tag.l{background:var(--navy-soft)}
+.mrow .diet{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:.2rem .5rem;background:var(--cream);color:var(--muted);font-weight:600}
+.msec-empty{padding:1.5rem;color:var(--muted);font-size:.9rem;text-align:center;font-style:italic;display:none}
+.msec.empty .msec-empty{display:block}
+.msec.empty .mrow{display:none}
+
+/* ============ ORDER — compact coffee builder ============ */
+.builder{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(1.4rem,2.5vw,2.4rem);align-items:start;
+  padding:2rem 0 3rem;max-width:1080px;margin:0 auto}
+.build-l{background:var(--paper);border:1px solid var(--line);padding:1.5rem 1.6rem}
+.bstep{margin-bottom:1.4rem}
+.bstep:last-child{margin-bottom:0}
+.bstep .sh{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.7rem}
+.bstep .sh .n{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.16em;color:var(--terra);font-weight:700}
+.bstep .sh h3{font-family:'Archivo Black',sans-serif;font-size:1rem;color:var(--navy);letter-spacing:-.02em}
+.bstep .sh .hint{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;font-weight:600}
+/* COMPACT OPTIONS: much tighter padding & font, dense grid */
+.opts{display:flex;flex-wrap:wrap;gap:.3rem}
+.opt{border:1px solid var(--line);background:var(--paper);padding:.35rem .6rem;cursor:pointer;font-size:.76rem;
+  transition:.15s;display:inline-flex;align-items:center;gap:.4rem;user-select:none;font-weight:500;color:var(--ink)}
+.opt:hover{border-color:var(--navy)}
+.opt.on{background:var(--navy);color:var(--paper);border-color:var(--navy);font-weight:600}
+.opt .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.opt .plus{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--terra);font-weight:700;letter-spacing:0}
+.opt.on .plus{color:var(--amber)}
+/* size opts are equal-width tiles */
+.opts.size-opts{display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem}
+.opts.size-opts .opt{justify-content:center;padding:.5rem .5rem;flex-direction:column;gap:.1rem;text-align:center}
+.opts.size-opts .opt .n{font-family:'Archivo Black',sans-serif;font-size:.75rem;letter-spacing:-.01em}
+
+/* cup preview — smaller too */
+.cup-panel{position:sticky;top:106px;background:var(--navy);color:var(--paper);padding:1.4rem;border:1px solid var(--line)}
+.cup-panel .cap{color:var(--amber)}
+.cup-panel .title{font-family:'Archivo Black',sans-serif;font-size:1.15rem;margin:.4rem 0 .8rem;color:var(--paper);letter-spacing:-.02em}
+.cup-stage{display:grid;place-items:center;margin:.6rem 0 1rem}
+.cup-stage svg{width:130px;height:auto}
+.cup-recipe{border-top:1px solid rgba(245,239,224,.2);padding-top:.7rem;margin-top:.5rem}
+.cup-recipe div{display:flex;justify-content:space-between;font-size:.76rem;padding:.24rem 0;border-bottom:1px dashed rgba(245,239,224,.14);gap:.5rem}
+.cup-recipe div:last-child{border-bottom:none}
+.cup-recipe .k{color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.cup-recipe .v{color:var(--paper);text-align:right;font-weight:500}
+.cup-total{margin-top:.9rem;padding-top:.9rem;border-top:1px solid rgba(245,239,224,.32);display:flex;justify-content:space-between;align-items:baseline}
+.cup-total .lb{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.cup-total .amt{font-family:'Archivo Black',sans-serif;font-size:1.65rem;letter-spacing:-.02em}
+.cup-panel .btn{width:100%;justify-content:center;margin-top:.9rem;padding:.75rem 1rem}
+
+/* order menu list */
+.order-menu{margin:2.5rem auto 5rem;max-width:900px;padding-top:1.6rem;border-top:1.5px solid var(--navy)}
+.order-menu h2{font-family:'Archivo Black',sans-serif;font-size:1.75rem;margin:1rem 0 1.5rem;color:var(--navy);letter-spacing:-.02em}
+.order-menu h2 .script-accent{font-family:'Caveat',cursive;color:var(--grey-script);font-size:1em;display:inline-block;transform:translateY(.06em) rotate(-4deg)}
+.orow{display:grid;grid-template-columns:34px minmax(0,1fr) auto auto;gap:1rem;padding:.95rem 0;
+  border-top:1px solid var(--line);align-items:center}
+.orow:last-child{border-bottom:1px solid var(--line)}
+.orow .rn{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--terra);font-weight:600}
+.orow h4{font-family:'Inter';font-weight:700;font-size:.98rem;color:var(--navy)}
+.orow p{font-size:.82rem;color:var(--muted);margin-top:.2rem;max-width:44ch}
+.orow .op{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem;color:var(--ink);min-width:56px;text-align:right}
+.addb{background:transparent;border:1px solid var(--navy);color:var(--navy);padding:.4rem .8rem;font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;font-weight:700;transition:.15s;white-space:nowrap}
+.addb:hover{background:var(--navy);color:var(--paper)}
+.addb.done{background:var(--terra);border-color:var(--terra);color:#fff}
+
+/* ============ BOOKINGS — timeline ============ */
+.timeline-wrap{padding:2.5rem 0 5rem;max-width:1100px;margin:0 auto}
+.tl-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem}
+.tl-head h2{font-family:'Archivo Black',sans-serif;font-size:1.6rem;color:var(--navy);letter-spacing:-.02em}
+.tl-head h2 .script-accent{font-family:'Caveat',cursive;color:var(--grey-script);font-size:1em;display:inline-block;transform:translateY(.06em) rotate(-4deg)}
+.day-picker{display:flex;gap:.4rem;flex-wrap:wrap}
+.dp{background:var(--paper);border:1px solid var(--line);padding:.5rem .85rem;cursor:pointer;text-align:center;min-width:64px;transition:.15s}
+.dp:hover{border-color:var(--navy)}
+.dp.on{background:var(--navy);color:var(--paper);border-color:var(--navy)}
+.dp.closed{opacity:.4;cursor:not-allowed;background:var(--paper-2)}
+.dp .dw{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.dp.on .dw{color:var(--amber)}
+.dp .dd{font-family:'Archivo Black',sans-serif;font-size:1.3rem;line-height:1.1;margin-top:.15rem;letter-spacing:-.02em}
+.dp .closedlab{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:.15rem}
+
+.timeline{background:var(--paper);border:1px solid var(--line);padding:1.4rem;margin-top:1.4rem}
+.tl-legend{display:flex;gap:1.4rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;flex-wrap:wrap;font-weight:600}
+.tl-legend span{display:inline-flex;align-items:center;gap:.5rem}
+.tl-legend .sw{width:12px;height:12px;display:inline-block;border:1px solid var(--line)}
+.sw.free{background:var(--paper)}
+.sw.few{background:var(--amber);opacity:.4}
+.sw.full{background:var(--line)}
+.tl-grid{display:grid;grid-template-columns:74px 1fr;gap:0;border-top:1px solid var(--line);position:relative}
+.tl-row{display:grid;grid-template-columns:subgrid;grid-column:span 2;min-height:42px;border-bottom:1px solid var(--line-soft)}
+.tl-row:last-child{border-bottom:none}
+.tl-hour{padding:.55rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--muted);
+  border-right:1px solid var(--line);background:var(--paper-2);font-weight:600}
+.tl-slots{display:grid;grid-template-columns:repeat(2,1fr);position:relative}
+.tl-slot{border-right:1px solid var(--line-soft);cursor:pointer;padding:.5rem .7rem;transition:.14s;display:flex;
+  align-items:center;justify-content:space-between;gap:.5rem}
+.tl-slot:last-child{border-right:none}
+.tl-slot:hover:not(.full){background:var(--cream)}
+.tl-slot.free{background:var(--paper)}
+.tl-slot.few{background:rgba(217,164,65,.15)}
+.tl-slot.full{background:repeating-linear-gradient(45deg,var(--paper) 0 6px,var(--line-soft) 6px 7px);cursor:not-allowed}
+.tl-slot.on{background:var(--terra);color:#fff}
+.tl-slot .tm{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:700}
+.tl-slot .st{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:600}
+.tl-slot.on .st{color:rgba(255,255,255,.85)}
+.tl-slot.few .st{color:#a0762d}
+
+.book-detail{margin-top:2rem;background:var(--navy);color:var(--paper);padding:1.6rem;display:grid;
+  grid-template-columns:1fr 1fr 1fr auto;gap:1.2rem;align-items:end}
+.book-detail .fld label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:.4rem;font-weight:600}
+.book-detail .fld input{width:100%;background:transparent;border:1px solid rgba(245,239,224,.34);
+  padding:.6rem .8rem;color:var(--paper);font-family:'Inter';font-size:.92rem}
+.book-detail .fld input:focus{outline:none;border-color:var(--amber)}
+.book-detail .fld input::placeholder{color:rgba(245,239,224,.36)}
+.party-row{display:flex;gap:.35rem;flex-wrap:wrap}
+.pp{background:transparent;border:1px solid rgba(245,239,224,.34);width:34px;padding:.5rem 0;text-align:center;
+  font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--paper);cursor:pointer;transition:.15s;font-weight:600}
+.pp:hover{border-color:var(--amber)}
+.pp.on{background:var(--amber);color:var(--navy);border-color:var(--amber)}
+.book-summary-row{margin-top:1.2rem;background:var(--navy-deep);color:var(--paper);padding:1rem 1.4rem;display:flex;
+  gap:1rem;align-items:center;flex-wrap:wrap}
+.book-summary-row .k{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);font-weight:600}
+.book-summary-row .v{font-family:'Archivo Black',sans-serif;font-size:1.1rem;letter-spacing:-.01em}
+.book-summary-row .btn{margin-left:auto}
+.book-done{display:none;text-align:center;padding:4rem 1rem}
+.book-done.show{display:block;animation:fade .4s}
+.book-done .tick{width:74px;height:74px;border:1px solid var(--navy);color:var(--navy);display:grid;place-items:center;font-size:2rem;margin:0 auto 1.4rem;border-radius:50%}
+.book-done h2{font-family:'Archivo Black',sans-serif;font-size:2.2rem;margin-bottom:.6rem;color:var(--navy);letter-spacing:-.02em}
+.book-done p{color:var(--muted);margin-bottom:1.6rem}
+
+/* ============ FOOTER ============ */
+.foot{background:var(--navy-deep);color:rgba(245,239,224,.7);padding:4rem 0 1.5rem;border-top:6px solid var(--terra)}
+.foot-in{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2.5rem;max-width:1200px;margin-inline:auto}
+.foot .brand{color:var(--paper);margin-bottom:.8rem}
+.foot .brand .cafe{color:var(--paper);opacity:.7}
+.foot .brand .presto{color:var(--paper)}
+.foot h5{color:var(--amber);font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1rem;font-weight:700}
+.foot ul{list-style:none}
+.foot ul li{margin-bottom:.5rem}
+.foot ul a{font-size:.88rem;transition:.15s}
+.foot ul a:hover{color:var(--amber)}
+.foot p{font-size:.88rem;max-width:32ch}
+.socials{display:flex;gap:.5rem;margin-top:1rem}
+.socials a{width:34px;height:34px;background:rgba(245,239,224,.08);display:grid;place-items:center;transition:.15s;font-size:.85rem;font-weight:700}
+.socials a:hover{background:var(--terra);color:#fff}
+.foot-bot{border-top:1px solid rgba(245,239,224,.14);padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.78rem;max-width:1200px;margin-inline:auto}
+
+/* ============ ORDER DRAWER ============ */
+.sheet-overlay{position:fixed;inset:0;background:rgba(17,24,52,.55);opacity:0;visibility:hidden;transition:.3s;z-index:80}
+.sheet-overlay.open{opacity:1;visibility:visible}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--paper);z-index:90;transform:translateY(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:80vh;display:flex;flex-direction:column;
+  box-shadow:0 -20px 40px -10px rgba(0,0,0,.3)}
+.sheet.open{transform:translateY(0)}
+.sheet-head{background:var(--navy);color:var(--paper);padding:1.15rem 1.5rem;display:flex;align-items:center;
+  gap:1rem;border-bottom:3px solid var(--terra)}
+.sheet-head h3{font-family:'Archivo Black',sans-serif;font-size:1.3rem;color:var(--paper);letter-spacing:-.02em}
+.sheet-head .cnt{background:var(--amber);color:var(--navy);font-family:'JetBrains Mono',monospace;font-weight:700;padding:.15rem .5rem;font-size:.7rem}
+.sheet-head .x{margin-left:auto;background:none;border:none;color:var(--paper);font-size:1.35rem;cursor:pointer}
+.sheet-body{flex:1;overflow-y:auto;padding:1.1rem 1.5rem;max-width:900px;margin:0 auto;width:100%}
+.si{display:grid;grid-template-columns:1fr auto auto;gap:1.2rem;align-items:center;padding:.85rem 0;border-bottom:1px solid var(--line)}
+.si h5{font-family:'Inter';font-weight:700;font-size:.96rem;color:var(--navy)}
+.si .note{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);margin-top:.2rem;letter-spacing:.04em}
+.si .sp{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.9rem;min-width:64px;text-align:right}
+.qty{display:flex;align-items:center;gap:.4rem;background:var(--paper-2);padding:.15rem}
+.qty button{width:24px;height:24px;border:none;background:var(--paper);color:var(--navy);cursor:pointer;font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.9rem}
+.qty button:hover{background:var(--navy);color:var(--paper)}
+.qty span{min-width:18px;text-align:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.82rem}
+.sheet-empty{padding:3rem;text-align:center;color:var(--muted);font-style:italic}
+.sheet-foot{padding:1.1rem 1.5rem;background:var(--paper-2);border-top:1px solid var(--line);display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1rem;max-width:900px;margin:0 auto;width:100%}
+.sheet-foot .tot{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.sheet-foot .tot b{display:block;font-family:'Archivo Black',sans-serif;font-size:1.55rem;color:var(--navy);letter-spacing:-.02em;text-transform:none;font-weight:normal}
+
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120%);background:var(--navy);color:var(--paper);
+  padding:.85rem 1.4rem;font-weight:600;font-size:.86rem;z-index:110;border-left:4px solid var(--terra);
+  box-shadow:0 20px 40px -18px rgba(0,0,0,.5);opacity:0;visibility:hidden;pointer-events:none;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility 0s linear .3s}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility 0s}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){
+  .nav-mid{position:fixed;top:82px;left:0;right:0;flex-direction:column;background:var(--paper);
+    border-bottom:1px solid var(--line);padding:.8rem 1rem;transform:translateY(-140%);transition:.3s;z-index:59;gap:0}
+  .nav-mid.open{transform:none}
+  .nav-mid a{padding:.85rem 1rem;width:100%;border-bottom:1px solid var(--line-soft)}
+  .nav-mid a.active::after{display:none}
+  .hamb{display:flex}
+  .nav-cta{margin-left:auto}
+  .editorial,.roast,.locate,.builder{grid-template-columns:1fr}
+  .cabinet-grid{grid-template-columns:1fr 1fr}
+  .cup-panel{position:static}
+  .book-detail{grid-template-columns:1fr}
+  .foot-in{grid-template-columns:1fr 1fr}
+  .tl-slots{grid-template-columns:1fr}
+  .masthead .stamp{display:none}
+}
+@media(max-width:560px){
+  .cabinet-grid{grid-template-columns:1fr}
+  .foot-in{grid-template-columns:1fr}
+  .batch-meta{grid-template-columns:1fr}
+  .opts.size-opts{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= RIBBON ================= -->
+<div class="ribbon">
+  <div class="ribbon-track">
+    <span>All-day breakfast · Fullarton, SA · Beans roasted weekly</span>
+    <span>Shop 12 · Arkaba Village · (08) 8379 8882 · Trading Tue – Sun</span>
+    <span>All-day breakfast · Fullarton, SA · Beans roasted weekly</span>
+    <span>Shop 12 · Arkaba Village · (08) 8379 8882 · Trading Tue – Sun</span>
+  </div>
+</div>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="brand" data-tab="home" aria-label="Café Presto — home">
+      <span class="cafe">Cafe</span>
+      <span class="presto">Presto<span class="dot">.</span></span>
+    </a>
+    <nav class="nav-mid" id="navMid">
+      <a href="#home"     data-tab="home"><span class="ix">01</span>Home</a>
+      <a href="#menu"     data-tab="menu"><span class="ix">02</span>Menu</a>
+      <a href="#order"    data-tab="order"><span class="ix">03</span>Order</a>
+      <a href="#bookings" data-tab="bookings"><span class="ix">04</span>Bookings</a>
+    </nav>
+    <button class="nav-cta" id="sheetToggle">Order<span class="cnt" id="cartCnt">0</span></button>
+    <button class="hamb" id="hamb" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ================= 01 · HOME ================= -->
+<section class="page active" id="home">
+  <!-- MAGAZINE COVER -->
+  <div class="cover pad">
+    <div class="cover-in">
+      <div class="issue-strip">
+        <span>№ 26 · The Fullarton Issue</span>
+        <span>Est. Adelaide · SA</span>
+      </div>
+      <div class="masthead">
+        Presto<span class="dot">.</span>
+        <span class="stamp">a cafe worth<br>slowing down for</span>
+      </div>
+      <div class="cover-underline">
+        <div class="foot-line">
+          <span><b>Inside:</b> the roast, the cabinet, the classics</span>
+          <span>Glen Osmond Rd · Fullarton</span>
+        </div>
+      </div>
+
+      <!-- EDITORIAL COLUMNS -->
+      <div class="editorial">
+        <div class="ed-l">
+          <span class="ed-kicker">Feature · Local</span>
+          <h2 class="ed-headline">Coffee, cake &amp; a <span class="script-accent">good sit</span> on Glen Osmond Road.</h2>
+          <p class="ed-body">
+            <span class="dropcap">C</span>afé Presto opened its doors on the Arkaba Village strip with a plain idea: make everything from scratch, roast your own beans, keep the cabinet full, and let the neighbourhood settle in. Six mornings a week, we're behind the machine before seven — pulling shots, plating eggs and pouring out the day's first flat whites for the regulars who've already parked out front.
+          </p>
+          <p class="ed-body" style="max-width:52ch">
+            The menu leans modern Australian — smashed avo, hotcakes, a burger you'll think about later — with an espresso program that gets as much attention as the food. We roast a fresh batch every Wednesday. Bags on the shelf, whole bean or ground how you like.
+          </p>
+          <div class="ed-btns">
+            <a href="#order" class="btn btn-terra" data-tab="order">Order Ahead</a>
+            <a href="#menu" class="btn btn-out" data-tab="menu">See the Menu</a>
+            <a href="#bookings" class="btn btn-navy" data-tab="bookings">Book a Table</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="today-card">
+            <div class="top">
+              <span class="lb">Today</span>
+              <span class="now" id="todayClock">—</span>
+            </div>
+            <div class="row"><span class="k">Status</span><span class="v" id="todayStatus">Open</span></div>
+            <div class="row"><span class="k">Hours</span><span class="v" id="todayHours">7:30am – 5:00pm</span></div>
+            <div class="row"><span class="k">Kitchen</span><span class="v" id="todayKitchen">Serving all day</span></div>
+            <div class="row"><span class="k">Cabinet</span><span class="v">4 slices left</span></div>
+            <div class="row"><span class="k">Coffee</span><span class="v">Batch №2607 · fresh</span></div>
+          </div>
+
+          <div class="pull-quote">
+            <p>"You can tell the second the door swings open — this is a place that takes its coffee seriously."</p>
+            <cite>— Fullarton Local, weekly regular</cite>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROAST — the coffee feature -->
+  <section class="strip dark pad">
+    <div class="folio dark">
+      <span class="n">02.</span>
+      <span class="l">The Coffee · Wednesday's Batch</span>
+    </div>
+    <div class="roast">
+      <div>
+        <h2>Roasted in-house, <span class="script-accent">every Wednesday.</span></h2>
+        <p class="lede">Coffee is the whole reason we opened the door. Green beans arrive from three farms — Colombian Huila, Ethiopian Sidamo, Brazilian Cerrado — and we roast a fresh batch every Wednesday morning.</p>
+        <p class="lede" style="color:rgba(245,239,224,.62)">Grab a bag at the counter — whole bean, plunger, filter, or espresso ground to order. 250g, 500g and 1kg. Ask for the current batch card.</p>
+        <div class="sig">— The Presto roasters</div>
+      </div>
+      <div class="batch-card">
+        <div class="lot">Batch №2607 · Roasted Wed 22.07</div>
+        <h3>The Overture</h3>
+        <div class="flavours">
+          <span>Dark Chocolate</span><span>Hazelnut</span><span>Brown Sugar</span><span>Citrus</span>
+        </div>
+        <p style="color:rgba(245,239,224,.7);font-size:.9rem">Our flagship blend — chocolatey and rounded, plays nicely with milk, still has something to say black.</p>
+        <div class="batch-meta">
+          <div><div class="k">Roast</div><div class="v">Medium-dark</div></div>
+          <div><div class="k">Body</div><div class="v">Full, syrupy</div></div>
+          <div><div class="k">Origin</div><div class="v">CO · ET · BR</div></div>
+          <div><div class="k">250g</div><div class="v">$22</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CABINET -->
+  <section class="strip pad">
+    <div class="wrap">
+      <div class="folio">
+        <span class="n">03.</span>
+        <span class="l">The Cabinet · Today's Bakes</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem">
+        <h2 style="font-family:'Archivo Black',sans-serif;font-size:clamp(1.7rem,3vw,2.4rem);color:var(--navy);letter-spacing:-.02em">
+          Baked before we opened. <span class="script" style="font-family:'Caveat',cursive;color:var(--grey-script);font-size:1em">Get here early.</span>
+        </h2>
+        <p style="color:var(--muted);max-width:36ch;font-size:.9rem">On a Saturday the cabinet usually empties by 3pm — the carrot cake goes first.</p>
+      </div>
+      <div class="cabinet-grid" id="cabinet"></div>
+    </div>
+  </section>
+
+  <!-- LOCATE -->
+  <section class="strip cream pad">
+    <div class="wrap">
+      <div class="folio">
+        <span class="n">04.</span>
+        <span class="l">Visit · Arkaba Village, Fullarton</span>
+      </div>
+      <div class="locate">
+        <div class="info">
+          <h2>Find us on <span class="script-accent">Glen Osmond Rd.</span></h2>
+          <p>We're tucked into Arkaba shopping village — the arterial that takes you toward the hills. Free parking out front, plenty of pram room inside, and a small courtyard for warmer days.</p>
+          <ul class="addr-list">
+            <li><span class="k">Address</span><span class="v">Shop 12 / 180 Glen Osmond Rd<br>Fullarton SA 5063</span></li>
+            <li><span class="k">Call</span><span class="v">(08) 8379 8882</span></li>
+            <li><span class="k">Today</span><span class="v open" id="locOpen">7:30am – 5:00pm</span></li>
+            <li><span class="k">Trading</span><span class="v">Tue – Sun · closed Mondays</span></li>
+          </ul>
+        </div>
+        <div class="map-box">
+          <div class="map-lines"></div>
+          <div class="map-road"><div class="r">Glen Osmond Rd →</div></div>
+          <div class="map-pin"><div class="p"></div><div class="l">Café Presto · Shop 12</div></div>
+          <div class="map-badge">you're going the right way →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================= 02 · MENU ================= -->
+<section class="page" id="menu">
+  <div class="pgtop pad">
+    <div class="wrap">
+      <div class="issue-strip">
+        <span>№ 02 · The Menu</span>
+        <span id="menuCountStrip">28 dishes · updated daily</span>
+      </div>
+      <h1>Everything <span class="script-accent">on offer.</span></h1>
+      <p>All-day breakfast, lunch from 11, and a cabinet baked before we open. Filter by meal-time or dive straight in.</p>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="wrap filter-bar-in">
+      <span class="lb">Show</span>
+      <div class="tf" id="mealFilter">
+        <button data-meal="all" class="on">All</button>
+        <button data-meal="brekky">Breakfast</button>
+        <button data-meal="allday">All-Day</button>
+        <button data-meal="lunch">Lunch</button>
+        <button data-meal="grab">Grab &amp; go</button>
+      </div>
+      <div class="match-count"><b id="matchN">28</b> of 28 dishes</div>
+    </div>
+  </div>
+
+  <div class="pad">
+    <div class="menu-body" id="menuBody"></div>
+  </div>
+</section>
+
+<!-- ================= 03 · ORDER ================= -->
+<section class="page" id="order">
+  <div class="pgtop pad">
+    <div class="wrap">
+      <div class="issue-strip">
+        <span>№ 03 · Order Ahead</span>
+        <span>Ready in 4 – 8 min · Pickup only</span>
+      </div>
+      <h1>Build a <span class="script-accent">coffee</span>, or shortcut it.</h1>
+      <p>Tap through the steps. Or scroll down and one-tap add from the menu.</p>
+    </div>
+  </div>
+
+  <div class="pad">
+    <div class="wrap">
+      <!-- Compact coffee builder -->
+      <div class="builder">
+        <div class="build-l">
+          <div class="bstep">
+            <div class="sh"><span class="n">01</span><h3>Base</h3><span class="hint">pick one</span></div>
+            <div class="opts" id="optBase"></div>
+          </div>
+          <div class="bstep">
+            <div class="sh"><span class="n">02</span><h3>Milk</h3><span class="hint">pick one</span></div>
+            <div class="opts" id="optMilk"></div>
+          </div>
+          <div class="bstep">
+            <div class="sh"><span class="n">03</span><h3>Size</h3><span class="hint">pick one</span></div>
+            <div class="opts size-opts" id="optSize"></div>
+          </div>
+          <div class="bstep">
+            <div class="sh"><span class="n">04</span><h3>Extras</h3><span class="hint">optional</span></div>
+            <div class="opts" id="optExtras"></div>
+          </div>
+        </div>
+
+        <div class="cup-panel">
+          <span class="cap">Your Cup</span>
+          <div class="title" id="cupTitle">Flat White · Regular</div>
+          <div class="cup-stage">
+            <svg id="cupSvg" viewBox="0 0 200 220" aria-label="Cup preview"></svg>
+          </div>
+          <div class="cup-recipe" id="cupRecipe"></div>
+          <div class="cup-total"><span class="lb">Total</span><span class="amt" id="cupTotal">$5</span></div>
+          <button class="btn btn-amber" id="addCup">Add to order</button>
+        </div>
+      </div>
+
+      <!-- Order-from-menu ledger -->
+      <div class="order-menu">
+        <span class="cap">Or grab from the menu</span>
+        <h2>One-tap <span class="script-accent">add.</span></h2>
+        <div id="oBody"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 · BOOKINGS ================= -->
+<section class="page" id="bookings">
+  <div class="pgtop pad">
+    <div class="wrap">
+      <div class="issue-strip">
+        <span>№ 04 · Reservations</span>
+        <span>Closed Mondays · Weekends fill fast</span>
+      </div>
+      <h1>Reserve a <span class="script-accent">table.</span></h1>
+      <p>See what's free at a glance — pick a day, pick a time, done.</p>
+    </div>
+  </div>
+
+  <div class="pad">
+    <div class="wrap timeline-wrap" id="bkFlow">
+      <div class="tl-head">
+        <h2>Availability <span class="script-accent">this week.</span></h2>
+        <div class="day-picker" id="dayPicker"></div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-legend">
+          <span><i class="sw free"></i> Available</span>
+          <span><i class="sw few"></i> Filling up</span>
+          <span><i class="sw full"></i> Booked out</span>
+          <span style="color:var(--terra)">■ Your selection</span>
+        </div>
+        <div class="tl-grid" id="tlGrid"></div>
+      </div>
+
+      <div class="book-detail">
+        <div class="fld">
+          <label>Party</label>
+          <div class="party-row" id="partyRow"></div>
+        </div>
+        <div class="fld"><label>Name</label><input id="bkName" placeholder="Alex"></div>
+        <div class="fld"><label>Phone</label><input id="bkPhone" type="tel" placeholder="0400 000 000"></div>
+        <button class="btn btn-amber" id="bkConfirm" disabled>Confirm</button>
+      </div>
+
+      <div class="book-summary-row">
+        <span class="k">Booking</span>
+        <span class="v" id="bkSummary">Pick a day &amp; time above</span>
+      </div>
+    </div>
+
+    <div class="wrap book-done" id="bkDone">
+      <div class="tick">✓</div>
+      <h2>Table booked.</h2>
+      <p id="bkDoneMsg">We've sent a confirmation text. See you soon.</p>
+      <button class="btn btn-out" id="bkAgain">Make another booking</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <a href="#home" class="brand" data-tab="home">
+        <span class="cafe">Cafe</span>
+        <span class="presto" style="color:var(--paper)">Presto<span class="dot" style="color:var(--terra)">.</span></span>
+      </a>
+      <p style="color:rgba(245,239,224,.66);margin-top:.8rem">Modern Australian all-day brunch, own-roasted coffee, and a properly stocked cake cabinet — right on Glen Osmond Road.</p>
+      <div class="socials"><a href="#" aria-label="Instagram">◉</a><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Google">★</a></div>
+    </div>
+    <div>
+      <h5>Sections</h5>
+      <ul>
+        <li><a href="#home" data-tab="home">01 · Home</a></li>
+        <li><a href="#menu" data-tab="menu">02 · Menu</a></li>
+        <li><a href="#order" data-tab="order">03 · Order</a></li>
+        <li><a href="#bookings" data-tab="bookings">04 · Bookings</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Visit</h5>
+      <ul>
+        <li>Shop 12 / 180 Glen Osmond Rd</li>
+        <li>Fullarton SA 5063</li>
+        <li><a href="#">(08) 8379 8882</a></li>
+        <li><a href="#">hello@cafepresto.com.au</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Hours</h5>
+      <ul>
+        <li>Tue – Fri · 7:30am – 5pm</li>
+        <li>Sat – Sun · 8am – 4pm</li>
+        <li>Monday · closed</li>
+        <li>Public hols · check socials</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bot">
+    <span>© 2026 Café Presto, Fullarton. Mock site for demo purposes.</span>
+    <span>Made in Adelaide · Privacy · Terms</span>
+  </div>
+</footer>
+
+<div class="sheet-overlay" id="sheetOverlay"></div>
+<aside class="sheet" id="sheet">
+  <div class="sheet-head">
+    <h3>Your Order</h3>
+    <span class="cnt" id="sheetCnt">0</span>
+    <button class="x" id="sheetClose" aria-label="Close">✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot" id="sheetFoot"></div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+// meal: brekky=morning only, allday=served anytime, lunch=from 11, grab=cabinet/pastry/coffee
+const MENU={
+  espresso:{label:"Espresso Bar",meta:"6:30am – 4:30pm",items:[
+    {n:"Espresso",d:"House blend, 18g in, 42g out.",p:4,m:"grab",tags:["gf"]},
+    {n:"Macchiato",d:"Double shot, dash of foam.",p:4.5,m:"grab",tags:["gf"]},
+    {n:"Long Black",d:"Water first, shots on top.",p:4.5,m:"grab",tags:["gf"]},
+    {n:"Flat White",d:"Silky microfoam, no sugar needed.",p:5,m:"grab",tags:["gf"]},
+    {n:"Cappuccino",d:"Thicker foam, dusted with chocolate.",p:5,m:"grab",tags:["gf"]},
+    {n:"Mocha",d:"Belgian dark chocolate & shot of espresso.",p:5.5,m:"grab",tags:["gf"]},
+    {n:"Chai Latte",d:"House-spiced, honey on the side.",p:5.5,m:"grab",tags:["v"]},
+    {n:"Hot Chocolate",d:"Dark, milk or white — you choose.",p:5.5,m:"grab",tags:["v"]},
+  ]},
+  cabinet:{label:"The Cabinet",meta:"baked from 6am · till it's gone",items:[
+    {n:"Almond Croissant",d:"Twice-baked, house frangipane, toasted almond.",p:7,m:"grab",tags:["v"]},
+    {n:"Ham & Cheese Croissant",d:"Local leg ham, gruyère, dijon.",p:8.5,m:"grab",tags:[]},
+    {n:"Portuguese Tart",d:"Blistered custard top, flaky pastry.",p:5,m:"grab",tags:["v"]},
+    {n:"Banana Bread (toasted)",d:"Thick-cut, house butter, walnut.",p:7.5,m:"grab",tags:["v"]},
+    {n:"Muffin (daily)",d:"Choose from the case. Ask what's fresh.",p:5.5,m:"grab",tags:["v"]},
+  ]},
+  brekky:{label:"Breakfast",meta:"served 7:30 – 11am only",items:[
+    {n:"Eggs on Toast",d:"Two poached or fried, sourdough, S&P butter.",p:14,m:"brekky",tags:["v"]},
+    {n:"Bacon & Egg Roll",d:"Streaky bacon, fried egg, tomato relish, brioche.",p:13,m:"brekky",tags:[]},
+    {n:"Ricotta Hotcakes",d:"Berry compote, mascarpone, maple syrup.",p:21,m:"brekky",tags:["v"]},
+    {n:"French Toast",d:"Cinnamon custard, banana, salted caramel.",p:20,m:"brekky",tags:["v"]},
+  ]},
+  allday:{label:"All-Day Brunch",meta:"kitchen 7:30 – 4pm",items:[
+    {n:"Smashed Avocado",d:"Sourdough, avo, feta, cherry tomato, lemon.",p:19,m:"allday",tags:["v"]},
+    {n:"Eggs Benedict",d:"House hollandaise, English muffin, ham or spinach.",p:22,m:"allday",tags:[]},
+    {n:"Big Breakfast",d:"Eggs, bacon, sausage, mushroom, halloumi, hash, sourdough.",p:27,m:"allday",tags:[]},
+    {n:"Chorizo Baked Eggs",d:"Skillet with tomato sugo, feta, sourdough soldiers.",p:23,m:"allday",tags:[]},
+  ]},
+  lunch:{label:"Lunch",meta:"from 11am · till kitchen close",items:[
+    {n:"Presto Burger",d:"Wagyu patty, bacon, egg, gruyère, aioli, brioche.",p:24,m:"lunch",tags:[]},
+    {n:"Halloumi Wrap",d:"Grilled halloumi, roast pumpkin, rocket, aioli.",p:18,m:"lunch",tags:["v"]},
+    {n:"Grilled Chicken Salad",d:"Chicken, quinoa, avocado, seeds, lemon dressing.",p:22,m:"lunch",tags:["gf"]},
+    {n:"Steak Sandwich",d:"Scotch fillet, caramelised onion, tomato relish, gruyère.",p:23,m:"lunch",tags:[]},
+    {n:"Fish & Chips",d:"Beer-battered flathead, chunky chips, tartare, lemon.",p:24,m:"lunch",tags:[]},
+    {n:"Calamari",d:"Crumbed, aioli, lemon, house salad.",p:22,m:"lunch",tags:[]},
+    {n:"Bowl of Chips",d:"Beer-battered, aioli or gravy.",p:9,m:"lunch",tags:["v","gf"]},
+  ]},
+};
+const DIET={v:"VEG",gf:"GF",df:"DF"};
+const MEAL_LABEL={brekky:"BRKFST",allday:"ALL-DAY",lunch:"LUNCH",grab:"GRAB"};
+const MEAL_STYLE={brekky:"b",allday:"",lunch:"l",grab:""};
+const money=n=>'$'+(Math.round(n*100)/100).toFixed(2).replace(/\.00$/,'').replace(/\.5$/,'.50');
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* ============ ROUTER ============ */
+function showTab(t){
+  $$('.page').forEach(p=>p.classList.toggle('active',p.id===t));
+  $$('.nav-mid a').forEach(a=>a.classList.toggle('active',a.dataset.tab===t));
+  $('#navMid').classList.remove('open');
+  window.scrollTo({top:0,behavior:'auto'});
+  if(location.hash.slice(1)!==t) history.replaceState(null,'','#'+t);
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-tab]');if(t){e.preventDefault();showTab(t.dataset.tab);}});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1)||'home';if(document.getElementById(h))showTab(h);});
+showTab(document.getElementById(location.hash.slice(1))?location.hash.slice(1):'home');
+$('#hamb').onclick=()=>$('#navMid').classList.toggle('open');
+
+/* ============ CABINET ============ */
+const CABINET=[
+  {n:"Carrot Cake",script:"the classic",d:"Walnut, cream cheese frosting.",p:8.5,c:"var(--terra)",stock:"3 left"},
+  {n:"Basque Cheesecake",script:"burnt & wobbly",d:"Blistered top, silky middle.",p:9.5,c:"var(--amber)",stock:"5 left"},
+  {n:"Flourless Chocolate",script:"dense · GF",d:"Dark ganache, sea salt.",p:9,c:"var(--navy)",stock:"7 left"},
+  {n:"Lemon Meringue Tart",script:"sharp & sweet",d:"Buttery pastry, torched top.",p:8,c:"#d9b13a",stock:"2 left"},
+];
+$('#cabinet').innerHTML=CABINET.map((c,i)=>
+  `<div class="jar">
+    <div class="band" style="background:${c.c}"></div>
+    <div class="no">No. ${String(i+1).padStart(2,'0')}</div>
+    <div class="name-script">${c.script}</div>
+    <h4>${c.n}</h4>
+    <p>${c.d}</p>
+    <div class="p"><span>${money(c.p)} / slice</span><span class="stock">${c.stock}</span></div>
+  </div>`).join('');
+
+/* ============ ADELAIDE CLOCK + STATUS ============ */
+function adelaide(){
+  const parts=new Intl.DateTimeFormat('en-AU',{timeZone:'Australia/Adelaide',hour:'2-digit',minute:'2-digit',hour12:false,weekday:'short'}).formatToParts(new Date());
+  const g=k=>parts.find(p=>p.type===k)?.value;
+  return {h:+g('hour'),m:+g('minute'),wd:g('weekday'),clock:`${g('hour')}:${g('minute')}`};
+}
+const HOURS={Mon:null,Tue:[7.5,17],Wed:[7.5,17],Thu:[7.5,17],Fri:[7.5,17],Sat:[8,16],Sun:[8,16]};
+function fmt(h){const H=Math.floor(h),M=Math.round((h-H)*60);const s=H>=12?'pm':'am';const hh=((H+11)%12)+1;return M?`${hh}:${String(M).padStart(2,'0')}${s}`:`${hh}${s}`;}
+function updateStatus(){
+  const t=adelaide(); const dec=t.h+t.m/60; const rng=HOURS[t.wd];
+  const isOpen=rng && dec>=rng[0] && dec<rng[1];
+  $('#todayClock').textContent=t.clock;
+  const statusEl=$('#todayStatus');
+  statusEl.textContent=isOpen?'Open Now':(rng?'Closed':'Closed Mondays');
+  statusEl.className='v '+(isOpen?'open':'closed');
+  $('#todayHours').textContent=rng?`${fmt(rng[0])} – ${fmt(rng[1])}`:'Closed all day';
+  // kitchen status
+  let kitchen='Serving all day';
+  if(!isOpen) kitchen=rng?`Opens ${fmt(rng[0])}`:'—';
+  else if(dec<11) kitchen='Breakfast on · lunch from 11';
+  else if(dec>=16) kitchen='Kitchen wound down · cabinet & coffee';
+  $('#todayKitchen').textContent=kitchen;
+  $('#locOpen').textContent=rng?`${fmt(rng[0])} – ${fmt(rng[1])}`:'Closed Mondays';
+  $('#locOpen').style.color=isOpen?'var(--terra)':'var(--muted)';
+}
+updateStatus(); setInterval(updateStatus,30000);
+
+/* ============ MENU BUILD + FILTER ============ */
+let rowN=0;
+Object.entries(MENU).forEach(([k,c],i)=>{
+  let rows='';
+  c.items.forEach(it=>{rowN++;
+    rows+=`<div class="mrow" data-meal="${it.m}"><span class="rn">${String(rowN).padStart(2,'0')}</span>
+      <div>
+        <div class="rline"><h4>${it.n}</h4><span class="dots"></span><span class="rp">${money(it.p)}</span></div>
+        <p>${it.d}</p>
+        <div class="tags">
+          <span class="meal-tag ${MEAL_STYLE[it.m]}">${MEAL_LABEL[it.m]}</span>
+          ${it.tags.map(x=>`<span class="diet">${DIET[x]}</span>`).join('')}
+        </div>
+      </div></div>`;
+  });
+  const isOpen=i<2?' open':'';
+  $('#menuBody').insertAdjacentHTML('beforeend',
+   `<div class="msec${isOpen}" data-sec="${k}">
+      <div class="msec-head">
+        <span class="ix">${String(i+1).padStart(2,'0')}.</span>
+        <h3>${c.label}</h3>
+        <span class="meta">${c.meta}</span>
+        <span class="caret">▸</span>
+      </div>
+      <div class="msec-body"><div class="msec-body-in">${rows}<div class="msec-empty">Nothing in ${c.label} at this filter.</div></div></div>
+    </div>`);
+});
+$('#menuBody').addEventListener('click',e=>{
+  const h=e.target.closest('.msec-head'); if(!h)return;
+  h.parentElement.classList.toggle('open');
+});
+function setFilter(m){
+  $$('#mealFilter button').forEach(b=>b.classList.toggle('on',b.dataset.meal===m));
+  let visible=0, total=0;
+  $$('.msec').forEach(sec=>{
+    let secVisible=0;
+    sec.querySelectorAll('.mrow').forEach(r=>{
+      total++;
+      const show=(m==='all')||r.dataset.meal===m;
+      r.classList.toggle('hidden',!show);
+      if(show){secVisible++;visible++;}
+    });
+    sec.classList.toggle('empty',secVisible===0);
+    if(secVisible>0 && m!=='all') sec.classList.add('open');
+  });
+  $('#matchN').textContent=visible;
+  document.querySelector('.match-count').innerHTML=`<b id="matchN">${visible}</b> of ${total} dishes`;
+  $('#menuCountStrip').textContent=`${visible} dishes · updated daily`;
+}
+$('#mealFilter').addEventListener('click',e=>{const b=e.target.closest('button');if(b)setFilter(b.dataset.meal);});
+setFilter('all');
+
+/* ============ COFFEE BUILDER ============ */
+const BASE=[{id:'espresso',n:'Espresso',c:'#3b2519',p:0},{id:'longblack',n:'Long Black',c:'#2b1a10',p:.5},
+  {id:'flatwhite',n:'Flat White',c:'#8b5a3c',p:1,def:true},{id:'cappuccino',n:'Cappuccino',c:'#a2704a',p:1},
+  {id:'latte',n:'Latte',c:'#c99568',p:1},{id:'mocha',n:'Mocha',c:'#4a2a18',p:1.5},
+  {id:'chai',n:'Chai',c:'#c68a5c',p:1.5},{id:'matcha',n:'Matcha',c:'#7a9a4a',p:2}];
+const MILK=[{id:'full',n:'Full cream',c:'#f4ecdc',p:0,def:true},{id:'skim',n:'Skim',c:'#f0e6ce',p:0},
+  {id:'oat',n:'Oat',c:'#e6d5b0',p:1},{id:'almond',n:'Almond',c:'#e4d0a8',p:1},
+  {id:'soy',n:'Soy',c:'#e8dcbe',p:1},{id:'lactose',n:'Lactose-free',c:'#f0e6ce',p:1},{id:'none',n:'No milk',c:'transparent',p:0}];
+const SIZE=[{id:'S',n:'Small',c:'#7a7a7a',p:0,vol:.7},{id:'M',n:'Regular',c:'#1a2544',p:1,def:true,vol:.85},{id:'L',n:'Large',c:'#111834',p:2,vol:1}];
+const EXTRAS=[{id:'shot',n:'Extra shot',c:'#3b2519',p:1},{id:'decaf',n:'Decaf',c:'#8b7a5c',p:0},
+  {id:'vanilla',n:'Vanilla',c:'#d9b96a',p:.8},{id:'caramel',n:'Caramel',c:'#a8703a',p:.8},
+  {id:'hazelnut',n:'Hazelnut',c:'#7a5030',p:.8},{id:'honey',n:'Honey',c:'#e2ad48',p:.5}];
+let cup={base:'flatwhite',milk:'full',size:'M',extras:new Set()};
+
+function optHTML(o,on){
+  const swBg = o.c==='transparent'?'':`background:${o.c}`;
+  const swBorder = o.c==='transparent'?';border:1px dashed rgba(245,239,224,.5)':'';
+  return `<span class="opt${on?' on':''}" data-o="${o.id}">
+    <span class="sw" style="${swBg}${swBorder}"></span>${o.n}${o.p?`<span class="plus">+${money(o.p)}</span>`:''}</span>`;
+}
+function sizeOptHTML(o,on){
+  return `<span class="opt${on?' on':''}" data-o="${o.id}"><span class="n">${o.n}</span>${o.p?`<span class="plus">+${money(o.p)}</span>`:''}</span>`;
+}
+function renderCupOpts(){
+  $('#optBase').innerHTML=BASE.map(o=>optHTML(o,cup.base===o.id)).join('');
+  $('#optMilk').innerHTML=MILK.map(o=>optHTML(o,cup.milk===o.id)).join('');
+  $('#optSize').innerHTML=SIZE.map(o=>sizeOptHTML(o,cup.size===o.id)).join('');
+  $('#optExtras').innerHTML=EXTRAS.map(o=>optHTML(o,cup.extras.has(o.id))).join('');
+}
+function cupPrice(){
+  const b=BASE.find(x=>x.id===cup.base), m=MILK.find(x=>x.id===cup.milk), s=SIZE.find(x=>x.id===cup.size);
+  let p=4+b.p+m.p+s.p;
+  cup.extras.forEach(e=>{const x=EXTRAS.find(y=>y.id===e);if(x)p+=x.p;});
+  return p;
+}
+function drawCup(){
+  const b=BASE.find(x=>x.id===cup.base), m=MILK.find(x=>x.id===cup.milk), s=SIZE.find(x=>x.id===cup.size);
+  const scale=s.vol, cupW=120*scale, cupH=140*scale, cx=100, cy=110-(140-cupH)/2;
+  const left=cx-cupW/2, right=cx+cupW/2, top=cy-cupH/2, bottom=cy+cupH/2;
+  const milkH=cupH*.55, coffeeH=cupH*.35;
+  const milkTop=bottom-milkH, coffeeTop=bottom-milkH-coffeeH;
+  const foam=(cup.base==='cappuccino'||cup.base==='latte'||cup.base==='flatwhite'||cup.base==='chai'||cup.base==='matcha')&&cup.milk!=='none';
+  const showMilk=cup.milk!=='none';
+  let steam='';
+  for(let i=0;i<3;i++){
+    steam+=`<path d="M ${cx-16+i*16} ${top-8} q -4 -14 4 -22 q 8 -8 4 -22" stroke="rgba(217,164,65,.6)" stroke-width="1.6" fill="none" stroke-linecap="round"><animate attributeName="opacity" values="0;0.9;0" dur="2.4s" begin="${i*0.5}s" repeatCount="indefinite"/></path>`;
+  }
+  const saucerY=bottom+16;
+  $('#cupSvg').innerHTML=`
+    <g>${steam}</g>
+    <ellipse cx="${cx}" cy="${saucerY}" rx="${cupW*0.85}" ry="7" fill="none" stroke="#d9a441" stroke-width="1.4"/>
+    <ellipse cx="${cx}" cy="${saucerY+4}" rx="${cupW*0.7}" ry="4" fill="#d9a441" opacity=".2"/>
+    <path d="M ${left} ${top} Q ${left} ${bottom} ${cx} ${bottom} Q ${right} ${bottom} ${right} ${top} Z" fill="#f5efe0" stroke="#d9a441" stroke-width="2"/>
+    <path d="M ${right} ${top+cupH*.2} q 22 0 22 22 q 0 22 -22 22" fill="none" stroke="#d9a441" stroke-width="2"/>
+    ${showMilk?`<path d="M ${left+2} ${milkTop} Q ${left+2} ${bottom-2} ${cx} ${bottom-2} Q ${right-2} ${bottom-2} ${right-2} ${milkTop} Z" fill="${m.c}"/>`:''}
+    <path d="M ${left+2} ${coffeeTop} L ${right-2} ${coffeeTop} L ${right-2} ${milkTop+2} L ${left+2} ${milkTop+2} Z" fill="${b.c}"/>
+    ${foam?`<ellipse cx="${cx}" cy="${coffeeTop}" rx="${(cupW-4)/2}" ry="5" fill="#f5efe0" opacity=".95"/>`:''}
+    <ellipse cx="${cx}" cy="${coffeeTop}" rx="${(cupW-4)/2}" ry="2.5" fill="rgba(0,0,0,.15)"/>
+  `;
+}
+function renderCup(){
+  renderCupOpts();
+  drawCup();
+  const b=BASE.find(x=>x.id===cup.base), m=MILK.find(x=>x.id===cup.milk), s=SIZE.find(x=>x.id===cup.size);
+  $('#cupTitle').textContent=`${b.n} · ${s.n}`;
+  const extras=[...cup.extras].map(e=>EXTRAS.find(y=>y.id===e).n).join(', ')||'—';
+  $('#cupRecipe').innerHTML=`
+    <div><span class="k">Base</span><span class="v">${b.n}</span></div>
+    <div><span class="k">Milk</span><span class="v">${m.n}</span></div>
+    <div><span class="k">Size</span><span class="v">${s.n}</span></div>
+    <div><span class="k">Extras</span><span class="v">${extras}</span></div>`;
+  $('#cupTotal').textContent=money(cupPrice());
+}
+$('#optBase').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o){cup.base=o.dataset.o;renderCup();}});
+$('#optMilk').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o){cup.milk=o.dataset.o;renderCup();}});
+$('#optSize').addEventListener('click',e=>{const o=e.target.closest('[data-o]');if(o){cup.size=o.dataset.o;renderCup();}});
+$('#optExtras').addEventListener('click',e=>{
+  const o=e.target.closest('[data-o]'); if(!o)return;
+  if(cup.extras.has(o.dataset.o))cup.extras.delete(o.dataset.o);else cup.extras.add(o.dataset.o);
+  renderCup();
+});
+renderCup();
+
+let cupSeq=0;
+$('#addCup').onclick=()=>{
+  const b=BASE.find(x=>x.id===cup.base), m=MILK.find(x=>x.id===cup.milk), s=SIZE.find(x=>x.id===cup.size);
+  const extras=[...cup.extras].map(e=>EXTRAS.find(y=>y.id===e).n).join(', ');
+  const note=`${m.n} · ${s.n}${extras?' · +'+extras:''}`;
+  addItem('cup-'+(++cupSeq),`${b.n} coffee`,cupPrice(),note);
+  toast(`${b.n} added to your order`);
+};
+
+/* ============ ORDER LEDGER ============ */
+let oSeq=0;
+Object.entries(MENU).forEach(([k,c])=>{
+  let rows='';
+  c.items.forEach(it=>{oSeq++;
+    rows+=`<div class="orow"><span class="rn">${String(oSeq).padStart(2,'0')}</span>
+      <div><h4>${it.n}</h4><p>${it.d}</p></div>
+      <span class="op">${money(it.p)}</span>
+      <button class="addb" data-add="${k}::${it.n}::${it.p}">Add</button></div>`;
+  });
+  $('#oBody').insertAdjacentHTML('beforeend',
+    `<div style="margin-top:2rem"><h3 style="font-family:'Archivo Black',sans-serif;font-size:1.2rem;color:var(--navy);margin-bottom:.5rem;letter-spacing:-.02em">${c.label}</h3>${rows}</div>`);
+});
+$('#oBody').addEventListener('click',e=>{
+  const b=e.target.closest('[data-add]'); if(!b)return;
+  const [,n,p]=b.dataset.add.split('::');
+  addItem('m-'+n,n,+p,'');
+  b.textContent='Added';b.classList.add('done');
+  setTimeout(()=>{b.textContent='Add';b.classList.remove('done');},1000);
+  toast(`${n} added`);
+});
+
+/* ============ ORDER SHEET ============ */
+let cart={};
+function addItem(id,n,p,note){
+  if(cart[id]){cart[id].q++;} else cart[id]={n,p,note,q:1};
+  renderCart();
+}
+function renderCart(){
+  const ids=Object.keys(cart), n=ids.reduce((s,i)=>s+cart[i].q,0), t=ids.reduce((s,i)=>s+cart[i].q*cart[i].p,0);
+  $('#cartCnt').textContent=n;
+  $('#sheetCnt').textContent=n;
+  if(!n){
+    $('#sheetBody').innerHTML=`<div class="sheet-empty">Nothing in your order yet.<br>Build a coffee or add from the menu.</div>`;
+    $('#sheetFoot').innerHTML='';
+    return;
+  }
+  $('#sheetBody').innerHTML=ids.map(i=>{const c=cart[i];return `<div class="si">
+    <div><h5>${c.n}</h5>${c.note?`<div class="note">${c.note}</div>`:''}</div>
+    <div class="qty"><button data-dec="${i}">−</button><span>${c.q}</span><button data-inc="${i}">＋</button></div>
+    <span class="sp">${money(c.p*c.q)}</span></div>`;}).join('');
+  $('#sheetFoot').innerHTML=`<div class="tot">Pickup · ready in 4–8 min <b>${money(t)}</b></div>
+    <button class="btn btn-terra" id="placeOrder">Place order · ${money(t)}</button>`;
+}
+$('#sheet').addEventListener('click',e=>{
+  const inc=e.target.closest('[data-inc]'), dec=e.target.closest('[data-dec]');
+  if(inc){cart[inc.dataset.inc].q++;renderCart();}
+  if(dec){const k=dec.dataset.dec;cart[k].q--;if(cart[k].q<=0)delete cart[k];renderCart();}
+  if(e.target.id==='placeOrder'){toast('Order placed (demo) — see you in a few minutes');cart={};renderCart();closeSheet();}
+});
+function openSheet(){$('#sheet').classList.add('open');$('#sheetOverlay').classList.add('open');}
+function closeSheet(){$('#sheet').classList.remove('open');$('#sheetOverlay').classList.remove('open');}
+$('#sheetToggle').onclick=openSheet;
+$('#sheetClose').onclick=closeSheet;
+$('#sheetOverlay').onclick=closeSheet;
+renderCart();
+
+/* ============ TOAST ============ */
+let toastT;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200);}
+
+/* ============ BOOKINGS — timeline ============ */
+const TL_HOURS=[8,9,10,11,12,13,14,15];
+const CLOSED_DAYS=['Mon'];
+let bk={day:null,slot:null,party:2};
+function seededAvail(dayIx,hour,half){const s=(dayIx*17+hour*7+half*3)%10;return s<1?'full':(s<3?'few':'free');}
+function buildDays(){
+  const now=new Date(); const days=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(now);d.setDate(now.getDate()+i);
+    const dw=d.toLocaleDateString('en-AU',{weekday:'short',timeZone:'Australia/Adelaide'});
+    const closed=CLOSED_DAYS.includes(dw);
+    days.push({ix:i,dw:i===0?'Today':dw,dd:d.getDate(),closed,
+      full:d.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',timeZone:'Australia/Adelaide'})});
+  }
+  $('#dayPicker').innerHTML=days.map(d=>
+    `<div class="dp${d.closed?' closed':''}${bk.day===d.ix?' on':''}" data-day="${d.closed?'':d.ix}" data-full="${d.full}">
+      <div class="dw">${d.dw}</div>
+      <div class="dd">${d.dd}</div>
+      ${d.closed?`<div class="closedlab">closed</div>`:''}
+    </div>`).join('');
+  return days;
+}
+function buildTL(){
+  if(bk.day===null){
+    $('#tlGrid').innerHTML=`<div style="padding:2rem;text-align:center;color:var(--muted);grid-column:span 2;font-family:'JetBrains Mono',monospace;font-size:.8rem">Pick a day to see availability</div>`;
+    return;
+  }
+  let html='';
+  TL_HOURS.forEach(h=>{
+    const label=(h>12?h-12:h)+':00'+(h>=12?'pm':'am');
+    const a1=seededAvail(bk.day,h,0), a2=seededAvail(bk.day,h,1);
+    html+=`<div class="tl-hour">${label}</div><div class="tl-slots">
+      <div class="tl-slot ${a1}${bk.slot===h+':00'?' on':''}" data-slot="${h}:00" data-status="${a1}">
+        <span class="tm">${h.toString().padStart(2,'0')}:00</span><span class="st">${a1==='full'?'Booked':a1==='few'?'2 left':'Free'}</span>
+      </div>
+      <div class="tl-slot ${a2}${bk.slot===h+':30'?' on':''}" data-slot="${h}:30" data-status="${a2}">
+        <span class="tm">${h.toString().padStart(2,'0')}:30</span><span class="st">${a2==='full'?'Booked':a2==='few'?'2 left':'Free'}</span>
+      </div>
+    </div>`;
+  });
+  $('#tlGrid').innerHTML=html;
+}
+function buildParty(){
+  $('#partyRow').innerHTML=[1,2,3,4,5,6,8].map(p=>
+    `<div class="pp${bk.party===p?' on':''}" data-p="${p}">${p===8?'8+':p}</div>`).join('');
+}
+function updateBkSummary(){
+  const days=$$('#dayPicker .dp'); const d=days.find(x=>+x.dataset.day===bk.day);
+  const ok=bk.day!==null && bk.slot;
+  $('#bkSummary').textContent= ok
+    ? `${d.dataset.full} · ${bk.slot} · ${bk.party} ${bk.party===1?'guest':'guests'}`
+    : 'Pick a day & time above';
+  $('#bkConfirm').disabled=!ok;
+}
+buildDays(); buildTL(); buildParty(); updateBkSummary();
+$('#dayPicker').addEventListener('click',e=>{
+  const d=e.target.closest('.dp[data-day]'); if(!d||d.classList.contains('closed'))return;
+  bk.day=+d.dataset.day; bk.slot=null; buildDays(); buildTL(); updateBkSummary();
+});
+$('#tlGrid').addEventListener('click',e=>{
+  const s=e.target.closest('.tl-slot'); if(!s||s.classList.contains('full'))return;
+  bk.slot=s.dataset.slot; buildTL(); updateBkSummary();
+});
+$('#partyRow').addEventListener('click',e=>{const p=e.target.closest('.pp');if(!p)return;bk.party=+p.dataset.p;buildParty();updateBkSummary();});
+$('#bkConfirm').onclick=()=>{
+  const nm=$('#bkName').value.trim();
+  $('#bkDoneMsg').textContent=`${nm?nm+', we':'We'}'ve got you for ${$('#bkSummary').textContent}. A confirmation text is on its way.`;
+  $('#bkFlow').style.display='none'; $('#bkDone').classList.add('show');
+};
+$('#bkAgain').onclick=()=>{
+  bk={day:null,slot:null,party:2};$('#bkName').value='';$('#bkPhone').value='';
+  buildDays();buildTL();buildParty();updateBkSummary();
+  $('#bkDone').classList.remove('show');$('#bkFlow').style.display='';
+};
+</script>
+</body>
+</html>

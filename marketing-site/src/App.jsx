@@ -3,14 +3,18 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { BRAND } from './brand.js';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
-import Landing from './pages/Landing.jsx';
-import CaseStudy from './pages/CaseStudy.jsx';
+import Home from './pages/Home.jsx';
+import Platform from './pages/Platform.jsx';
+import Pricing from './pages/Pricing.jsx';
+import Live from './pages/Live.jsx';
 import Contact from './pages/Contact.jsx';
 
 const TITLES = {
   '/': `${BRAND.name} — ${BRAND.tagline}`,
-  '/case-study': `Case study: Caffe Primo Firle — ${BRAND.name}`,
-  '/contact': `Talk to us — ${BRAND.name}`,
+  '/platform': `Platform — ${BRAND.name}`,
+  '/pricing': `Pricing — ${BRAND.name}`,
+  '/live': `Live now: Caffe Primo Firle — ${BRAND.name}`,
+  '/contact': `Book a demo — ${BRAND.name}`,
 };
 
 export default function App() {
@@ -32,10 +36,12 @@ export default function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/case-study" element={<CaseStudy />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/platform" element={<Platform />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/live" element={<Live />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<Landing />} />
+        <Route path="*" element={<Home />} />
       </Routes>
       <Footer />
     </>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { BRAND } from '../brand.js';
-import { IconMail, IconPhone } from './icons.jsx';
 
 const EMPTY = { name: '', venue: '', phone: '', email: '', message: '' };
 
@@ -39,7 +38,8 @@ export default function ContactForm() {
     <div className="form-card">
       {status === 'success' ? (
         <div className="form-status form-status--ok" role="status">
-          Thanks — we'll be in touch within one business day.
+          Thanks — we'll be in touch within one business day. Prefer to talk now?
+          Call <a href={`tel:${BRAND.contactPhone}`}>{BRAND.contactPhoneDisplay}</a>.
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate={false}>
@@ -131,19 +131,6 @@ export default function ContactForm() {
           </p>
         </form>
       )}
-
-      <div className="contact-lines" aria-hidden={status === 'success' ? undefined : true}>
-        {status === 'success' && (
-          <>
-            <a href={`tel:${BRAND.contactPhone}`}>
-              <IconPhone /> {BRAND.contactPhoneDisplay}
-            </a>
-            <a href={`mailto:${BRAND.contactEmail}`}>
-              <IconMail /> {BRAND.contactEmail}
-            </a>
-          </>
-        )}
-      </div>
     </div>
   );
 }
