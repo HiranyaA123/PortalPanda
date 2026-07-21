@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
-import DeviceFrame from '../components/DeviceFrame.jsx';
+import { Tilt, Magnetic, CountUp } from '../components/motion.jsx';
+import { MockOrder, MockKitchen, MockDashboard } from '../components/mocks.jsx';
 import { IconArrowRight, IconPhone } from '../components/icons.jsx';
 
 const RUNS = [
@@ -12,9 +13,7 @@ const RUNS = [
       'Over 100 items with sizes, add-ons and dietary options.',
       'Card payments via Stripe and pay-in-store cash at pickup.',
     ],
-    type: 'phone',
-    src: 'customer-checkout-phone.png',
-    label: 'Primo checkout',
+    Mock: MockOrder,
   },
   {
     eyebrow: 'In the kitchen',
@@ -23,9 +22,7 @@ const RUNS = [
       'Orders land on the kitchen board with a sound alert.',
       'Dockets print automatically on a Star receipt printer as orders are accepted.',
     ],
-    type: 'tablet',
-    src: 'kitchen-board-tablet.png',
-    label: 'Primo kitchen board',
+    Mock: MockKitchen,
   },
   {
     eyebrow: 'Behind the counter',
@@ -34,14 +31,12 @@ const RUNS = [
       'Public-holiday surcharges set in advance for busy long weekends.',
       'Customers tagged automatically — regulars and high-spenders stand out.',
     ],
-    type: 'desktop',
-    src: 'admin-customers-desktop.png',
-    label: 'Primo customer list',
+    Mock: MockDashboard,
   },
 ];
 
 const STATS = [
-  { num: '100+', label: 'Menu items, fully modifiable' },
+  { count: 100, suffix: '+', label: 'Menu items, fully modifiable' },
   { num: '$0', label: 'Commission paid, ever' },
   { num: 'Instant', label: 'From order placed to kitchen' },
 ];
@@ -57,7 +52,7 @@ export default function Live() {
           <div className="cs-hero__grid">
             <div>
               <span className="eyebrow">
-                <span className="dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
                 Live now
               </span>
               <h1>Caffe Primo Firle runs on {BRAND.name}.</h1>
@@ -66,18 +61,14 @@ export default function Live() {
                 operation — customer site, kitchen and counter — on one portal.
               </p>
               <div className="hero__actions" style={{ marginTop: 30 }}>
-                <Link to="/contact" className="btn btn-primary btn-lg">
-                  Get this for your venue <IconArrowRight />
-                </Link>
+                <Magnetic>
+                  <Link to="/contact" className="btn btn-primary btn-lg">
+                    Get this for your venue <IconArrowRight />
+                  </Link>
+                </Magnetic>
               </div>
             </div>
-            <DeviceFrame
-              type="desktop"
-              src="casestudy-hero.png"
-              label="Caffe Primo Firle"
-              alt="Caffe Primo Firle ordering site"
-              light
-            />
+            <Tilt><MockOrder /></Tilt>
           </div>
         </div>
       </section>
@@ -110,25 +101,26 @@ export default function Live() {
             <h2>The whole portal, in one venue.</h2>
           </div>
 
-          {RUNS.map((r, i) => (
-            <Reveal
-              className={`surface-block ${i % 2 === 1 ? 'surface-block--reverse' : ''}`}
-              key={r.eyebrow}
-            >
-              <div>
-                <span className="eyebrow">{r.eyebrow}</span>
-                <h3>{r.heading}</h3>
-                <ul className="feature-list">
-                  {r.lines.map((l) => (
-                    <li key={l}>{l}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="surface-block__media">
-                <DeviceFrame type={r.type} src={r.src} label={r.label} light />
-              </div>
-            </Reveal>
-          ))}
+          {RUNS.map((r, i) => {
+            const Mock = r.Mock;
+            return (
+              <Reveal
+                className={`surface-block ${i % 2 === 1 ? 'surface-block--reverse' : ''}`}
+                key={r.eyebrow}
+              >
+                <div>
+                  <span className="eyebrow">{r.eyebrow}</span>
+                  <h3>{r.heading}</h3>
+                  <ul className="feature-list">
+                    {r.lines.map((l) => <li key={l}>{l}</li>)}
+                  </ul>
+                </div>
+                <div className="surface-block__media">
+                  <Tilt><Mock /></Tilt>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
@@ -153,7 +145,9 @@ export default function Live() {
           <div className="stats-row">
             {STATS.map((s) => (
               <Reveal className="stat-tile" key={s.label}>
-                <div className="stat-tile__num">{s.num}</div>
+                <div className="stat-tile__num">
+                  {s.count ? <CountUp to={s.count} suffix={s.suffix || ''} /> : s.num}
+                </div>
                 <div className="stat-tile__label">{s.label}</div>
               </Reveal>
             ))}
@@ -170,9 +164,9 @@ export default function Live() {
             <h2>Want this for your venue?</h2>
             <p>Book a demo, or call us and we’ll show you Primo’s setup and quote yours.</p>
             <div className="cta-band__actions">
-              <Link to="/contact" className="btn btn-primary btn-lg">
-                Book a demo <IconArrowRight />
-              </Link>
+              <Magnetic>
+                <Link to="/contact" className="btn btn-primary btn-lg">Book a demo <IconArrowRight /></Link>
+              </Magnetic>
               <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg">
                 <IconPhone /> {BRAND.contactPhoneDisplay}
               </a>

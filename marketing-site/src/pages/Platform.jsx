@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
-import DeviceFrame from '../components/DeviceFrame.jsx';
+import { Tilt, Magnetic } from '../components/motion.jsx';
+import {
+  MockOrder,
+  MockDashboard,
+  MockStaff,
+  MockKitchen,
+  MockBookings,
+  MockDelivery,
+} from '../components/mocks.jsx';
 import {
   IconStore,
   IconLayout,
@@ -31,9 +39,7 @@ const MODULES = [
       'Modifiers done properly — sizes, add-ons, sauces, dietary tags.',
       'Pickup and delivery slots tied to your live opening hours.',
     ],
-    type: 'phone',
-    src: 'customer-menu-phone.png',
-    label: 'Customer ordering site',
+    Mock: MockOrder,
   },
   {
     Icon: IconLayout,
@@ -46,9 +52,7 @@ const MODULES = [
       'Live view of orders, takings and your best-selling items.',
       'Turn delivery, bookings or whole sections on and off in a click.',
     ],
-    type: 'desktop',
-    src: 'admin-menu-desktop.png',
-    label: 'Admin dashboard',
+    Mock: MockDashboard,
   },
   {
     Icon: IconStaff,
@@ -61,9 +65,7 @@ const MODULES = [
       'Front-of-house sees orders and bookings, not your finances.',
       'Add or remove team members yourself in seconds.',
     ],
-    type: 'tablet',
-    src: 'staff-portal-tablet.png',
-    label: 'Staff portal',
+    Mock: MockStaff,
   },
   {
     Icon: IconChef,
@@ -76,9 +78,7 @@ const MODULES = [
       'One tap to accept, mark ready, or hand over.',
       'Mark an item sold out and it disappears from the site immediately.',
     ],
-    type: 'tablet',
-    src: 'kitchen-board-tablet.png',
-    label: 'Kitchen order board',
+    Mock: MockKitchen,
   },
   {
     Icon: IconCalendar,
@@ -91,9 +91,7 @@ const MODULES = [
       'Customers book in a few taps — no account required.',
       'Every booking is tied to the same customer record.',
     ],
-    type: 'phone',
-    src: 'bookings-phone.png',
-    label: 'Table bookings',
+    Mock: MockBookings,
   },
   {
     Icon: IconTruck,
@@ -106,9 +104,7 @@ const MODULES = [
       'Set your own delivery radius and fees.',
       'Track every delivery from the same dashboard.',
     ],
-    type: 'desktop',
-    src: 'delivery-desktop.png',
-    label: 'Delivery dispatch',
+    Mock: MockDelivery,
   },
 ];
 
@@ -138,12 +134,12 @@ export default function Platform() {
               commission.
             </p>
             <div className="hero__actions" style={{ marginTop: 32 }}>
-              <Link to="/contact" className="btn btn-primary btn-lg">
-                Book a demo <IconArrowRight />
-              </Link>
-              <Link to="/pricing" className="btn btn-ghost btn-lg">
-                See pricing
-              </Link>
+              <Magnetic>
+                <Link to="/contact" className="btn btn-primary btn-lg">
+                  Book a demo <IconArrowRight />
+                </Link>
+              </Magnetic>
+              <Link to="/pricing" className="btn btn-ghost btn-lg">See pricing</Link>
             </div>
           </div>
         </div>
@@ -152,26 +148,27 @@ export default function Platform() {
       {/* Modules */}
       <section className="section">
         <div className="container">
-          {MODULES.map((m, i) => (
-            <Reveal
-              className={`surface-block ${i % 2 === 1 ? 'surface-block--reverse' : ''}`}
-              key={m.eyebrow}
-            >
-              <div>
-                <span className="eyebrow">{m.eyebrow}</span>
-                <h3>{m.heading}</h3>
-                <p className="lead">{m.lead}</p>
-                <ul className="feature-list">
-                  {m.features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="surface-block__media">
-                <DeviceFrame type={m.type} src={m.src} label={m.label} light />
-              </div>
-            </Reveal>
-          ))}
+          {MODULES.map((m, i) => {
+            const Mock = m.Mock;
+            return (
+              <Reveal
+                className={`surface-block ${i % 2 === 1 ? 'surface-block--reverse' : ''}`}
+                key={m.eyebrow}
+              >
+                <div>
+                  <span className="eyebrow">{m.eyebrow}</span>
+                  <h3>{m.heading}</h3>
+                  <p className="lead">{m.lead}</p>
+                  <ul className="feature-list">
+                    {m.features.map((f) => <li key={f}>{f}</li>)}
+                  </ul>
+                </div>
+                <div className="surface-block__media">
+                  <Tilt><Mock /></Tilt>
+                </div>
+              </Reveal>
+            );
+          })}
         </div>
       </section>
 
@@ -204,9 +201,9 @@ export default function Platform() {
             <h2>See it running a real venue.</h2>
             <p>We’ll walk you through the whole platform live, then quote you for your venue.</p>
             <div className="cta-band__actions">
-              <Link to="/contact" className="btn btn-primary btn-lg">
-                Book a demo <IconArrowRight />
-              </Link>
+              <Magnetic>
+                <Link to="/contact" className="btn btn-primary btn-lg">Book a demo <IconArrowRight /></Link>
+              </Magnetic>
               <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg">
                 <IconPhone /> {BRAND.contactPhoneDisplay}
               </a>

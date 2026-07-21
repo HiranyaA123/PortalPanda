@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { BRAND } from './brand.js';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import Cursor from './components/Cursor.jsx';
 import Home from './pages/Home.jsx';
 import Platform from './pages/Platform.jsx';
 import Pricing from './pages/Pricing.jsx';
@@ -34,6 +35,7 @@ export default function App() {
 
   return (
     <>
+      <Cursor />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
