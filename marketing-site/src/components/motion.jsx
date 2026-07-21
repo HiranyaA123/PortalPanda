@@ -99,9 +99,15 @@ export function CountUp({ to, from = 0, duration = 1400, prefix = '', suffix = '
           }
         });
       },
-      { threshold: 0.4 }
+      { threshold: 0, rootMargin: '0px 0px -60px 0px' }
     );
     io.observe(node);
+    // Fallback: if it's already on screen at mount, kick it off immediately.
+    const r = node.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0 && !seen) {
+      seen = true;
+      raf = requestAnimationFrame(run);
+    }
 
     return () => {
       cancelAnimationFrame(raf);

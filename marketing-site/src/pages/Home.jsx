@@ -1,83 +1,14 @@
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
-import OrderFlowDemo from '../components/OrderFlowDemo.jsx';
-import ModuleExplorer from '../components/ModuleExplorer.jsx';
+import ScrollJourney from '../components/ScrollJourney.jsx';
 import { Magnetic, CountUp } from '../components/motion.jsx';
-import {
-  MockOrder,
-  MockDashboard,
-  MockStaff,
-  MockKitchen,
-  MockBookings,
-  MockDelivery,
-} from '../components/mocks.jsx';
-import {
-  IconStore,
-  IconLayout,
-  IconStaff,
-  IconChef,
-  IconCalendar,
-  IconTruck,
-  IconArrowRight,
-  IconPhone,
-} from '../components/icons.jsx';
-
-const MODULES = [
-  {
-    id: 'order', Icon: IconStore, name: 'Ordering site',
-    eyebrow: 'For your customers',
-    heading: 'A storefront that looks like your venue.',
-    body: 'A bespoke, fast ordering site for pickup and delivery — your brand, your menu, not a template.',
-    features: ['Custom design, not a theme', 'Stripe card + pay-in-store cash', 'Full modifiers & dietary tags'],
-    Mock: MockOrder,
-  },
-  {
-    id: 'dash', Icon: IconLayout, name: 'Admin dashboard',
-    eyebrow: 'For you',
-    heading: 'One dashboard that runs everything.',
-    body: 'Change anything on your live site in seconds — menu, prices, hours, promos — with no developer.',
-    features: ['Edits go live instantly', 'Discounts & surcharge days', 'Today’s takings at a glance'],
-    Mock: MockDashboard,
-  },
-  {
-    id: 'kitchen', Icon: IconChef, name: 'Kitchen + printer',
-    eyebrow: 'For your team',
-    heading: 'Orders hit the pass instantly.',
-    body: 'A live kitchen board on one tablet, wired to a receipt printer so dockets print themselves.',
-    features: ['Sound alert on every order', 'Auto-printed Star dockets', 'One tap: accept → ready'],
-    Mock: MockKitchen,
-  },
-  {
-    id: 'staff', Icon: IconStaff, name: 'Staff portal',
-    eyebrow: 'For your team',
-    heading: 'The right access for every role.',
-    body: 'Staff get their own logins and a portal on the shop tablet — separate from your owner dashboard.',
-    features: ['Role-based permissions', 'Built-in time clock', 'Add or remove staff yourself'],
-    Mock: MockStaff,
-  },
-  {
-    id: 'book', Icon: IconCalendar, name: 'Bookings',
-    eyebrow: 'Beyond pickup',
-    heading: 'Reservations in the same portal.',
-    body: 'Take table bookings through the site your customers already order from — no separate app.',
-    features: ['Set covers & time slots', 'Lands beside your orders', 'Tied to the customer record'],
-    Mock: MockBookings,
-  },
-  {
-    id: 'deliv', Icon: IconTruck, name: 'Uber Direct',
-    eyebrow: 'Beyond pickup',
-    heading: 'Delivery you own — without drivers.',
-    body: 'Offer delivery without handing customers, or 30% of every order, to a marketplace.',
-    features: ['Auto-dispatch a courier', 'You keep the customer', 'Set your radius & fees'],
-    Mock: MockDelivery,
-  },
-];
+import { IconArrowRight, IconPhone } from '../components/icons.jsx';
 
 export default function Home() {
   return (
     <main id="main">
-      {/* Hero + interactive showpiece */}
+      {/* Compact hero */}
       <section className="hero hero--center grain">
         <div className="hero__bg">
           <div className="glow glow--violet" />
@@ -106,27 +37,23 @@ export default function Home() {
                 </Link>
               </Magnetic>
             </div>
-            <div className="hero__proof">
-              <span className="dot" aria-hidden="true" />
-              Tap the menu below — watch an order flow through, live
+            <div className="scroll-cue" aria-hidden="true">
+              <span className="scroll-cue__mouse" />
+              Scroll to follow an order
             </div>
-          </div>
-
-          <div className="hero__showpiece">
-            <OrderFlowDemo />
           </div>
         </div>
       </section>
 
-      {/* Interactive module explorer */}
+      {/* The scroll journey — the order flows down the page */}
       <section className="section">
         <div className="container">
           <div className="section-head">
-            <span className="eyebrow">One portal, everything</span>
-            <h2>Six modules. One login. Zero commission.</h2>
-            <p>Click through the platform — every piece talks to every other piece, in real time.</p>
+            <span className="eyebrow">Follow the order</span>
+            <h2>Watch one order travel through the whole portal.</h2>
+            <p>Scroll down — the order flows from your customer’s phone to the kitchen, the printer and out the door. Every step is one system.</p>
           </div>
-          <ModuleExplorer modules={MODULES} />
+          <ScrollJourney />
         </div>
       </section>
 
