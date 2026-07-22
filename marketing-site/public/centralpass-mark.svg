@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">CentralPass mark</title>
+  <desc id="desc">A central hub connected to six venue systems.</desc>
+  <defs>
+    <linearGradient id="g" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C4DFF"/><stop offset=".54" stop-color="#A24BFF"/><stop offset="1" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="20" stroke-linecap="round" opacity=".9">
+    <path d="M256 256 256 76M256 256 411.9 166M256 256 411.9 346M256 256 256 436M256 256 100.1 346M256 256 100.1 166"/>
+  </g>
+  <g fill="#0B0B12" stroke="url(#g)" stroke-width="18">
+    <circle cx="256" cy="76" r="34"/><circle cx="411.9" cy="166" r="34"/><circle cx="411.9" cy="346" r="34"/>
+    <circle cx="256" cy="436" r="34"/><circle cx="100.1" cy="346" r="34"/><circle cx="100.1" cy="166" r="34"/>
+  </g>
+  <circle cx="256" cy="256" r="72" fill="url(#g)"/>
+  <circle cx="256" cy="256" r="26" fill="#0B0B12"/>
+</svg>

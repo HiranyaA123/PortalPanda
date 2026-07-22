@@ -16,8 +16,8 @@ export default function Footer() {
               {BRAND.name}
             </Link>
             <p className="footer__desc">
-              The all-in-one, commission-free ordering platform for independent
-              restaurants and caffes. Built and run for you.
+              Bespoke, commission-free venue software for independent restaurants
+              and cafes. Designed and built from scratch in Adelaide.
             </p>
           </div>
 
@@ -30,15 +30,16 @@ export default function Footer() {
 
           <div className="footer__col">
             <h4>Company</h4>
-            <Link to="/contact">Book a demo</Link>
-            <a href={`mailto:${BRAND.contactEmail}`}>Email us</a>
-            <p>{BRAND.location}</p>
+            <Link to="/contact">Plan your build</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
           </div>
 
           <div className="footer__col">
             <h4>Get in touch</h4>
             <a href={`tel:${BRAND.contactPhone}`}>{BRAND.contactPhoneDisplay}</a>
-            <a href={`mailto:${BRAND.contactEmail}`}>{BRAND.contactEmail}</a>
+            <a className="footer__email" href={`mailto:${BRAND.contactEmail}`}>{BRAND.contactEmail}</a>
+            <p>{BRAND.location}</p>
           </div>
         </div>
 

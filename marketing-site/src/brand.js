@@ -1,20 +1,20 @@
 // Single source of truth for every brand-specific string, colour and contact
 // detail on the site. Renaming the business or changing a contact detail should
-// be a one-file edit here — no component may hardcode the name, email or phone.
+// be a one-file edit here - no component may hardcode the name, email or phone.
 export const BRAND = {
   name: 'CentralPass',
   shortName: 'CentralPass',
-  tagline: 'Every system your venue runs — connected.',
-  // One-liner used in meta descriptions and hero sub-copy.
+  tagline: 'Custom venue software, built around you.',
+  siteUrl: 'https://portal-panda.vercel.app',
   pitch:
-    'CentralPass wires every part of your venue into one system — online ordering, bookings, a live kitchen and staff portal, receipt printing, email + SMS promotions and Uber Direct delivery. Commission-free.',
+    'We design and build a connected system from scratch for your venue - using proven modules, plus any new capabilities we agree to scope with you.',
   contactEmail: 'agarwalhiranya@gmail.com',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',
-  formEndpoint: 'https://formspree.io/f/mlgqbarp', // Formspree URL
+  formEndpoint: 'https://formspree.io/f/mlgqbarp',
   location: 'Adelaide, South Australia',
 
-  // Brand colours — keep in sync with the tokens in src/index.css.
+  // Keep these values in sync with the tokens in src/index.css.
   colors: {
     ink: '#0B0B12',
     violet: '#6C4DFF',

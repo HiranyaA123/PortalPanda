@@ -22,6 +22,19 @@ export default function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if (!open) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.body.classList.add('menu-open');
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.classList.remove('menu-open');
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -37,7 +50,7 @@ export default function Header() {
         </Link>
 
         <nav className={`nav ${open ? 'nav--open' : ''}`} aria-label="Primary">
-          <ul className="nav__links">
+          <ul className="nav__links" id="primary-navigation">
             {LINKS.map((l) => (
               <li key={l.to}>
                 <NavLink
@@ -64,6 +77,7 @@ export default function Header() {
               className="nav__burger"
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
+              aria-controls="primary-navigation"
               onClick={() => setOpen((v) => !v)}
             >
               {open ? <IconClose /> : <IconMenu />}
