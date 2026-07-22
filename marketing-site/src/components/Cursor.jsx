@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Site-wide custom cursor: a lagging gradient "portal" ring plus a precise dot.
+// Site-wide custom cursor: a gradient "portal" ring plus a precise dot.
 // Only mounts on fine-pointer devices with motion allowed — touch users and
 // reduced-motion users keep their native cursor untouched.
 export default function Cursor() {
@@ -14,25 +14,13 @@ export default function Cursor() {
     if (!fine || reduce) return undefined;
 
     setEnabled(true);
-    document.body.classList.add('has-cursor');
-
-    let mx = window.innerWidth / 2;
-    let my = window.innerHeight / 2;
-    let rx = mx;
-    let ry = my;
-    let raf = 0;
+    document.body.classList.add('has-cursor', 'cursor-gone');
 
     const onMove = (e) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (dotRef.current) dotRef.current.style.transform = `translate(${mx}px, ${my}px)`;
+      const position = `translate(${e.clientX}px, ${e.clientY}px)`;
+      if (dotRef.current) dotRef.current.style.transform = position;
+      if (ringRef.current) ringRef.current.style.transform = position;
       document.body.classList.remove('cursor-gone');
-    };
-    const tick = () => {
-      rx += (mx - rx) * 0.2;
-      ry += (my - ry) * 0.2;
-      if (ringRef.current) ringRef.current.style.transform = `translate(${rx}px, ${ry}px)`;
-      raf = requestAnimationFrame(tick);
     };
     const onOver = (e) => {
       const t = e.target;
@@ -51,10 +39,8 @@ export default function Cursor() {
     window.addEventListener('mousedown', onDown);
     window.addEventListener('mouseup', onUp);
     document.addEventListener('mouseleave', onLeave);
-    raf = requestAnimationFrame(tick);
 
     return () => {
-      cancelAnimationFrame(raf);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseover', onOver);
       window.removeEventListener('mousedown', onDown);

@@ -7,7 +7,7 @@ import { IconMenu, IconClose } from './icons.jsx';
 const LINKS = [
   { to: '/platform', label: 'Platform' },
   { to: '/pricing', label: 'Pricing' },
-  { to: '/live', label: 'Live now' },
+  { to: '/live', label: 'Our work' },
   { to: '/contact', label: 'Contact' },
 ];
 
