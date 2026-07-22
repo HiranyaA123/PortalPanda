@@ -1,20 +1,20 @@
 import { BRAND } from './brand.js';
 
 const DEFAULT_DESCRIPTION =
-  'CentralPass designs and builds bespoke venue software for independent Australian restaurants and cafes, with connected operations and zero marketplace commission.';
+  'CentralPass builds custom restaurant and cafe websites, online ordering, CRM, bookings, kitchen and staff software for independent Australian venues.';
 
 export const SEO = {
   '/': {
-    title: 'CentralPass | Custom venue software, built around you',
+    title: 'Restaurant Website, CRM & Venue Software | CentralPass',
     description: DEFAULT_DESCRIPTION,
   },
   '/platform': {
-    title: 'Custom restaurant and cafe software | CentralPass',
+    title: 'Restaurant CRM, Ordering & Operations Software | CentralPass',
     description:
-      'Explore proven CentralPass modules, then request the custom workflows, integrations and capabilities your restaurant or cafe needs.',
+      'Explore CentralPass restaurant CRM, online ordering, bookings, kitchen, staff, promotions and delivery modules, customised for your venue.',
   },
   '/pricing': {
-    title: 'Custom venue software pricing | CentralPass',
+    title: 'Custom Restaurant Software Pricing | CentralPass',
     description:
       'Get a tailored CentralPass proposal based on your venue, chosen modules and requested features. No marketplace commission or forced software tier.',
   },
@@ -24,7 +24,7 @@ export const SEO = {
       'See the real Caffe Primo Firle customer website, ordering, staff operations and owner dashboard built with CentralPass.',
   },
   '/contact': {
-    title: 'Plan custom venue software | CentralPass Adelaide',
+    title: 'Restaurant Website & Software Design Adelaide | CentralPass',
     description:
       'Plan bespoke software for your restaurant or cafe. Share your workflows, request features and receive a tailored CentralPass build proposal.',
   },
@@ -62,6 +62,7 @@ export function applySeo(pathname) {
   upsertMeta('name', 'description', entry.description);
   upsertMeta('name', 'robots', entry.noIndex ? 'noindex, nofollow' : 'index, follow');
   upsertMeta('property', 'og:type', 'website');
+  upsertMeta('property', 'og:locale', 'en_AU');
   upsertMeta('property', 'og:site_name', BRAND.name);
   upsertMeta('property', 'og:title', entry.title);
   upsertMeta('property', 'og:description', entry.description);
@@ -102,12 +103,21 @@ export function applySeo(pathname) {
         areaServed: 'Australia',
       },
       {
+        '@type': 'WebSite',
+        '@id': `${BRAND.siteUrl}/#website`,
+        name: BRAND.name,
+        url: `${BRAND.siteUrl}/`,
+        inLanguage: 'en-AU',
+        publisher: { '@id': `${BRAND.siteUrl}/#organization` },
+      },
+      {
         '@type': 'SoftwareApplication',
         '@id': `${BRAND.siteUrl}/#software`,
         name: BRAND.name,
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         url: BRAND.siteUrl,
+        inLanguage: 'en-AU',
         description: DEFAULT_DESCRIPTION,
         provider: { '@id': `${BRAND.siteUrl}/#organization` },
       },

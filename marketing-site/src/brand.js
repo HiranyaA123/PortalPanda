@@ -5,7 +5,7 @@ export const BRAND = {
   name: 'CentralPass',
   shortName: 'CentralPass',
   tagline: 'Custom venue software, built around you.',
-  siteUrl: 'https://portal-panda.vercel.app',
+  siteUrl: 'https://www.centralpass.au',
   pitch:
     'We design and build a connected system from scratch for your venue - using proven modules, plus any new capabilities we agree to scope with you.',
   contactEmail: 'centralpassinfo@gmail.com',
