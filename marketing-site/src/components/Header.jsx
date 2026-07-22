@@ -83,6 +83,16 @@ export default function Header() {
               {open ? <IconClose /> : <IconMenu />}
             </button>
           </div>
+
+          {open && (
+            <button
+              type="button"
+              className="nav__backdrop"
+              aria-label="Close navigation menu"
+              tabIndex={-1}
+              onClick={() => setOpen(false)}
+            />
+          )}
         </nav>
       </div>
     </header>
