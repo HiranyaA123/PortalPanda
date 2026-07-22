@@ -21,7 +21,7 @@ export const SEO = {
   '/live': {
     title: 'CentralPass live at Caffe Primo Firle | Case study',
     description:
-      'See how Caffe Primo Firle uses CentralPass for a 100+ item pickup menu, kitchen orders, printed dockets and day-to-day venue operations.',
+      'See the real Caffe Primo Firle customer website, ordering, staff operations and owner dashboard built with CentralPass.',
   },
   '/contact': {
     title: 'Plan custom venue software | CentralPass Adelaide',

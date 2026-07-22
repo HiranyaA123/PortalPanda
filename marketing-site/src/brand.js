@@ -8,7 +8,7 @@ export const BRAND = {
   siteUrl: 'https://portal-panda.vercel.app',
   pitch:
     'We design and build a connected system from scratch for your venue - using proven modules, plus any new capabilities we agree to scope with you.',
-  contactEmail: 'agarwalhiranya@gmail.com',
+  contactEmail: 'centralpassinfo@gmail.com',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',
   formEndpoint: 'https://formspree.io/f/mlgqbarp',
