@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CentralPass Gmail signature</title>
+  <link rel="icon" href="public/favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: #0b0b12;
+      color: #f3f2f7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(108, 77, 255, 0.24), transparent 34%),
+        radial-gradient(circle at 82% 18%, rgba(255, 107, 74, 0.16), transparent 30%),
+        #0b0b12;
+    }
+
+    .page {
+      width: min(100%, 720px);
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 5vw, 38px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .intro {
+      max-width: 58ch;
+      margin: 12px 0 26px;
+      color: #b0b2bd;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      background: #6c4dff;
+      color: #ffffff;
+      font: 700 14px/1 Arial, Helvetica, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 9px 24px rgba(108, 77, 255, 0.28);
+    }
+
+    button:hover { background: #5c3feb; }
+    button:focus-visible { outline: 3px solid #37d6e5; outline-offset: 3px; }
+
+    #copy-status {
+      min-height: 18px;
+      color: #82e8a9;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .preview {
+      overflow-x: auto;
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+    }
+
+    .instructions {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      background: rgba(18, 18, 28, 0.88);
+      color: #c9cad3;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+
+    .instructions strong { color: #ffffff; }
+    .instructions ol { margin: 7px 0 0; padding-left: 20px; }
+    .instructions p { margin: 12px 0 0; color: #9497a7; }
+
+    @media (max-width: 520px) {
+      body { padding: 24px 12px; }
+      .preview { padding: 20px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>CentralPass Gmail signature</h1>
+    <p class="intro">
+      A compact, Gmail-safe signature using the official CentralPass mark and
+      the live <strong>centralpass.au</strong> website address.
+    </p>
+
+    <div class="toolbar">
+      <button id="copy-button" type="button">Copy signature</button>
+      <span id="copy-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <section class="preview" aria-label="Email signature preview">
+      <!-- SIGNATURE START: copy only the contents of #signature -->
+      <div id="signature">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:540px;font-family:Arial,Helvetica,sans-serif;color:#0b0b12;background-color:#ffffff;">
+          <tr>
+            <td width="92" style="width:92px;padding:0 20px 0 0;vertical-align:top;">
+              <a href="https://www.centralpass.au" style="display:block;text-decoration:none;">
+                <img src="https://www.centralpass.au/centralpass-mark.png" width="72" height="72" alt="CentralPass" style="display:block;width:72px;height:72px;border:0;outline:none;text-decoration:none;">
+              </a>
+            </td>
+            <td style="padding:0;vertical-align:top;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;">
+                <tr>
+                  <td style="padding:0 0 2px;color:#0b0b12;font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;line-height:1.25;">
+                    Hiranya Agarwal
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 8px;color:#656776;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.4;">
+                    Founder <span style="color:#b4b5bd;">|</span>
+                    <span style="color:#6c4dff;font-weight:700;">CentralPass</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 10px;color:#454754;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.45;">
+                    Every system your venue runs, connected.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 10px;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:350px;">
+                      <tr>
+                        <td height="3" style="height:3px;width:54%;background-color:#6c4dff;font-size:0;line-height:0;">&nbsp;</td>
+                        <td height="3" style="height:3px;width:28%;background-color:#ff6b4a;font-size:0;line-height:0;">&nbsp;</td>
+                        <td height="3" style="height:3px;width:18%;background-color:#37d6e5;font-size:0;line-height:0;">&nbsp;</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0;color:#555865;font-family:Arial,Helvetica,sans-serif;font-size:11.5px;line-height:1.75;">
+                    <a href="tel:+61452145196" style="color:#555865;text-decoration:none;white-space:nowrap;">0452 145 196</a>
+                    <span style="color:#b8bac3;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                    <a href="mailto:agarwalhiranya@gmail.com" style="color:#555865;text-decoration:none;white-space:nowrap;">agarwalhiranya@gmail.com</a><br>
+                    Adelaide, South Australia
+                    <span style="color:#b8bac3;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                    <a href="https://www.centralpass.au" style="color:#6c4dff;text-decoration:none;font-weight:700;white-space:nowrap;">centralpass.au</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- SIGNATURE END -->
+    </section>
+
+    <section class="instructions">
+      <strong>Install in Gmail</strong>
+      <ol>
+        <li>Click <strong>Copy signature</strong>.</li>
+        <li>Open Gmail Settings, then <strong>See all settings &gt; General &gt; Signature</strong>.</li>
+        <li>Create a new signature, click inside its editor, and paste.</li>
+        <li>Choose it under <strong>Signature defaults</strong>, then save your changes.</li>
+      </ol>
+      <p>
+        The logo loads from <strong>centralpass.au</strong>, so deploy the latest site version
+        before installing the signature. This ensures recipients can load the image from a public HTTPS URL.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const copyButton = document.getElementById('copy-button');
+    const copyStatus = document.getElementById('copy-status');
+    const signature = document.getElementById('signature');
+
+    copyButton.addEventListener('click', () => {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(signature);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      try {
+        const copied = document.execCommand('copy');
+        copyStatus.textContent = copied
+          ? 'Copied. Paste it into Gmail.'
+          : 'Press Ctrl+C, then paste into Gmail.';
+      } catch (error) {
+        copyStatus.textContent = 'Press Ctrl+C, then paste into Gmail.';
+      }
+
+      window.setTimeout(() => {
+        selection.removeAllRanges();
+      }, 100);
+    });
+  </script>
+</body>
+</html>
