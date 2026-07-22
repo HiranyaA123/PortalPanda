@@ -81,13 +81,13 @@ export default function Home() {
       {/* Live now */}
       <section className="section">
         <div className="container">
-          <Reveal className="cta-band grain" style={{ background: 'var(--surface)', color: 'var(--ink)', border: '1px solid var(--line)', boxShadow: 'var(--shadow-soft)' }}>
+          <Reveal className="cta-band grain" style={{ background: 'var(--surface-2)', border: '1px solid var(--line)' }}>
             <span className="eyebrow" style={{ position: 'relative', zIndex: 2 }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
               Live now
             </span>
-            <h2 style={{ color: 'var(--ink)' }}>Running a real venue today.</h2>
-            <p style={{ color: 'var(--text-soft)' }}>
+            <h2>Running a real venue today.</h2>
+            <p>
               Caffe Primo Firle takes its whole pickup operation through Portal
               Panda — 100+ menu items, one tablet in the kitchen.
             </p>
