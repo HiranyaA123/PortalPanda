@@ -19,9 +19,9 @@ export const SEO = {
       'Get a tailored CentralPass proposal based on your venue, chosen modules and requested features. No marketplace commission or forced software tier.',
   },
   '/live': {
-    title: 'CentralPass live at Caffe Primo Firle | Case study',
+    title: 'CentralPass venue projects | Live and in progress',
     description:
-      'See the real Caffe Primo Firle customer website, ordering, staff operations and owner dashboard built with CentralPass.',
+      'Explore CentralPass venue projects for Caffe Primo Firle, Needa Pizza and Beach Road Pizza, including live work and clearly marked work-in-progress builds.',
   },
   '/contact': {
     title: 'Restaurant Website & Software Design Adelaide | CentralPass',

@@ -54,7 +54,7 @@ export default function Home() {
         <div className="container hero__grid">
           <div>
             <Link to="/live" className="hero__badge">
-              <b>Live</b> Running at Caffe Primo Firle <IconArrowRight />
+              <b>3 builds</b> Live and in progress <IconArrowRight />
             </Link>
             <h1>
               Custom venue software, <span className="grad-text">built around you.</span>
@@ -85,7 +85,7 @@ export default function Home() {
           <div><strong>Designed for you</strong><span>No off-the-shelf template</span></div>
           <div><strong>Open brief</strong><span>Request features not shown</span></div>
           <div><strong>$0 commission</strong><span>On every CentralPass order</span></div>
-          <Link to="/live">See a live build <IconArrowRight /></Link>
+          <Link to="/live">See our venue work <IconArrowRight /></Link>
         </div>
       </section>
 
@@ -228,7 +228,7 @@ export default function Home() {
               from customer order to kitchen board and printed docket.
             </p>
             <div className="cta-band__actions">
-              <Link to="/live" className="btn btn-primary btn-lg">View the live case study <IconArrowRight /></Link>
+              <Link to="/live" className="btn btn-primary btn-lg">Explore our venue work <IconArrowRight /></Link>
             </div>
           </Reveal>
         </div>

@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
 import { Magnetic, CountUp } from '../components/motion.jsx';
-import { IconArrowRight, IconPhone } from '../components/icons.jsx';
+import { IconArrowRight, IconPhone, IconSparkle, IconStore } from '../components/icons.jsx';
 
 const CUSTOMER_SCREENS = [
   {
@@ -71,11 +72,110 @@ const OWNER_SCREENS = [
   },
 ];
 
+const WIP_SCREENS = {
+  needa: [
+    {
+      src: '/live/needa-pizza-wip.webp',
+      label: 'Customer website direction',
+      alt: 'Intentionally blurred work-in-progress preview for the Needa Pizza customer website',
+    },
+  ],
+  beach: [
+    {
+      src: '/live/beach-road-wip-1.webp',
+      label: 'Brand and venue story',
+      alt: 'Intentionally blurred work-in-progress preview for the Beach Road Pizza customer website',
+    },
+    {
+      src: '/live/beach-road-wip-2.webp',
+      label: 'Menu showcase direction',
+      alt: 'Intentionally blurred work-in-progress menu preview for Beach Road Pizza',
+    },
+    {
+      src: '/live/beach-road-wip-3.webp',
+      label: 'Food and service story',
+      alt: 'Intentionally blurred work-in-progress food and service preview for Beach Road Pizza',
+    },
+  ],
+};
+
+const VENUES = [
+  {
+    id: 'primo',
+    name: 'Caffe Primo Firle',
+    location: 'Firle, South Australia',
+    status: 'Live',
+    statusKind: 'live',
+    scope: 'Customer, staff and owner portals',
+    description: 'A connected pickup operation running from customer order through service and owner controls.',
+    cover: '/live/venue-home.webp',
+    coverAlt: 'Caffe Primo Firle live customer website',
+  },
+  {
+    id: 'needa',
+    name: 'Needa Pizza',
+    location: 'Aberfoyle Park, South Australia',
+    status: 'Work in progress',
+    statusKind: 'wip',
+    scope: 'Branded website and ordering journey',
+    description: 'A bold, mobile-first pizza experience being shaped around the Needa Pizza brand and service flow.',
+    cover: '/live/needa-pizza-wip.webp',
+    coverAlt: 'Intentionally blurred work-in-progress Needa Pizza website preview',
+  },
+  {
+    id: 'beach',
+    name: 'Beach Road Pizza',
+    location: 'Christies Beach, South Australia',
+    status: 'Work in progress',
+    statusKind: 'wip',
+    scope: 'Venue website and menu experience',
+    description: 'A character-led website in active development for Beach Road Pizza and its generous local menu.',
+    cover: '/live/beach-road-wip-1.webp',
+    coverAlt: 'Intentionally blurred work-in-progress Beach Road Pizza website preview',
+  },
+];
+
 const STATS = [
   { count: 100, suffix: '+', label: 'Menu items, fully modifiable' },
   { num: '$0', label: 'Marketplace commission taken' },
   { num: '3', label: 'Connected portals in one build' },
 ];
+
+function StatusPill({ venue }) {
+  return (
+    <span className={`venue-status venue-status--${venue.statusKind}`}>
+      <i aria-hidden="true" /> {venue.status}
+    </span>
+  );
+}
+
+function VenueCard({ venue, selected, onSelect }) {
+  const isWip = venue.statusKind === 'wip';
+
+  return (
+    <button
+      type="button"
+      className={`venue-card ${selected ? 'is-selected' : ''}`}
+      aria-pressed={selected}
+      aria-controls="venue-project-details"
+      onClick={() => onSelect(venue.id)}
+    >
+      <span className={`venue-card__visual ${isWip ? 'is-wip' : ''}`}>
+        <img src={venue.cover} alt={venue.coverAlt} loading="lazy" decoding="async" />
+        {isWip && <span className="wip-watermark">Preview blurred</span>}
+      </span>
+      <span className="venue-card__body">
+        <span className="venue-card__topline">
+          <StatusPill venue={venue} />
+          <span>{venue.location}</span>
+        </span>
+        <strong>{venue.name}</strong>
+        <span className="venue-card__scope">{venue.scope}</span>
+        <span className="venue-card__action">{selected ? 'Viewing project' : 'View project'} <IconArrowRight /></span>
+      </span>
+    </button>
+  );
+}
 
 function ScreenshotCard({ screen, priority = false }) {
   return (
@@ -90,7 +190,7 @@ function ScreenshotCard({ screen, priority = false }) {
         <div className="live-shot__chrome" aria-hidden="true">
           <span><i /><i /><i /></span>
           <em>{screen.label}</em>
-          <b>Open full image ↗</b>
+          <b>Open full image</b>
         </div>
         <div className="live-shot__image">
           <img
@@ -111,27 +211,23 @@ function ScreenshotCard({ screen, priority = false }) {
   );
 }
 
-export default function Live() {
+function PrimoProject() {
+  const venue = VENUES[0];
+
   return (
-    <main id="main">
-      <section className="page-hero live-hero grain">
-        <div className="glow glow--violet" style={{ width: 460, height: 460, top: -150, left: -70, opacity: 0.38 }} />
-        <div className="glow glow--coral" style={{ width: 340, height: 340, bottom: -170, right: '8%', opacity: 0.28 }} />
+    <>
+      <section className="section selected-project">
         <div className="container">
-          <div className="cs-hero__grid">
-            <div>
-              <span className="eyebrow live-hero__status"><i /> Live now</span>
-              <h1>Caffe Primo Firle runs on {BRAND.name}.</h1>
-              <p>
-                A real Adelaide venue running its customer website, ordering,
-                service tools and owner controls through one custom-built system.
-              </p>
-              <div className="hero__actions page-hero__actions">
-                <Magnetic>
-                  <Link to="/contact" className="btn btn-primary btn-lg">
-                    Plan a system like this <IconArrowRight />
-                  </Link>
-                </Magnetic>
+          <div className="selected-project__grid">
+            <div className="selected-project__copy">
+              <StatusPill venue={venue} />
+              <span className="selected-project__location">{venue.location}</span>
+              <h2>{venue.name} runs on {BRAND.name}.</h2>
+              <p>{venue.description}</p>
+              <div className="selected-project__facts">
+                <span>Customer experience</span>
+                <span>Service operations</span>
+                <span>Owner controls</span>
               </div>
             </div>
 
@@ -156,24 +252,8 @@ export default function Live() {
               />
             </a>
           </div>
-        </div>
-      </section>
 
-      <section className="section live-intro">
-        <div className="container">
-          <div className="section-head section-head--split">
-            <div>
-              <span className="eyebrow">A real connected build</span>
-              <h2>Proof from every side of the venue.</h2>
-            </div>
-            <p>
-              These are the live customer, staff and owner interfaces built for
-              Caffe Primo Firle—not generic mock-ups. Select any screen to view
-              the full-resolution capture.
-            </p>
-          </div>
-
-          <div className="live-proof-strip" aria-label="CentralPass portal coverage">
+          <div className="live-proof-strip" aria-label="Caffe Primo Firle portal coverage">
             <div><strong>Customer portal</strong><span>Website, ordering and bookings</span></div>
             <div><strong>Staff portal</strong><span>Orders, time clock and availability</span></div>
             <div><strong>Owner portal</strong><span>Reporting, menus and payroll preparation</span></div>
@@ -271,6 +351,136 @@ export default function Live() {
           </div>
         </div>
       </section>
+    </>
+  );
+}
+
+function WorkInProgressProject({ venue }) {
+  const screens = WIP_SCREENS[venue.id];
+
+  return (
+    <section className="section selected-project selected-project--wip">
+      <div className="container">
+        <div className="selected-project__copy selected-project__copy--wide">
+          <StatusPill venue={venue} />
+          <span className="selected-project__location">{venue.location}</span>
+          <h2>{venue.name} is currently being built.</h2>
+          <p>{venue.description}</p>
+        </div>
+
+        <div className="wip-notice" role="note">
+          <IconSparkle />
+          <span>
+            <strong>Work in progress</strong>
+            These previews are intentionally blurred because the design and functionality are still being developed with the customer.
+          </span>
+        </div>
+
+        <div className={`wip-gallery ${screens.length === 1 ? 'wip-gallery--single' : ''}`}>
+          {screens.map((screen) => (
+            <Reveal className="wip-shot" key={screen.src}>
+              <div className="live-shot__chrome" aria-hidden="true">
+                <span><i /><i /><i /></span>
+                <em>{screen.label}</em>
+                <b>Private preview</b>
+              </div>
+              <div className="wip-shot__image">
+                <img src={screen.src} alt={screen.alt} loading="lazy" decoding="async" draggable="false" />
+                <span className="wip-shot__overlay"><i /> Work in progress</span>
+              </div>
+              <div className="wip-shot__caption">
+                <strong>{screen.label}</strong>
+                <span>Intentionally blurred while the customer build is in development.</span>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="wip-scope">
+          <div><strong>Current direction</strong><span>{venue.scope}</span></div>
+          <div><strong>Project state</strong><span>Active customer build</span></div>
+          <div><strong>Next milestone</strong><span>Design and workflow refinement</span></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function Live() {
+  const [activeVenueId, setActiveVenueId] = useState('primo');
+  const activeVenue = VENUES.find((venue) => venue.id === activeVenueId) || VENUES[0];
+
+  return (
+    <main id="main">
+      <section className="page-hero live-hero live-collection-hero grain">
+        <div className="glow glow--violet" style={{ width: 460, height: 460, top: -150, left: -70, opacity: 0.38 }} />
+        <div className="glow glow--coral" style={{ width: 340, height: 340, bottom: -170, right: '8%', opacity: 0.28 }} />
+        <div className="container">
+          <div className="cs-hero__grid">
+            <div>
+              <span className="eyebrow"><IconStore /> Our venue work</span>
+              <h1>Built for one venue at a time.</h1>
+              <p>
+                Browse one launched CentralPass system and two active customer
+                builds. Every project is designed from scratch around a different venue.
+              </p>
+              <div className="hero__actions page-hero__actions">
+                <Magnetic>
+                  <a href="#venue-collection" className="btn btn-primary btn-lg">
+                    Choose a venue <IconArrowRight />
+                  </a>
+                </Magnetic>
+              </div>
+            </div>
+
+            <div className="portfolio-status" aria-label="CentralPass venue project status">
+              <div className="portfolio-status__top">
+                <span>Customer portfolio</span>
+                <strong>3 venue builds</strong>
+              </div>
+              {VENUES.map((venue) => (
+                <div className="portfolio-status__row" key={venue.id}>
+                  <StatusPill venue={venue} />
+                  <span><strong>{venue.name}</strong><small>{venue.location}</small></span>
+                </div>
+              ))}
+              <p>Unfinished customer work is shown as a blurred preview until launch.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section venue-collection" id="venue-collection">
+        <div className="container">
+          <div className="section-head section-head--split">
+            <div>
+              <span className="eyebrow">Select a project</span>
+              <h2>See what is live and what is taking shape.</h2>
+            </div>
+            <p>
+              Launched work is shown in full. Active builds are clearly marked and
+              intentionally blurred while we continue designing with each customer.
+            </p>
+          </div>
+
+          <div className="venue-picker" role="group" aria-label="Choose a CentralPass venue project">
+            {VENUES.map((venue) => (
+              <VenueCard
+                venue={venue}
+                selected={activeVenueId === venue.id}
+                onSelect={setActiveVenueId}
+                key={venue.id}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div id="venue-project-details" className="venue-project-details" aria-live="polite">
+        {activeVenue.id === 'primo'
+          ? <PrimoProject />
+          : <WorkInProgressProject venue={activeVenue} />}
+      </div>
 
       <section className="section section--tight">
         <div className="container">
