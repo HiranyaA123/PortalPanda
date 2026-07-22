@@ -3,46 +3,43 @@ import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
 import { IconArrowRight, IconPhone, IconSparkle } from '../components/icons.jsx';
 
-const PLANS = [
+const SCOPES = [
   {
-    name: 'Pickup',
-    desc: 'Everything you need to take commission-free online orders for pickup.',
-    price: 'Custom',
-    unit: 'per venue',
+    name: 'Customer launch',
+    label: 'Focused build',
+    desc: 'A polished direct channel for venues that want to start with ordering and customer ownership.',
     features: [
-      'Custom-designed ordering site',
-      'Admin dashboard + staff portal',
-      'Kitchen board + receipt printing',
-      'Stripe card & cash payments',
-      'Customer CRM',
+      'Bespoke customer-facing design',
+      'Online ordering and payments',
+      'Menu and customer management',
+      'Kitchen hand-off and printing',
+      'Launch support for your team',
     ],
     featured: false,
   },
   {
-    name: 'Full service',
-    desc: 'The complete platform — pickup, delivery and bookings, all in one system.',
-    price: 'Custom',
-    unit: 'per venue',
+    name: 'Connected operations',
+    label: 'Common starting point',
+    desc: 'A broader build that connects customer experience, service and day-to-day venue operations.',
     features: [
-      'Everything in Pickup, plus:',
-      'Uber Direct delivery',
-      'Table bookings',
-      'Discount codes & email campaigns',
-      'Priority support',
+      'Everything in Customer launch',
+      'Bookings, staff or delivery workflows',
+      'Reporting, offers and customer tools',
+      'Role-based operational views',
+      'A roadmap for future phases',
     ],
     featured: true,
   },
   {
-    name: 'Multi-venue',
-    desc: 'For groups running more than one location from a single system.',
-    price: 'Custom',
-    unit: 'per group',
+    name: 'Bespoke or multi-venue',
+    label: 'Extended brief',
+    desc: 'For unique workflows, requested capabilities, integrations or teams operating across locations.',
     features: [
-      'Everything in Full service, plus:',
-      'Multiple venues, one login',
-      'Per-venue menus & pricing',
-      'Group-wide reporting',
-      'Dedicated account manager',
+      'A system designed around your brief',
+      'New capabilities scoped with you',
+      'Multi-venue controls where needed',
+      'Custom workflows and integrations',
+      'Phased delivery and ongoing evolution',
     ],
     featured: false,
   },
@@ -51,119 +48,126 @@ const PLANS = [
 const FAQ = [
   {
     q: 'Why is pricing custom?',
-    a: 'Every venue is different — menu size, delivery, number of staff, hardware you already have. We quote a fair, flat price for your setup rather than forcing you into a tier that doesn’t fit.',
+    a: 'Because the product is custom. We price the agreed design, modules, new capabilities, integrations, setup and support instead of forcing every venue into the same package.',
+  },
+  {
+    q: 'Can you build a feature that is not listed?',
+    a: 'Yes. Tell us the outcome and workflow you need. We will assess how it fits the wider system, explain what is practical and include the agreed work in your proposal.',
   },
   {
     q: 'Do you take a commission on orders?',
-    a: 'No. CentralPass is commission-free. You keep 100% of every order (aside from the standard Stripe card processing fee). That’s the whole point.',
+    a: 'No. CentralPass takes no marketplace commission. Standard payment processing or third-party delivery fees can still apply where those services are used.',
   },
   {
-    q: 'What about hardware?',
-    a: 'We help you get set up with a tablet and a Star receipt printer, and configure everything. If you already have compatible hardware, even better.',
+    q: 'What about hardware and integrations?',
+    a: 'We review what you already use, recommend compatible hardware and scope any required integration work before the build begins.',
   },
   {
-    q: 'How long until we’re live?',
-    a: 'Most venues are designed, built and trained within a week or two, depending on menu size. Setup on the floor is usually done in a single day.',
+    q: 'How long will my build take?',
+    a: 'Timing depends on the brief. A focused build can move quickly; a larger or first-of-its-kind workflow needs more design and testing. Your proposal will set out phases, milestones and a realistic launch plan.',
   },
 ];
 
 export default function Pricing() {
   return (
     <main id="main">
-      {/* Page hero */}
       <section className="page-hero grain">
         <div className="glow glow--violet" style={{ width: 460, height: 460, top: -150, right: -60, opacity: 0.38 }} />
         <div className="glow glow--cyan" style={{ width: 320, height: 320, bottom: -160, left: '6%', opacity: 0.2 }} />
         <div className="container">
           <div className="page-hero__inner">
-            <span className="eyebrow">Pricing</span>
-            <h1>Simple, flat, and <span className="grad-text">commission-free.</span></h1>
+            <span className="eyebrow">Custom pricing</span>
+            <h1>Built to your brief. <span className="grad-text">Priced to your scope.</span></h1>
             <p>
-              No cut of your orders. No per-order fees. One fair price for your
-              venue — quoted after a quick demo so it actually fits how you run.
+              Every proposal reflects the system we agree to design and build for
+              you. There is no marketplace commission, forced tier or charge for a
+              feature your venue does not need.
             </p>
+            <div className="hero__actions page-hero__actions">
+              <Link to="/contact" className="btn btn-primary btn-lg">
+                Discuss my brief <IconArrowRight />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Plans */}
-      <section className="section">
+      <section className="section pricing-scopes">
         <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Typical scopes</span>
+            <h2>Three starting points. No fixed packages.</h2>
+            <p>Use these examples to understand the level of build. Your proposal will be shaped around your actual brief.</p>
+          </div>
           <div className="pricing-grid">
-            {PLANS.map((p) => (
+            {SCOPES.map((scope) => (
               <Reveal
-                className={`price-card ${p.featured ? 'price-card--featured' : ''}`}
-                key={p.name}
+                className={`price-card ${scope.featured ? 'price-card--featured' : ''}`}
+                key={scope.name}
               >
-                {p.featured && (
-                  <span className="price-card__ribbon">
-                    Most popular
-                  </span>
-                )}
-                <div className="price-card__name">{p.name}</div>
-                <p className="price-card__desc">{p.desc}</p>
+                <span className="price-card__scope">{scope.label}</span>
+                <div className="price-card__name">{scope.name}</div>
+                <p className="price-card__desc">{scope.desc}</p>
                 <div className="price-card__price">
-                  {p.price} <small>/ {p.unit}</small>
+                  Tailored <small>quote</small>
                 </div>
                 <ul className="price-card__list">
-                  {p.features.map((f) => (
-                    <li key={f}>{f}</li>
+                  {scope.features.map((feature) => (
+                    <li key={feature}>{feature}</li>
                   ))}
                 </ul>
                 <Link
                   to="/contact"
-                  className={`btn btn-block price-card__cta ${p.featured ? 'btn-primary' : 'btn-dark'}`}
+                  className={`btn btn-block price-card__cta ${scope.featured ? 'btn-primary' : 'btn-dark'}`}
                 >
-                  Get a quote
+                  Scope this build
                 </Link>
               </Reveal>
             ))}
           </div>
-          <p className="center lead" style={{ marginTop: 32, fontSize: '1rem', color: 'var(--text-muted)' }}>
-            All plans are commission-free. Standard Stripe card processing fees apply.
+          <p className="pricing-note">
+            All CentralPass builds are commission-free. Standard payment processor, courier or other third-party service fees may apply.
           </p>
         </div>
       </section>
 
-      {/* Big call-for-quote panel */}
       <section className="section section--tight">
         <div className="container">
           <Reveal className="quote-panel grain">
             <div className="glow glow--violet" style={{ width: 400, height: 400, top: -160, left: '14%', opacity: 0.4 }} />
             <div className="glow glow--coral" style={{ width: 340, height: 340, bottom: -170, right: '12%', opacity: 0.32 }} />
-            <span className="eyebrow" style={{ position: 'relative', zIndex: 2 }}>
-              <IconSparkle /> Get your number
+            <span className="eyebrow quote-panel__eyebrow">
+              <IconSparkle /> Start with a conversation
             </span>
-            <h2>Call us for a demo and a quote.</h2>
+            <h2>Tell us what the system needs to do.</h2>
             <p>
-              Two minutes on the phone and we’ll show you {BRAND.name} running a
-              real venue, then give you a straight price for yours.
+              We will show you {BRAND.name} running a real venue, map the scope
+              with you and prepare a clear proposal for the build.
             </p>
             <a href={`tel:${BRAND.contactPhone}`} className="quote-phone">
               <IconPhone />
               <span className="grad-text">{BRAND.contactPhoneDisplay}</span>
             </a>
-            <div className="cta-band__actions" style={{ marginTop: 34 }}>
+            <div className="cta-band__actions quote-panel__actions">
               <Link to="/contact" className="btn btn-primary btn-lg">
-                Or book a demo online <IconArrowRight />
+                Send a build brief <IconArrowRight />
               </Link>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="section section--tight">
         <div className="container container--narrow">
           <div className="section-head">
             <span className="eyebrow">Questions</span>
             <h2>Good to know.</h2>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {FAQ.map((f) => (
-              <Reveal className="bento__cell" key={f.q}>
-                <h3 style={{ fontSize: '1.2rem', marginBottom: 10 }}>{f.q}</h3>
-                <p style={{ color: 'var(--text-soft)' }}>{f.a}</p>
+          <div className="faq-list">
+            {FAQ.map((item) => (
+              <Reveal className="bento__cell faq-item" key={item.q}>
+                <h3>{item.q}</h3>
+                <p>{item.a}</p>
               </Reveal>
             ))}
           </div>

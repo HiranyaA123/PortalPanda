@@ -1,22 +1,22 @@
 import { BRAND } from './brand.js';
 
 const DEFAULT_DESCRIPTION =
-  'CentralPass connects online ordering, bookings, kitchen operations, staff, promotions and delivery for independent Australian venues — with zero marketplace commission.';
+  'CentralPass designs and builds bespoke venue software for independent Australian restaurants and cafes, with connected operations and zero marketplace commission.';
 
 export const SEO = {
   '/': {
-    title: 'CentralPass | One connected venue system',
+    title: 'CentralPass | Custom venue software, built around you',
     description: DEFAULT_DESCRIPTION,
   },
   '/platform': {
-    title: 'Restaurant management platform | CentralPass',
+    title: 'Custom restaurant and cafe software | CentralPass',
     description:
-      'Explore CentralPass ordering, bookings, kitchen, staff, promotion and Uber Direct delivery tools — all connected in one venue system.',
+      'Explore proven CentralPass modules, then request the custom workflows, integrations and capabilities your restaurant or cafe needs.',
   },
   '/pricing': {
-    title: 'Commission-free restaurant software pricing | CentralPass',
+    title: 'Custom venue software pricing | CentralPass',
     description:
-      'Get straightforward, custom CentralPass pricing for your venue. No marketplace commission, no per-order platform fee and no forced package.',
+      'Get a tailored CentralPass proposal based on your venue, chosen modules and requested features. No marketplace commission or forced software tier.',
   },
   '/live': {
     title: 'CentralPass live at Caffe Primo Firle | Case study',
@@ -24,9 +24,9 @@ export const SEO = {
       'See how Caffe Primo Firle uses CentralPass for a 100+ item pickup menu, kitchen orders, printed dockets and day-to-day venue operations.',
   },
   '/contact': {
-    title: 'Book a CentralPass demo | Adelaide restaurant software',
+    title: 'Plan custom venue software | CentralPass Adelaide',
     description:
-      'Book a practical CentralPass demo for your restaurant or café. See the live platform, ask questions and receive a quote for your venue.',
+      'Plan bespoke software for your restaurant or cafe. Share your workflows, request features and receive a tailored CentralPass build proposal.',
   },
   '/privacy': {
     title: 'Privacy policy | CentralPass',
@@ -67,7 +67,7 @@ export function applySeo(pathname) {
   upsertMeta('property', 'og:description', entry.description);
   upsertMeta('property', 'og:url', canonicalUrl);
   upsertMeta('property', 'og:image', socialImage);
-  upsertMeta('property', 'og:image:alt', 'CentralPass — one connected system for independent venues');
+  upsertMeta('property', 'og:image:alt', 'CentralPass custom venue software for independent restaurants and cafes');
   upsertMeta('name', 'twitter:card', 'summary_large_image');
   upsertMeta('name', 'twitter:title', entry.title);
   upsertMeta('name', 'twitter:description', entry.description);

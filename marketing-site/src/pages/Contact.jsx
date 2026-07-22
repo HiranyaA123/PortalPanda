@@ -5,31 +5,40 @@ import { IconPhone, IconMail } from '../components/icons.jsx';
 export default function Contact() {
   return (
     <main id="main">
-      <section className="section">
+      <section className="section contact-section">
         <div className="container">
           <div className="contact__grid">
             <div className="contact__aside">
-              <span className="eyebrow">Book a demo</span>
-              <h1>Tell us about your venue.</h1>
+              <span className="eyebrow">Plan your build</span>
+              <h1>Tell us what your ideal system should do.</h1>
               <p>
-                We’ll show you {BRAND.name} running a real venue, answer your
-                questions, and put together a straight quote for yours. Usually a
-                reply within one business day.
+                Start with your venue, the way your team works and anything you
+                wish your current software could do. Even if a capability is not
+                shown on this site, ask for it. We will reply within one business day.
               </p>
+
+              <div className="contact-brief" aria-label="What to include in your enquiry">
+                <strong>Useful details to include</strong>
+                <ul>
+                  <li>Your customer journey and service model</li>
+                  <li>The systems or manual steps causing friction</li>
+                  <li>Any new feature, workflow or integration you want</li>
+                </ul>
+              </div>
 
               <div className="contact-lines">
                 <a href={`tel:${BRAND.contactPhone}`} className="contact-card">
                   <span className="contact-card__icon"><IconPhone /></span>
                   <span>
                     {BRAND.contactPhoneDisplay}
-                    <small>Call for a demo &amp; quote</small>
+                    <small>Call to discuss your build</small>
                   </span>
                 </a>
                 <a href={`mailto:${BRAND.contactEmail}`} className="contact-card">
                   <span className="contact-card__icon"><IconMail /></span>
                   <span>
                     {BRAND.contactEmail}
-                    <small>Email us any time</small>
+                    <small>Send a brief or ask a question</small>
                   </span>
                 </a>
               </div>

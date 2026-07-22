@@ -16,8 +16,8 @@ export default function Footer() {
               {BRAND.name}
             </Link>
             <p className="footer__desc">
-              One connected, commission-free venue system for independent
-              restaurants and cafés. Built in Adelaide and set up with you.
+              Bespoke, commission-free venue software for independent restaurants
+              and cafes. Designed and built from scratch in Adelaide.
             </p>
           </div>
 
@@ -30,7 +30,7 @@ export default function Footer() {
 
           <div className="footer__col">
             <h4>Company</h4>
-            <Link to="/contact">Book a demo</Link>
+            <Link to="/contact">Plan your build</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms</Link>
           </div>
