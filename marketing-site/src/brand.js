@@ -2,12 +2,12 @@
 // detail on the site. Renaming the business or changing a contact detail should
 // be a one-file edit here — no component may hardcode the name, email or phone.
 export const BRAND = {
-  name: 'Portal Panda',
-  shortName: 'Portal Panda',
-  tagline: 'The whole restaurant, run from one portal.',
+  name: 'CentralPass',
+  shortName: 'CentralPass',
+  tagline: 'Every system your venue runs — connected.',
   // One-liner used in meta descriptions and hero sub-copy.
   pitch:
-    'Portal Panda is the all-in-one ordering platform for independent venues — a custom online ordering site, an admin dashboard, a staff portal, kitchen + receipt printing, bookings and Uber Direct delivery. Commission-free.',
+    'CentralPass wires every part of your venue into one system — online ordering, bookings, a live kitchen and staff portal, receipt printing, email + SMS promotions and Uber Direct delivery. Commission-free.',
   contactEmail: 'agarwalhiranya@gmail.com',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',

@@ -58,7 +58,7 @@ export default function Live() {
               <h1>Caffe Primo Firle runs on {BRAND.name}.</h1>
               <p>
                 A busy neighbourhood caffe in Adelaide running its whole pickup
-                operation — customer site, kitchen and counter — on one portal.
+                operation — customer site, kitchen and counter — on one system.
               </p>
               <div className="hero__actions" style={{ marginTop: 30 }}>
                 <Magnetic>
@@ -87,7 +87,7 @@ export default function Live() {
               add-ons and dietary options — to a steady stream of counter
               service and regulars. From the breakfast rush to weekend queues,
               they take pickup orders through their own custom-designed site,
-              and run the kitchen on a single tablet — all on Portal Panda.
+              and run the kitchen on a single tablet — all on {BRAND.name}.
             </p>
           </Reveal>
         </div>
@@ -98,7 +98,7 @@ export default function Live() {
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">What they run</span>
-            <h2>The whole portal, in one venue.</h2>
+            <h2>The whole system, in one venue.</h2>
           </div>
 
           {RUNS.map((r, i) => {

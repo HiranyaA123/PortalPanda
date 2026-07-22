@@ -84,7 +84,7 @@ const MODULES = [
   {
     id: 'book', name: 'Bookings', Icon: IconCalendar,
     eyebrow: 'Table bookings',
-    heading: 'Reservations, in the same portal as your orders.',
+    heading: 'Reservations, in the same system as your orders.',
     body: 'Stop juggling a separate booking app. Take reservations through the site customers already use.',
     features: [
       'Bookings land in your dashboard beside orders.',
@@ -128,10 +128,10 @@ export default function Platform() {
         <div className="container">
           <div className="page-hero__inner">
             <span className="eyebrow">The platform</span>
-            <h1>One portal that <span className="grad-text">does everything.</span></h1>
+            <h1>One system that <span className="grad-text">does everything.</span></h1>
             <p>
-              Portal Panda isn’t a menu page — it’s the full stack that runs an
-              independent venue. Six connected modules, one login, zero
+              {BRAND.name} isn’t a menu page — it’s the full stack that runs an
+              independent venue. Six connected systems, one login, zero
               commission.
             </p>
             <div className="hero__actions" style={{ marginTop: 32 }}>

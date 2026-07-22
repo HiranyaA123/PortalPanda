@@ -1,9 +1,18 @@
-// Portal Panda mark: a geometric panda face framed by a glowing "portal" ring.
-// The gradient id is suffixed so multiple instances on one page don't collide.
+// CentralPass mark: a central hub with six spokes radiating to system nodes —
+// a tiny version of the "web of data" the platform is built around.
 let uid = 0;
 
+const NODES = [
+  [24, 8],
+  [37.9, 16],
+  [37.9, 32],
+  [24, 40],
+  [10.1, 32],
+  [10.1, 16],
+];
+
 export default function Logo({ size = 34, className = '' }) {
-  const gid = `pp-grad-${(uid += 1)}`;
+  const gid = `cp-grad-${(uid += 1)}`;
   return (
     <svg
       className={className}
@@ -14,32 +23,26 @@ export default function Logo({ size = 34, className = '' }) {
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id={gid} x1="4" y1="6" x2="44" y2="42" gradientUnits="userSpaceOnUse">
+        <linearGradient id={gid} x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
           <stop offset="0" stopColor="#6C4DFF" />
           <stop offset="0.55" stopColor="#A24BFF" />
           <stop offset="1" stopColor="#FF6B4A" />
         </linearGradient>
       </defs>
 
-      {/* Portal ring */}
-      <circle cx="24" cy="24" r="21" stroke={`url(#${gid})`} strokeWidth="3.2" />
+      {/* spokes */}
+      {NODES.map(([x, y]) => (
+        <line key={`${x}-${y}`} x1="24" y1="24" x2={x} y2={y} stroke={`url(#${gid})`} strokeWidth="1.8" strokeLinecap="round" opacity="0.85" />
+      ))}
 
-      {/* Ears */}
-      <circle cx="13.5" cy="12.5" r="5.4" fill="#0B0B12" />
-      <circle cx="34.5" cy="12.5" r="5.4" fill="#0B0B12" />
+      {/* outer nodes */}
+      {NODES.map(([x, y]) => (
+        <circle key={`n-${x}-${y}`} cx={x} cy={y} r="3.1" fill="#0b0b12" stroke={`url(#${gid})`} strokeWidth="1.8" />
+      ))}
 
-      {/* Face */}
-      <circle cx="24" cy="25" r="13.2" fill="#0B0B12" />
-
-      {/* Eye patches */}
-      <ellipse cx="18.7" cy="23.2" rx="3.5" ry="4.4" transform="rotate(-18 18.7 23.2)" fill="#fff" />
-      <ellipse cx="29.3" cy="23.2" rx="3.5" ry="4.4" transform="rotate(18 29.3 23.2)" fill="#fff" />
-      <circle cx="19.2" cy="23.8" r="1.5" fill="#0B0B12" />
-      <circle cx="28.8" cy="23.8" r="1.5" fill="#0B0B12" />
-
-      {/* Nose + smile */}
-      <path d="M21.5 29.5c1.4 1.6 3.6 1.6 5 0" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="24" cy="28" r="1.5" fill="#fff" />
+      {/* central hub */}
+      <circle cx="24" cy="24" r="6.6" fill={`url(#${gid})`} />
+      <circle cx="24" cy="24" r="2.4" fill="#0b0b12" />
     </svg>
   );
 }

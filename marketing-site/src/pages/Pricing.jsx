@@ -20,7 +20,7 @@ const PLANS = [
   },
   {
     name: 'Full service',
-    desc: 'The complete platform — pickup, delivery and bookings, all in one portal.',
+    desc: 'The complete platform — pickup, delivery and bookings, all in one system.',
     price: 'Custom',
     unit: 'per venue',
     features: [
@@ -34,7 +34,7 @@ const PLANS = [
   },
   {
     name: 'Multi-venue',
-    desc: 'For groups running more than one location from a single portal.',
+    desc: 'For groups running more than one location from a single system.',
     price: 'Custom',
     unit: 'per group',
     features: [
@@ -55,7 +55,7 @@ const FAQ = [
   },
   {
     q: 'Do you take a commission on orders?',
-    a: 'No. Portal Panda is commission-free. You keep 100% of every order (aside from the standard Stripe card processing fee). That’s the whole point.',
+    a: 'No. CentralPass is commission-free. You keep 100% of every order (aside from the standard Stripe card processing fee). That’s the whole point.',
   },
   {
     q: 'What about hardware?',
@@ -136,7 +136,7 @@ export default function Pricing() {
             </span>
             <h2>Call us for a demo and a quote.</h2>
             <p>
-              Two minutes on the phone and we’ll show you Portal Panda running a
+              Two minutes on the phone and we’ll show you {BRAND.name} running a
               real venue, then give you a straight price for yours.
             </p>
             <a href={`tel:${BRAND.contactPhone}`} className="quote-phone">

@@ -12,7 +12,7 @@ export default function Contact() {
               <span className="eyebrow">Book a demo</span>
               <h1>Tell us about your venue.</h1>
               <p>
-                We’ll show you Portal Panda running a real venue, answer your
+                We’ll show you {BRAND.name} running a real venue, answer your
                 questions, and put together a straight quote for yours. Usually a
                 reply within one business day.
               </p>

@@ -66,7 +66,7 @@ export function MockKitchen() {
 
 export function MockDashboard() {
   return (
-    <Frame label="Portal Panda · Dashboard">
+    <Frame label="CentralPass · Dashboard">
       <div className="mk-dash">
         <aside className="mk-dash__nav">
           <span className="is-active" />
