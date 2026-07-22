@@ -1,6 +1,7 @@
+import { useId } from 'react';
+
 // CentralPass mark: a central hub with six spokes radiating to system nodes —
-// a tiny version of the "web of data" the platform is built around.
-let uid = 0;
+// a compact version of the connected system the platform is built around.
 
 const NODES = [
   [24, 8],
@@ -12,7 +13,7 @@ const NODES = [
 ];
 
 export default function Logo({ size = 34, className = '' }) {
-  const gid = `cp-grad-${(uid += 1)}`;
+  const gid = `cp-grad-${useId().replace(/:/g, '')}`;
   return (
     <svg
       className={className}

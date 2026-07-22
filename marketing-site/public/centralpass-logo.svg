@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 220" role="img" aria-labelledby="title desc">
+  <title id="title">CentralPass logo</title>
+  <desc id="desc">CentralPass wordmark with a connected central hub.</desc>
+  <defs>
+    <linearGradient id="g" x1="20" y1="20" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6C4DFF"/><stop offset=".54" stop-color="#A24BFF"/><stop offset="1" stop-color="#FF6B4A"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(10 10)">
+    <g fill="none" stroke="url(#g)" stroke-width="8" stroke-linecap="round" opacity=".9">
+      <path d="M100 100 100 28M100 100 162.4 64M100 100 162.4 136M100 100 100 172M100 100 37.6 136M100 100 37.6 64"/>
+    </g>
+    <g fill="#0B0B12" stroke="url(#g)" stroke-width="7">
+      <circle cx="100" cy="28" r="13.5"/><circle cx="162.4" cy="64" r="13.5"/><circle cx="162.4" cy="136" r="13.5"/>
+      <circle cx="100" cy="172" r="13.5"/><circle cx="37.6" cy="136" r="13.5"/><circle cx="37.6" cy="64" r="13.5"/>
+    </g>
+    <circle cx="100" cy="100" r="29" fill="url(#g)"/><circle cx="100" cy="100" r="10.5" fill="#0B0B12"/>
+  </g>
+  <text x="235" y="141" fill="#F3F2F7" font-family="Inter, Arial, sans-serif" font-size="94" font-weight="750" letter-spacing="-4">CentralPass</text>
+</svg>

@@ -4,10 +4,11 @@
 export const BRAND = {
   name: 'CentralPass',
   shortName: 'CentralPass',
-  tagline: 'Every system your venue runs — connected.',
+  tagline: 'Every system your venue runs, connected.',
+  siteUrl: 'https://portal-panda.vercel.app',
   // One-liner used in meta descriptions and hero sub-copy.
   pitch:
-    'CentralPass wires every part of your venue into one system — online ordering, bookings, a live kitchen and staff portal, receipt printing, email + SMS promotions and Uber Direct delivery. Commission-free.',
+    'Take orders, manage bookings, run the kitchen and staff, send promotions and dispatch delivery from one connected system — without marketplace commission.',
   contactEmail: 'agarwalhiranya@gmail.com',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',

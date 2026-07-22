@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BRAND } from '../brand.js';
 
-const EMPTY = { name: '', venue: '', phone: '', email: '', message: '' };
+const EMPTY = { name: '', venue: '', phone: '', email: '', message: '', website: '' };
 
 export default function ContactForm() {
   const [values, setValues] = useState(EMPTY);
@@ -13,6 +13,13 @@ export default function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Quietly accept bot-filled submissions without sending them.
+    if (values.website) {
+      setStatus('success');
+      setValues(EMPTY);
+      return;
+    }
+
     // No endpoint configured yet: degrade gracefully, point at email/phone.
     if (!BRAND.formEndpoint) {
       setStatus('error');
@@ -23,8 +30,15 @@ export default function ContactForm() {
     try {
       const res = await fetch(BRAND.formEndpoint, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: JSON.stringify(values),
+        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name,
+          venue: values.venue,
+          phone: values.phone,
+          email: values.email,
+          message: values.message,
+          _subject: `CentralPass demo request — ${values.venue}`,
+        }),
       });
       if (!res.ok) throw new Error('Bad response');
       setStatus('success');
@@ -43,6 +57,17 @@ export default function ContactForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} noValidate={false}>
+          <div className="hp-field" aria-hidden="true">
+            <label htmlFor="cf-website">Website</label>
+            <input
+              id="cf-website"
+              type="text"
+              tabIndex="-1"
+              autoComplete="off"
+              value={values.website}
+              onChange={update('website')}
+            />
+          </div>
           <div className="field">
             <label htmlFor="cf-name">
               Your name <span className="req">*</span>
@@ -113,7 +138,7 @@ export default function ContactForm() {
             className="btn btn-primary btn-block"
             disabled={status === 'submitting'}
           >
-            {status === 'submitting' ? 'Sending…' : 'Send'}
+            {status === 'submitting' ? 'Sending…' : 'Request my demo'}
           </button>
 
           {status === 'error' && (
@@ -124,7 +149,8 @@ export default function ContactForm() {
           )}
 
           <p className="form-note">
-            Prefer to talk? Call{' '}
+            By submitting, you agree that we can contact you about your enquiry.{' '}
+            <a href="/privacy">Privacy policy</a>. Prefer to talk? Call{' '}
             <a href={`tel:${BRAND.contactPhone}`}>{BRAND.contactPhoneDisplay}</a>{' '}
             or email{' '}
             <a href={`mailto:${BRAND.contactEmail}`}>{BRAND.contactEmail}</a>.

@@ -124,13 +124,23 @@ export default function Live() {
         </div>
       </section>
 
-      {/* Quote — REAL QUOTE PENDING */}
+      {/* Operational proof without an invented testimonial */}
       <section className="section on-dark grain">
         <div className="glow glow--violet" style={{ width: 420, height: 420, top: '-20%', left: '30%', opacity: 0.26 }} />
         <div className="container">
-          <Reveal className="cs-quote">
-            <blockquote>“[Owner quote to be supplied]” <span className="pending-tag">pending</span></blockquote>
-            <cite>— Owner, Caffe Primo Firle</cite>
+          <Reveal className="live-proof">
+            <span className="eyebrow">Built in a real service environment</span>
+            <h2>Designed around the rush, not a slide deck.</h2>
+            <p>
+              CentralPass is shaped by day-to-day venue work: modifiers that must
+              be right, orders that must reach the kitchen instantly and tools
+              staff can understand without a training manual.
+            </p>
+            <ul className="live-proof__list">
+              <li>100+ menu items and modifiers</li>
+              <li>Live kitchen board and printed dockets</li>
+              <li>Hands-on setup and local support</li>
+            </ul>
           </Reveal>
         </div>
       </section>

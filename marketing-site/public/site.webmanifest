@@ -1,0 +1,13 @@
+{
+  "name": "CentralPass",
+  "short_name": "CentralPass",
+  "description": "One connected, commission-free system for independent venues.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07070c",
+  "theme_color": "#0b0b12",
+  "icons": [
+    { "src": "/centralpass-mark-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/centralpass-mark-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -12,7 +12,7 @@ import {
 // along a web to six interactive system nodes. Click a node to open its live
 // component. What you order flows into the kitchen ticket — one connected system.
 
-const SYSTEMS = [
+export const SYSTEMS = [
   { id: 'order', name: 'Ordering', Icon: IconStore, x: 50, y: 8 },
   { id: 'book', name: 'Bookings', Icon: IconCalendar, x: 88, y: 30 },
   { id: 'kitchen', name: 'Kitchen', Icon: IconChef, x: 85, y: 74 },
@@ -37,8 +37,10 @@ const PROMOS = [
   { id: 'loyal', label: 'We miss you — 15% off', copy: 'Haven’t seen you in a while! Here’s 15% off your next pickup. Come back soon.' },
 ];
 
-export default function SystemWeb() {
-  const [active, setActive] = useState('order');
+export default function SystemWeb({ active: activeProp, onSelect } = {}) {
+  const [activeInternal, setActiveInternal] = useState('order');
+  const active = activeProp || activeInternal;
+  const setActive = onSelect || setActiveInternal;
   const [order, setOrder] = useState([]);
   const [staff, setStaff] = useState({ Mia: true, Jack: true, Sam: false });
   const [slot, setSlot] = useState('7:00');

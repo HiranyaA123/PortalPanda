@@ -1,9 +1,11 @@
-# Portal Panda marketing site
+# CentralPass marketing site
 
-Static marketing website for **Portal Panda** — the all-in-one, commission-free
-ordering platform for independent restaurants and caffes (custom ordering site,
-admin dashboard, staff portal, kitchen + receipt printing, table bookings and
-Uber Direct delivery).
+Static marketing website for **CentralPass** — the all-in-one, commission-free
+system for independent restaurants and cafés: online ordering, bookings, a live
+kitchen and staff portal, receipt printing, email + SMS promotions and Uber
+Direct delivery, wired into one core. The home page centres on an interactive
+"web of data" (`src/components/SystemWeb.jsx`) — a CentralPass hub with live
+data flowing to six clickable system components.
 
 Built with **React 18 + Vite + React Router v6** and plain CSS. No backend, no
 CMS, no analytics. `vite build` produces a fully static site deployable to any
@@ -32,13 +34,15 @@ npm run preview  # serve the built dist/ locally to check it
 ```
 src/
   brand.js                 # single source of truth for name/contact/form/colours
+  seo.js                   # route metadata, canonicals, social tags and schema
   index.css                # design tokens (:root) + all styles
   main.jsx                 # app entry (BrowserRouter)
   App.jsx                  # routes, page title, scroll-to-top
   components/
     Header.jsx             # sticky header, multi-page nav, burger menu < 860px
     Footer.jsx
-    Logo.jsx               # the Portal Panda mark (panda face + portal ring, SVG)
+    Logo.jsx               # the CentralPass mark (hub + spokes, SVG)
+    SystemWeb.jsx          # the interactive "web of data" (home centrepiece)
     ContactForm.jsx        # submits to the form endpoint; degrades gracefully
     DeviceFrame.jsx        # phone/tablet/desktop frames + screenshot fallback
     Reveal.jsx             # IntersectionObserver scroll-reveal
@@ -49,8 +53,17 @@ src/
     Pricing.jsx            # "/pricing"  — plans + call-for-quote panel
     Live.jsx               # "/live"     — Caffe Primo Firle (running today)
     Contact.jsx            # "/contact"  — book-a-demo form
+    Legal.jsx              # privacy policy + website terms
+    NotFound.jsx           # accessible 404 page
   assets/
     screenshots/           # drop real screenshots here (see below)
+public/
+  centralpass-logo.svg/png # full reusable logo lockup
+  centralpass-mark.svg/png # standalone brand mark and app-icon sizes
+  og.png                   # social sharing card
+  robots.txt               # crawler rules
+  sitemap.xml              # production route index
+  site.webmanifest         # install/app metadata
 ```
 
 ## Changing the brand
@@ -59,8 +72,8 @@ Edit **only** [`src/brand.js`](src/brand.js):
 
 ```js
 export const BRAND = {
-  name: 'Portal Panda',
-  tagline: 'The whole restaurant, run from one portal.',
+  name: 'CentralPass',
+  tagline: 'Every system your venue runs, connected.',
   pitch: '…',                          // one-liner used in hero + meta
   contactEmail: 'you@example.com',
   contactPhone: '0452145196',          // used for tel: links (no spaces)
@@ -79,7 +92,7 @@ the whole site.
 
 ## Contact form endpoint
 
-The contact form (on both `/` and `/contact`) submits with a plain `fetch` POST
+The contact form on `/contact` submits with a plain `fetch` POST
 to `BRAND.formEndpoint`.
 
 1. Create a free form endpoint — e.g. a [Formspree](https://formspree.io) form.
@@ -118,3 +131,13 @@ This is a client-side–routed single-page app, so the host must serve
 - **Other hosts:** configure a catch-all rewrite to `/index.html`.
 
 Build command: `npm run build`. Publish directory: `dist/`.
+
+## Search, social and logo assets
+
+Route-specific titles, descriptions, canonical links, social tags and JSON-LD
+live in [`src/seo.js`](src/seo.js). The production hostname is set in
+[`src/brand.js`](src/brand.js) and is also used by `robots.txt` and
+`sitemap.xml`; update all three if the public domain changes.
+
+The reusable SVG/PNG logo files live in `public/`. The PNG logo variants can be
+regenerated from the vector identity with `python scripts/render_logo.py`.
