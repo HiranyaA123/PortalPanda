@@ -11,7 +11,13 @@
     <meta name="theme-color" content="#0B0B12" />
     <meta name="color-scheme" content="dark" />
     <link rel="canonical" href="https://www.centralpass.au/" />
+    <!-- Google crawls /favicon.ico by default and does not reliably pick up an
+         SVG-only favicon, which is why search results showed a generic globe.
+         The .ico and PNG entries give it a raster it will definitely accept. -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/centralpass-mark-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/centralpass-mark-512.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content="website" />
@@ -35,6 +41,46 @@
       rel="stylesheet"
     />
     <title>Restaurant Website, CRM &amp; Venue Software | CentralPass</title>
+    <!-- Organization schema: tells Google which image is the brand logo and
+         ties the name, site and contact details into one entity. Every value
+         here is a real, verifiable detail — no ratings or review markup. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.centralpass.au/#organization",
+        "name": "CentralPass",
+        "url": "https://www.centralpass.au/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.centralpass.au/centralpass-mark-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://www.centralpass.au/og.png",
+        "description": "CentralPass builds custom restaurant and cafe websites, online ordering, CRM, bookings, kitchen and staff software for independent Australian venues.",
+        "email": "contact@centralpass.au",
+        "telephone": "+61452145196",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Adelaide",
+          "addressRegion": "SA",
+          "addressCountry": "AU"
+        },
+        "areaServed": {
+          "@type": "AdministrativeArea",
+          "name": "Australia"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "email": "contact@centralpass.au",
+          "telephone": "+61452145196",
+          "areaServed": "AU",
+          "availableLanguage": "English"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

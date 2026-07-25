@@ -4,7 +4,10 @@ import { BRAND } from '../brand.js';
 import Logo from './Logo.jsx';
 import { IconMenu, IconClose } from './icons.jsx';
 
+// `end` on "/" so it only highlights on the home route — without it every path
+// starts with "/" and Home would render as active everywhere.
 const LINKS = [
+  { to: '/', label: 'Home', end: true },
   { to: '/platform', label: 'Platform' },
   { to: '/pricing', label: 'Pricing' },
   { to: '/live', label: 'Our work' },
@@ -55,6 +58,7 @@ export default function Header() {
               <li key={l.to}>
                 <NavLink
                   to={l.to}
+                  end={l.end}
                   className={({ isActive }) => (isActive ? 'is-active' : '')}
                 >
                   {l.label}

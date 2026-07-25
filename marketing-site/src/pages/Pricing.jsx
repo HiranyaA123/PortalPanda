@@ -45,6 +45,22 @@ const SCOPES = [
   },
 ];
 
+// Custom pricing creates uncertainty, so name the variables that actually move
+// the number. No figures are quoted here - the proposal carries those.
+const COST_DRIVERS = [
+  ['How much connects', 'A single ordering channel costs less than a build that links customers, kitchen, staff and reporting.'],
+  ['Menu and data complexity', 'Item counts, modifier depth and migrating existing menus or customer data all affect build time.'],
+  ['New capabilities', 'Anything designed from scratch for your venue needs design, build and testing time that a proven module does not.'],
+  ['Integrations and hardware', 'Payments, receipt printers, delivery services and any tools you already run are scoped before we start.'],
+  ['Rollout and training', 'One venue with a small team is a different rollout to several sites with rotating staff.'],
+];
+
+const COMMITMENTS = [
+  'No marketplace commission on your orders',
+  'You keep control of your customer and operational data',
+  'Scope, phases and cost agreed in writing before the build starts',
+];
+
 const FAQ = [
   {
     q: 'Why is pricing custom?',
@@ -128,6 +144,41 @@ export default function Pricing() {
           <p className="pricing-note">
             All CentralPass builds are commission-free. Standard payment processor, courier or other third-party service fees may apply.
           </p>
+        </div>
+      </section>
+
+      <section className="section section--subtle">
+        <div className="container">
+          <div className="section-head section-head--split">
+            <div>
+              <span className="eyebrow">How we price</span>
+              <h2>What shapes your quote.</h2>
+            </div>
+            <p>
+              We cannot put a number on this page honestly without knowing your
+              venue. These are the things that actually move it, so you know what
+              we will be asking about.
+            </p>
+          </div>
+
+          <div className="cost-drivers">
+            {COST_DRIVERS.map(([title, body], index) => (
+              <Reveal className="cost-driver" key={title}>
+                <span className="cost-driver__num">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="commitments">
+            <strong>What does not change</strong>
+            <ul>
+              {COMMITMENTS.map((item) => <li key={item}>{item}</li>)}
+            </ul>
+          </Reveal>
         </div>
       </section>
 

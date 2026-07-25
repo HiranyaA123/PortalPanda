@@ -14,7 +14,9 @@
   --ink-3: #1b1b28;       /* card on dark */
   --text: #f3f2f7;        /* body text */
   --text-soft: #b0b2bd;
-  --text-muted: #71737e;
+  /* Lightened to clear WCAG AA (4.5:1) on every dark surface we use it on.
+     #71737e measured 3.95:1 and failed at small sizes. */
+  --text-muted: #8a8d99;
   --line: rgba(255, 255, 255, 0.09);   /* hairline */
   --line-dark: rgba(255, 255, 255, 0.09);
 
@@ -170,7 +172,9 @@ button { font-family: inherit; }
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--violet);
+  /* --violet (#6c4dff) only reached 3.67:1 here; --violet-2 clears AA at this
+     size while staying unmistakably brand violet. */
+  color: var(--violet-2);
   padding: 7px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -292,7 +296,9 @@ button { font-family: inherit; }
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: var(--violet);
+  color: var(--violet-2);
+  /* Vertical padding lifts the hit area to ~44px without moving the text. */
+  padding: 9px 0;
   transition: gap 0.2s var(--ease);
 }
 .textlink:hover { gap: 11px; }
@@ -375,7 +381,13 @@ button { font-family: inherit; }
   background: var(--surface);
   border: 1px solid var(--line);
 }
-.nav__links a {
+/* :not(.btn) matters — the mobile "Book a demo" button also lives in this list
+   and is hidden on desktop by .nav__cta-mobile. Without the exclusion this
+   rule outranks that (0,1,1 vs 0,1,0) and the button reappears as a duplicate. */
+.nav__links a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--text-soft);
@@ -649,6 +661,7 @@ button { font-family: inherit; }
 .commercial-proof__grid > a {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   gap: 8px;
   color: #cbbfff;
   font-weight: 700;
@@ -1098,6 +1111,78 @@ button { font-family: inherit; }
 .price-card__cta { margin-top: auto; }
 .pricing-note { max-width: 72ch; margin: 34px auto 0; color: var(--text-muted); font-size: 0.94rem; text-align: center; }
 .faq-list { display: flex; flex-direction: column; gap: 16px; }
+
+/* Pricing — cost drivers + standing commitments */
+.cost-drivers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.cost-driver {
+  display: flex;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+.cost-driver:hover { border-color: rgba(108, 77, 255, 0.4); transform: translateY(-2px); }
+.cost-driver:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.cost-driver__num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--violet-2);
+  padding-top: 3px;
+  flex-shrink: 0;
+}
+.cost-driver h3 { font-size: 1.08rem; margin-bottom: 7px; }
+.cost-driver p { color: var(--text-soft); font-size: 0.96rem; }
+
+.commitments {
+  margin-top: 26px;
+  padding: 26px 28px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(108, 77, 255, 0.25);
+  background: linear-gradient(120deg, rgba(108, 77, 255, 0.1), rgba(255, 107, 74, 0.06));
+}
+.commitments strong {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet-2);
+  margin-bottom: 16px;
+}
+.commitments ul { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.commitments li {
+  position: relative;
+  padding-left: 30px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+.commitments li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--grad-brand);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (max-width: 860px) {
+  .cost-drivers { grid-template-columns: 1fr; }
+  .commitments ul { grid-template-columns: 1fr; gap: 13px; }
+}
 .faq-item h3 { font-size: 1.2rem; margin-bottom: 12px; }
 .faq-item p { color: var(--text-soft); }
 
@@ -1187,7 +1272,7 @@ button { font-family: inherit; }
   font-size: 0.92rem;
   margin-bottom: 8px;
 }
-.field .req { color: var(--violet); }
+.field .req { color: var(--violet-2); }
 .field input,
 .field textarea {
   width: 100%;
@@ -1211,7 +1296,7 @@ button { font-family: inherit; }
 .hp-field { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .form-note { margin-top: 18px; color: var(--text-soft); font-size: 0.95rem; }
-.form-note a { color: var(--violet); font-weight: 600; }
+.form-note a { color: var(--violet-2); font-weight: 600; }
 .form-status {
   margin-top: 18px;
   padding: 15px 17px;
@@ -1219,7 +1304,7 @@ button { font-family: inherit; }
   font-size: 0.98rem;
   font-weight: 500;
 }
-.form-status--ok { background: rgba(108, 77, 255, 0.1); color: var(--violet); }
+.form-status--ok { background: rgba(108, 77, 255, 0.1); color: var(--violet-2); }
 .form-status--err { background: #fdecec; color: #b3261e; }
 
 .contact__aside h1,
@@ -1643,11 +1728,22 @@ button { font-family: inherit; }
   color: rgba(255, 255, 255, 0.45);
   margin-bottom: 18px;
 }
-.footer__col a,
 .footer__col p {
   display: block;
   color: rgba(255, 255, 255, 0.72);
   margin-bottom: 12px;
+}
+/* Footer links carry a 40px hit area — they were 27px, which is awkward on a
+   phone where the footer is a primary navigation surface. */
+.footer__col a {
+  /* Block-level flex (not inline-flex) so each link keeps its own line, with
+     fit-content so the hit area hugs the text rather than the whole column. */
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  min-height: 40px;
+  color: rgba(255, 255, 255, 0.72);
+  margin-bottom: 2px;
   transition: color 0.15s ease;
 }
 .footer__col a:hover { color: #fff; }
@@ -1657,7 +1753,8 @@ button { font-family: inherit; }
   z-index: 2;
   border-top: 1px solid var(--line-dark);
   padding-top: 26px;
-  color: rgba(255, 255, 255, 0.45);
+  /* 0.45 composited to 4.46:1 — just under AA. 0.52 clears it. */
+  color: rgba(255, 255, 255, 0.52);
   font-size: 0.9rem;
   display: flex;
   justify-content: space-between;
@@ -2059,7 +2156,8 @@ body.cursor-gone .cursor { opacity: 0; }
   align-self: flex-start;
   font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--violet); background: rgba(255,255,255,0.7); padding: 4px 9px; border-radius: 999px;
+  /* Solid white, not 70% — the gradient bleeding through dropped this to 2.56:1. */
+  color: var(--violet); background: #ffffff; padding: 4px 9px; border-radius: 999px;
 }
 .mk-order__row { display: flex; align-items: center; gap: 11px; padding: 8px 4px; border-bottom: 1px solid var(--line); }
 .mk-order__e { font-size: 1.15rem; }
@@ -2102,7 +2200,7 @@ body.cursor-gone .cursor { opacity: 0; }
 .mk-book__col { display: flex; flex-direction: column; gap: 7px; }
 .mk-book__col b { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-bottom: 2px; }
 .mk-book__chip { padding: 9px; border-radius: 9px; font-size: 0.72rem; font-weight: 600; text-align: center; background: var(--bg-2); color: var(--text-soft); border: 1px solid var(--line); }
-.mk-book__chip.on { background: rgba(108,77,255,0.12); color: var(--violet); border-color: rgba(108,77,255,0.3); }
+.mk-book__chip.on { background: rgba(108,77,255,0.12); color: var(--violet-2); border-color: rgba(108,77,255,0.3); }
 
 /* Delivery mock */
 .mk-deliv { display: flex; flex-direction: column; gap: 12px; }
@@ -2356,7 +2454,10 @@ body.cursor-gone .cursor { opacity: 0; }
 .jv__sel-empty { color: var(--text-muted); font-size: 0.82rem; padding: 12px 0; }
 .jv__sel-list { display: flex; flex-direction: column; gap: 6px; padding: 12px 0; max-height: 118px; overflow: auto; }
 .jv__sel-list li { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; font-weight: 500; animation: slide-in 0.35s var(--ease); }
-.jv__sel-x { width: 18px; height: 18px; border-radius: 6px; border: none; background: rgba(255,255,255,0.08); color: var(--text-soft); font-size: 0.95rem; line-height: 1; cursor: pointer; padding: 0; }
+/* Visually 22px, but a transparent inset ring pushes the real hit area to 40px
+   so the remove control is usable on a phone. */
+.jv__sel-x { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 7px; border: none; background: rgba(255,255,255,0.08); color: var(--text-soft); font-size: 1rem; line-height: 1; cursor: pointer; padding: 0; }
+.jv__sel-x::after { content: ''; position: absolute; inset: -9px; }
 .jv__sel-x:hover { background: rgba(255,107,74,0.2); color: #ff9f7a; }
 .jv__sel-q { font-family: 'JetBrains Mono', monospace; color: var(--violet-2); font-weight: 700; font-size: 0.76rem; }
 .jv__sel-list li b { margin-left: auto; color: var(--text-soft); font-variant-numeric: tabular-nums; }
@@ -2371,7 +2472,7 @@ body.cursor-gone .cursor { opacity: 0; }
 .stage.is-active .jv--send .jv__wave span { animation: ping 1.3s var(--ease) infinite; }
 .stage.is-active .jv--send .jv__wave span:nth-child(2) { animation-delay: 0.2s; }
 .stage.is-active .jv--send .jv__wave span:nth-child(3) { animation-delay: 0.4s; }
-.jv__code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 600; color: var(--violet); background: rgba(108,77,255,0.1); padding: 8px 14px; border-radius: 8px; }
+.jv__code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 600; color: var(--violet-2); background: rgba(108,77,255,0.1); padding: 8px 14px; border-radius: 8px; }
 .jv__note { font-size: 0.78rem; color: var(--text-muted); }
 
 /* kitchen ticket */

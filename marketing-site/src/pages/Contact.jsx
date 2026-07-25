@@ -1,6 +1,16 @@
 import { BRAND } from '../brand.js';
 import ContactForm from '../components/ContactForm.jsx';
+import Reveal from '../components/Reveal.jsx';
 import { IconPhone, IconMail } from '../components/icons.jsx';
+
+// Sets expectations for the enquiry. Every step here reflects a commitment the
+// site already makes (one business day reply, 1:1 discovery, written proposal,
+// and the Terms line that a brief does not create a contract).
+const NEXT_STEPS = [
+  ['01', 'We reply within one business day', 'A short call or email to understand your venue and what you are trying to fix.'],
+  ['02', 'A 1:1 discovery session', 'We map your service flow, team roles and the systems that need to connect - before anything is designed.'],
+  ['03', 'A written proposal', 'Scope, phases, milestones and a launch plan in writing. Sending a brief does not commit you to anything.'],
+];
 
 export default function Contact() {
   return (
@@ -44,6 +54,24 @@ export default function Contact() {
               </div>
             </div>
             <ContactForm />
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--tight section--subtle">
+        <div className="container">
+          <div className="section-head center">
+            <span className="eyebrow">What happens next</span>
+            <h2>No black box, no pressure.</h2>
+          </div>
+          <div className="steps next-steps">
+            {NEXT_STEPS.map(([num, title, body]) => (
+              <Reveal className="step" key={num}>
+                <span className="step__num">{num}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
