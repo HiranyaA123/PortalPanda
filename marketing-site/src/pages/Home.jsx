@@ -54,7 +54,7 @@ export default function Home() {
         <div className="container hero__grid">
           <div>
             <Link to="/live" className="hero__badge">
-              <b>3 builds</b> Live and in progress <IconArrowRight />
+              <b>Live</b> Running in Adelaide venues <IconArrowRight />
             </Link>
             <h1>
               Custom venue software, <span className="grad-text">built around you.</span>

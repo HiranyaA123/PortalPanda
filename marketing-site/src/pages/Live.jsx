@@ -197,7 +197,7 @@ function ScreenshotCard({ screen, priority = false }) {
             src={screen.src}
             alt={screen.alt}
             loading={priority ? 'eager' : 'lazy'}
-            fetchPriority={priority ? 'high' : 'auto'}
+            fetchpriority={priority ? 'high' : 'auto'}
             decoding="async"
           />
         </div>
@@ -247,7 +247,7 @@ function PrimoProject() {
                 src={CUSTOMER_SCREENS[0].src}
                 alt={CUSTOMER_SCREENS[0].alt}
                 loading="eager"
-                fetchPriority="high"
+                fetchpriority="high"
                 decoding="async"
               />
             </a>

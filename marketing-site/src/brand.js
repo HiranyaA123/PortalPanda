@@ -8,7 +8,7 @@ export const BRAND = {
   siteUrl: 'https://www.centralpass.au',
   pitch:
     'We design and build a connected system from scratch for your venue - using proven modules, plus any new capabilities we agree to scope with you.',
-  contactEmail: 'centralpassinfo@gmail.com',
+  contactEmail: 'contact@centralpass.au',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',
   formEndpoint: 'https://formspree.io/f/mlgqbarp',
