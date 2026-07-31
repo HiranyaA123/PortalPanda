@@ -15,11 +15,13 @@ function Frame({ label, tone = 'light', children }) {
 }
 
 export function MockOrder() {
+  // Item thumbnails are neutral image slots, not emoji — emoji read as a
+  // placeholder and undercut the claim that we ship real software.
   const items = [
-    { e: '☕', n: 'Flat White', p: '$4.50' },
-    { e: '🥑', n: 'Avo Smash', p: '$18.00' },
-    { e: '🍳', n: 'Big Brekkie', p: '$24.00' },
-    { e: '🥐', n: 'Croissant', p: '$6.50' },
+    { n: 'Flat White', p: '$4.50' },
+    { n: 'Avo Smash', p: '$18.00' },
+    { n: 'Big Brekkie', p: '$24.00' },
+    { n: 'Croissant', p: '$6.50' },
   ];
   return (
     <Frame label="yourcafe.com.au">
@@ -30,9 +32,9 @@ export function MockOrder() {
         </div>
         {items.map((it) => (
           <div className="mk-order__row" key={it.n}>
-            <span className="mk-order__e">{it.e}</span>
+            <span className="mk-order__e" aria-hidden="true" />
             <span className="mk-order__n">{it.n}<i>{it.p}</i></span>
-            <span className="mk-order__add">＋</span>
+            <span className="mk-order__add">+</span>
           </div>
         ))}
         <div className="mk-order__cta">2 items · $22.50 — Checkout</div>

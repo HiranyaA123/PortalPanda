@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
 import SystemWeb from '../components/SystemWeb.jsx';
+import PhotoSlot from '../components/PhotoSlot.jsx';
+import { MockOrder, MockDashboard } from '../components/mocks.jsx';
 import { Magnetic } from '../components/motion.jsx';
 import {
   IconArrowRight,
@@ -36,6 +38,12 @@ const LAUNCH_STEPS = [
   ['03', 'Launch and evolve', 'We test the real service flow, train your team and keep improving the system as your operation changes.'],
 ];
 
+const TICKER = [
+  'Online ordering', 'Table bookings', 'Kitchen board', 'Receipt printing',
+  'Staff time clock', 'Email + SMS promotions', 'Uber Direct delivery',
+  'Customer CRM', 'Reporting', 'Commission-free',
+];
+
 const BRIEF_ROWS = [
   ['Customer experience', 'Ordering, bookings, loyalty', 'Core'],
   ['Venue operations', 'Kitchen, staff, reporting', 'Core'],
@@ -45,40 +53,61 @@ const BRIEF_ROWS = [
 export default function Home() {
   return (
     <main id="main">
-      <section className="hero hero--center grain">
-        <div className="hero__bg" aria-hidden="true">
-          <div className="glow glow--violet" />
-          <div className="glow glow--coral" />
-          <div className="glow glow--cyan" />
-        </div>
-        <div className="container hero__grid">
-          <div>
-            <Link to="/live" className="hero__badge">
-              <b>Live</b> Running in Adelaide venues <IconArrowRight />
-            </Link>
-            <h1>
-              Custom venue software, <span className="grad-text">built around you.</span>
-            </h1>
+      {/* Type-first hero: the headline is the visual. A side-by-side split kept
+          shrinking the type to fit a panel; here the words run the full measure
+          and the product sits underneath as a wide anchor. */}
+      <section className="hero">
+        <div className="container">
+          <Link to="/live" className="hero__badge">
+            <b>Live</b> Running in Adelaide venues <IconArrowRight />
+          </Link>
+
+          <h1 className="hero__display">
+            <span className="hero__line">Custom venue</span>
+            <span className="hero__line">software,</span>
+            <span className="hero__line hero__line--accent">built around you.</span>
+          </h1>
+
+          <div className="hero__meta">
             <p className="hero__sub">{BRAND.pitch}</p>
-            <div className="hero__actions">
-              <Magnetic>
-                <Link to="/contact" className="btn btn-primary btn-lg">
-                  Plan my system <IconArrowRight />
-                </Link>
-              </Magnetic>
-              <Magnetic strength={0.25}>
-                <Link to="/platform" className="btn btn-ghost btn-lg">
-                  Explore what is possible
-                </Link>
-              </Magnetic>
+            <div className="hero__meta-right">
+              <div className="hero__actions">
+                <Magnetic>
+                  <Link to="/contact" className="btn btn-primary btn-lg">
+                    Plan my system <IconArrowRight />
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={0.25}>
+                  <Link to="/platform" className="btn btn-ghost btn-lg">
+                    Explore what is possible
+                  </Link>
+                </Magnetic>
+              </div>
+              <div className="hero__proof">
+                <span className="dot" aria-hidden="true" />
+                Built from scratch · yours to evolve · zero marketplace commission
+              </div>
             </div>
-            <div className="hero__proof">
-              <span className="dot" aria-hidden="true" />
-              Built from scratch · yours to evolve · zero marketplace commission
-            </div>
+          </div>
+
+          <div className="hero__plate">
+            <MockDashboard />
+            <span className="hero__plate-note">Owner dashboard · a real CentralPass screen</span>
           </div>
         </div>
       </section>
+
+      <div className="ticker" aria-hidden="true">
+        <div className="ticker__track">
+          {[0, 1].map((pass) => (
+            <div className="ticker__run" key={pass}>
+              {TICKER.map((t) => (
+                <span className="ticker__item" key={`${pass}-${t}`}>{t}</span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
 
       <section className="commercial-proof" aria-label="CentralPass proof points">
         <div className="container commercial-proof__grid">
@@ -94,7 +123,7 @@ export default function Home() {
           <div className="section-head section-head--split product-showcase__head">
             <div>
               <span className="eyebrow">One connected build</span>
-              <h2>Start with what your venue needs.</h2>
+              <h2>Six systems you can start from</h2>
             </div>
             <p>
               These six proven systems show what CentralPass can connect. Choose a
@@ -117,7 +146,7 @@ export default function Home() {
           <div className="section-head section-head--split">
             <div>
               <span className="eyebrow">Built for independent venues</span>
-              <h2>Less software to manage. More venue to run.</h2>
+              <h2>Fewer moving parts, and less to keep track of</h2>
             </div>
             <p>
               CentralPass replaces the disconnected hand-offs that slow service,
@@ -177,8 +206,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section section--tight on-dark grain">
-        <div className="glow glow--violet" style={{ width: 420, height: 420, top: '-30%', left: '30%', opacity: 0.24 }} />
+      <section className="section section--tight on-dark">
         <div className="container">
           <div className="stats-row">
             <Reveal className="stat-tile">
@@ -201,7 +229,7 @@ export default function Home() {
         <div className="container">
           <div className="section-head center">
             <span className="eyebrow">From brief to service</span>
-            <h2>A custom build without a black-box process.</h2>
+            <h2>You will always know what is being built, and why</h2>
             <p>You will know what is being built, why it matters and what comes next.</p>
           </div>
           <div className="steps launch-steps">
@@ -218,11 +246,11 @@ export default function Home() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="cta-band cta-band--case-study grain">
+          <Reveal className="cta-band cta-band--case-study">
             <div className="cta-band__kicker">
               <span className="status-dot" aria-hidden="true" /> Live in Adelaide
             </div>
-            <h2>See one custom build running a real venue.</h2>
+            <h2>See it running in a real venue</h2>
             <p>
               Caffe Primo Firle runs a 100+ item pickup menu through CentralPass,
               from customer order to kitchen board and printed docket.
@@ -236,9 +264,7 @@ export default function Home() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="cta-band grain">
-            <div className="glow glow--violet" style={{ width: 380, height: 380, top: -140, left: '18%', opacity: 0.4 }} />
-            <div className="glow glow--coral" style={{ width: 320, height: 320, bottom: -160, right: '16%', opacity: 0.3 }} />
+          <Reveal className="cta-band">
             <span className="eyebrow">Bring us your ideal system</span>
             <h2>Start with the messy version.</h2>
             <p>Show us how your venue runs today, what is getting in the way and what you wish your software could do.</p>

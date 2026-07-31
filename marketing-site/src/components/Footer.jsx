@@ -7,7 +7,6 @@ export default function Footer() {
 
   return (
     <footer className="footer">
-      <div className="glow glow--violet" style={{ width: 380, height: 380, bottom: -220, left: '10%', opacity: 0.28 }} />
       <div className="container">
         <div className="footer__grid">
           <div>

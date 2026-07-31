@@ -33,7 +33,7 @@ export default function Legal({ type }) {
   const content = SECTIONS[type];
   return (
     <main id="main">
-      <section className="page-hero page-hero--compact grain">
+      <section className="page-hero page-hero--compact">
         <div className="container">
           <div className="page-hero__inner">
             <span className="eyebrow">{content.eyebrow}</span>
