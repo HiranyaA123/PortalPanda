@@ -128,9 +128,7 @@ const CUSTOM_EXAMPLES = [
 export default function Platform() {
   return (
     <main id="main">
-      <section className="page-hero grain">
-        <div className="glow glow--violet" style={{ width: 480, height: 480, top: -160, left: -80, opacity: 0.4 }} />
-        <div className="glow glow--coral" style={{ width: 360, height: 360, bottom: -180, right: '8%', opacity: 0.28 }} />
+      <section className="page-hero">
         <div className="container">
           <div className="page-hero__inner">
             <span className="eyebrow">A bespoke venue platform</span>
@@ -156,7 +154,7 @@ export default function Platform() {
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">Proven building blocks</span>
-            <h2>Start with what you need.</h2>
+            <h2>Start with what you need</h2>
             <p>Explore six connected modules we already know well. Your final build can use some, all or go beyond them.</p>
           </div>
           <ModuleExplorer modules={MODULES} />
@@ -193,12 +191,11 @@ export default function Platform() {
         </div>
       </section>
 
-      <section className="section on-dark grain">
-        <div className="glow glow--cyan" style={{ width: 400, height: 400, top: '10%', left: '-8%', opacity: 0.2 }} />
+      <section className="section on-dark">
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">And everything around the edges</span>
-            <h2>The details that keep a venue running.</h2>
+            <h2>The details that keep a venue running</h2>
             <p>These are common capabilities, not a fixed boundary for your build.</p>
           </div>
           <div className="bento">
@@ -215,9 +212,7 @@ export default function Platform() {
 
       <section className="section">
         <div className="container">
-          <Reveal className="cta-band grain">
-            <div className="glow glow--violet" style={{ width: 380, height: 380, top: -140, left: '18%', opacity: 0.4 }} />
-            <div className="glow glow--coral" style={{ width: 320, height: 320, bottom: -160, right: '16%', opacity: 0.3 }} />
+          <Reveal className="cta-band">
             <h2>Bring us the workflow, not a shopping list.</h2>
             <p>We will show you a live build, learn what your venue needs and map a practical system of your own.</p>
             <div className="cta-band__actions">

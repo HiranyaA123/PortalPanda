@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CentralPass business card export</title>
+  <style>
+    :root { --ink:#0B0B12; --violet:#6C4DFF; --coral:#FF6B4A; --paper:#F7F5F1; }
+    * { box-sizing:border-box; }
+    html, body { margin:0; width:1110px; height:685px; overflow:hidden; background:transparent; }
+    body { font-family:Arial, Helvetica, sans-serif; }
+    .card { width:1110px; height:685px; display:none; position:relative; overflow:hidden; }
+    .card:target { display:block; }
+    .dark-front { background:var(--ink); color:#f8f7f5; }
+    .dark-front::before { content:""; position:absolute; width:780px; height:780px; right:-250px; top:-330px; background:radial-gradient(circle, rgba(108,77,255,.26), rgba(11,11,18,0) 68%); }
+    .dark-front::after { content:""; position:absolute; right:-150px; bottom:-190px; width:570px; height:570px; border:1px solid rgba(255,107,74,.22); border-radius:50%; box-shadow:0 0 0 44px rgba(108,77,255,.045),0 0 0 88px rgba(255,107,74,.03); }
+    .brand-lockup { position:absolute; left:92px; top:235px; display:flex; align-items:center; gap:30px; z-index:1; }
+    .brand-lockup img { width:92px; height:92px; }
+    .wordmark { font-size:79px; letter-spacing:-4.7px; font-weight:700; line-height:.9; }
+    .tagline { position:absolute; left:219px; top:345px; font-size:25px; letter-spacing:-.35px; color:#dddbe7; z-index:1; }
+    .micro { position:absolute; left:95px; bottom:72px; font-size:14px; letter-spacing:1.8px; text-transform:uppercase; color:#b6b2c3; z-index:1; }
+    .light-back { background:var(--paper); color:var(--ink); }
+    .light-back::before { content:""; position:absolute; width:850px; height:850px; right:-535px; bottom:-505px; border:1px solid rgba(108,77,255,.48); border-radius:50%; box-shadow:0 0 0 28px rgba(255,107,74,.34),0 0 0 57px rgba(108,77,255,.24),0 0 0 87px rgba(255,107,74,.16),0 0 0 118px rgba(108,77,255,.11),0 0 0 150px rgba(255,107,74,.08); }
+    .light-back::after { content:""; position:absolute; width:355px; height:355px; right:-140px; bottom:-130px; background:radial-gradient(circle, rgba(108,77,255,.11),rgba(255,107,74,0) 68%); }
+    .person { position:absolute; left:91px; top:120px; z-index:1; }
+    .name { font-size:54px; line-height:1; letter-spacing:-2.8px; font-weight:700; }
+    .role { margin-top:17px; color:#6247de; font-size:25px; font-weight:600; letter-spacing:.2px; }
+    .details { position:absolute; left:94px; top:300px; z-index:1; display:grid; gap:20px; font-size:26px; letter-spacing:-.35px; }
+    .details span { display:block; }
+    .details .label { display:inline-block; min-width:113px; color:#777382; font-size:14px; text-transform:uppercase; letter-spacing:1.5px; }
+    .light-brand { position:absolute; right:81px; top:64px; display:flex; gap:12px; align-items:center; color:#272430; font-weight:700; font-size:21px; letter-spacing:-1px; }
+    .light-brand img { width:34px; height:34px; }
+    .light-front { background:var(--paper); color:var(--ink); }
+    .light-front::before { content:""; position:absolute; width:640px; height:640px; right:-363px; bottom:-343px; border:4px solid rgba(255,107,74,.36); border-radius:50%; box-shadow:0 0 0 37px rgba(108,77,255,.20),0 0 0 74px rgba(255,107,74,.12),0 0 0 111px rgba(108,77,255,.08); }
+    .light-front .brand-lockup { top:220px; }
+    .light-front .wordmark { color:var(--ink); }
+    .light-front .tagline { color:#413d4b; top:340px; }
+    .light-front .micro { color:#716b7a; }
+    .dark-back { background:var(--ink); color:#f8f7f5; }
+    .dark-back::before { content:""; position:absolute; left:92px; top:104px; width:4px; height:475px; background:linear-gradient(var(--violet),var(--coral)); }
+    .dark-back::after { content:""; position:absolute; width:700px; height:700px; right:-430px; top:-450px; background:radial-gradient(circle,rgba(108,77,255,.23),rgba(11,11,18,0) 65%); }
+    .dark-back .person { left:154px; }
+    .dark-back .role { color:#e2ddf8; }
+    .dark-back .details { left:157px; color:#f0eff2; }
+    .dark-back .details .label { color:#aaa5b8; }
+    .dark-back .light-brand { color:#f4f3f5; }
+    .dark-back .light-brand img { filter:none; }
+  </style>
+</head>
+<body>
+  <section id="dark-front" class="card dark-front">
+    <div class="brand-lockup"><img src="../../public/centralpass-mark.svg" alt="" /><div class="wordmark">CentralPass</div></div>
+    <div class="tagline">Custom venue software, built around you.</div>
+    <div class="micro">Hospitality systems, connected</div>
+  </section>
+  <section id="light-back" class="card light-back">
+    <div class="light-brand"><img src="../../public/centralpass-mark.svg" alt="" />CentralPass</div>
+    <div class="person"><div class="name">Amit Agarwal</div><div class="role">Founder</div></div>
+    <div class="details">
+      <span><b class="label">Mobile</b>0452 145 196</span>
+      <span><b class="label">Email</b>contact@centralpass.au</span>
+      <span><b class="label">Web</b>www.centralpass.au</span>
+      <span><b class="label">Based</b>Adelaide, South Australia</span>
+    </div>
+  </section>
+  <section id="light-front" class="card light-front">
+    <div class="brand-lockup"><img src="../../public/centralpass-mark.svg" alt="" /><div class="wordmark">CentralPass</div></div>
+    <div class="tagline">Custom venue software, built around you.</div>
+    <div class="micro">Hospitality systems, connected</div>
+  </section>
+  <section id="dark-back" class="card dark-back">
+    <div class="light-brand"><img src="../../public/centralpass-mark.svg" alt="" />CentralPass</div>
+    <div class="person"><div class="name">Amit Agarwal</div><div class="role">Founder</div></div>
+    <div class="details">
+      <span><b class="label">Mobile</b>0452 145 196</span>
+      <span><b class="label">Email</b>contact@centralpass.au</span>
+      <span><b class="label">Web</b>www.centralpass.au</span>
+      <span><b class="label">Based</b>Adelaide, South Australia</span>
+    </div>
+  </section>
+</body>
+</html>

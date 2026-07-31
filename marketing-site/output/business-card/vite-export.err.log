@@ -1,0 +1,2 @@
+[33mFiles in the public directory are served at the root path.
+Instead of [36m/public/centralpass-mark.svg[33m, use [36m/centralpass-mark.svg[33m.[39m

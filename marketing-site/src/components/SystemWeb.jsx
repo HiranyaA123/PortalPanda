@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import {
   IconStore,
   IconCalendar,
@@ -22,10 +22,10 @@ export const SYSTEMS = [
 ];
 
 const MENU = [
-  { id: 'flat', e: '☕', n: 'Flat White', p: 4.5 },
-  { id: 'avo', e: '🥑', n: 'Avo Smash', p: 18 },
-  { id: 'brekkie', e: '🍳', n: 'Big Brekkie', p: 24 },
-  { id: 'burger', e: '🍔', n: 'Wagyu Burger', p: 22 },
+  { id: 'flat', n: 'Flat White', p: 4.5 },
+  { id: 'avo', n: 'Avo Smash', p: 18 },
+  { id: 'brekkie', n: 'Big Brekkie', p: 24 },
+  { id: 'burger', n: 'Wagyu Burger', p: 22 },
 ];
 const DEFAULT = ['flat', 'brekkie', 'avo'];
 const money = (n) => `$${n.toFixed(2)}`;
@@ -47,13 +47,6 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
   const [promo, setPromo] = useState('fri');
   const [sent, setSent] = useState(false);
 
-  const stageRef = useRef(null);
-  const svgRef = useRef(null);
-  const hubRef = useRef(null);
-  const nodeRefs = useRef([]);
-  const [edges, setEdges] = useState([]);
-  const [dims, setDims] = useState({ w: 0, h: 0 });
-
   const activeIndex = SYSTEMS.findIndex((s) => s.id === active);
 
   const lines = useMemo(() => {
@@ -71,46 +64,6 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
     const it = MENU.find((m) => m.id === id);
     return s + (it ? it.p : 0);
   }, 0);
-
-  // Measure hub + node centres and build the web edges in pixel space.
-  useLayoutEffect(() => {
-    const measure = () => {
-      const stage = stageRef.current;
-      const hub = hubRef.current;
-      if (!stage || !hub) return;
-      const sr = stage.getBoundingClientRect();
-      const hr = hub.getBoundingClientRect();
-      const hx = hr.left - sr.left + hr.width / 2;
-      const hy = hr.top - sr.top + hr.height / 2;
-      const next = nodeRefs.current.filter(Boolean).map((el) => {
-        const r = el.getBoundingClientRect();
-        const nx = r.left - sr.left + r.width / 2;
-        const ny = r.top - sr.top + r.height / 2;
-        return { d: `M ${hx.toFixed(1)} ${hy.toFixed(1)} L ${nx.toFixed(1)} ${ny.toFixed(1)}`, len: Math.hypot(nx - hx, ny - hy) };
-      });
-      setDims({ w: sr.width, h: sr.height });
-      setEdges(next);
-    };
-    measure();
-    const t = setTimeout(measure, 300);
-    window.addEventListener('resize', measure);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener('resize', measure);
-    };
-  }, []);
-
-  // Pause the flowing packets when the web is off-screen.
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return undefined;
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => stage.classList.toggle('is-live', e.isIntersecting)),
-      { threshold: 0.15 }
-    );
-    io.observe(stage);
-    return () => io.disconnect();
-  }, []);
 
   const add = (id) => setOrder((o) => [...o, id]);
   const removeOne = (id) =>
@@ -130,7 +83,7 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
           <div className="jv__menu">
             {MENU.map((it) => (
               <button key={it.id} type="button" className="jv__mi" onClick={() => add(it.id)}>
-                <span className="jv__mi-e">{it.e}</span>
+                <span className="jv__mi-e" aria-hidden="true" />
                 <span className="jv__mi-n">{it.n}<i>{money(it.p)}</i></span>
                 <span className="jv__mi-add">＋</span>
               </button>
@@ -151,9 +104,16 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
               </ul>
             )}
             <div className="jv__sel-total">
-              <span>{order.length ? 'Your order → flows to the kitchen' : 'Sample order'}</span>
+              <span>{order.length ? 'Your order' : 'Sample order'}</span>
               <b>{money(total)}</b>
             </div>
+            {/* Makes the "one connected system" claim tangible: the order you
+                build here is the order the kitchen view renders. */}
+            <button type="button" className="jv__handoff" onClick={() => setActive('kitchen')}>
+              <span className="jv__handoff-dot" aria-hidden="true" />
+              This order is already on the kitchen board
+              <em>See it →</em>
+            </button>
           </div>
         </div>
       );
@@ -268,67 +228,41 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
 
   const activeName = SYSTEMS[activeIndex]?.name;
 
+  // An indexed list rather than a radial diagram: the old web relied on
+  // measured pixel geometry that rarely resolved cleanly, and read as
+  // scattered fragments. A numbered index is legible, editorial and honest
+  // about what it is — a table of contents for the platform.
   return (
-    <div className="webz">
-      <div className="webz__stage" ref={stageRef}>
-        <svg
-          className="webz__lines"
-          ref={svgRef}
-          viewBox={`0 0 ${dims.w} ${dims.h}`}
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="webgrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#6C4DFF" />
-              <stop offset="1" stopColor="#FF6B4A" />
-            </linearGradient>
-          </defs>
-          {edges.map((e, i) => (
-            <path key={`b${i}`} className={`webz__edge ${i === activeIndex ? 'is-active' : ''}`} d={e.d} />
-          ))}
-          {edges.map((e, i) => (
-            <path
-              key={`p${i}`}
-              className={`webz__pulse ${i === activeIndex ? 'is-active' : ''}`}
-              d={e.d}
-              style={{ '--l': `${e.len}px`, '--dur': `${2.1 + i * 0.22}s`, animationDelay: `${i * 0.32}s` }}
-            />
-          ))}
-        </svg>
-
-        <button type="button" className="webz__hub" ref={hubRef} onClick={() => setActive('order')}>
-          <span className="webz__hub-ring" />
-          <span className="webz__hub-core">
-            <b>Central</b>Pass
-          </span>
-        </button>
-
+    <div className="sysx">
+      <ol className="sysx__index" role="tablist" aria-label="Platform systems">
         {SYSTEMS.map((s, i) => {
           const { Icon } = s;
+          const on = active === s.id;
           return (
-            <button
-              key={s.id}
-              type="button"
-              className={`webz__node ${active === s.id ? 'is-active' : ''}`}
-              style={{ left: `${s.x}%`, top: `${s.y}%` }}
-              ref={(el) => { nodeRefs.current[i] = el; }}
-              onClick={() => setActive(s.id)}
-              aria-pressed={active === s.id}
-            >
-              <span className="webz__node-icon"><Icon /></span>
-              <span className="webz__node-name">{s.name}</span>
-            </button>
+            <li key={s.id}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={on}
+                className={`sysx__row ${on ? 'is-active' : ''}`}
+                onClick={() => setActive(s.id)}
+              >
+                <span className="sysx__num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="sysx__icon"><Icon /></span>
+                <span className="sysx__name">{s.name}</span>
+                <span className="sysx__rule" aria-hidden="true" />
+              </button>
+            </li>
           );
         })}
-      </div>
+      </ol>
 
-      <div className="webz__detail">
-        <div className="webz__detail-head">
-          <span className="eyebrow">{activeName}</span>
-          <p>Live component — try it. Everything you see is one connected system.</p>
+      <div className="sysx__panel">
+        <div className="sysx__panel-head">
+          <span className="sysx__panel-title">{activeName}</span>
+          <span className="sysx__panel-hint">Live — try it</span>
         </div>
-        <div className="webz__detail-body" key={active}>
+        <div className="sysx__panel-body" key={active}>
           {detail()}
         </div>
       </div>

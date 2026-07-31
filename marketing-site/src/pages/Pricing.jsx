@@ -3,45 +3,44 @@ import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
 import { IconArrowRight, IconPhone, IconSparkle } from '../components/icons.jsx';
 
-const SCOPES = [
+// Three tiers that all read "Tailored quote" tell a buyer nothing and look
+// like a template. A custom studio sells a *process*, so the page now names
+// the five phases every proposal is priced against.
+const PHASES = [
   {
-    name: 'Customer launch',
-    label: 'Focused build',
-    desc: 'A polished direct channel for venues that want to start with ordering and customer ownership.',
-    features: [
-      'Bespoke customer-facing design',
-      'Online ordering and payments',
-      'Menu and customer management',
-      'Kitchen hand-off and printing',
-      'Launch support for your team',
-    ],
-    featured: false,
+    n: '01',
+    name: 'Discovery',
+    time: 'Week 1',
+    body: 'We sit down with how your venue actually runs — service flow, roles, the tools you already pay for and the jobs nobody wants to do twice.',
+    out: 'A written brief and scope you approve before anything is designed.',
   },
   {
-    name: 'Connected operations',
-    label: 'Common starting point',
-    desc: 'A broader build that connects customer experience, service and day-to-day venue operations.',
-    features: [
-      'Everything in Customer launch',
-      'Bookings, staff or delivery workflows',
-      'Reporting, offers and customer tools',
-      'Role-based operational views',
-      'A roadmap for future phases',
-    ],
-    featured: true,
+    n: '02',
+    name: 'Design',
+    time: 'Weeks 1–2',
+    body: 'Your customer experience and your team’s screens, designed around your brand rather than dropped into a theme.',
+    out: 'Designs for every screen your customers and staff will touch.',
   },
   {
-    name: 'Bespoke or multi-venue',
-    label: 'Extended brief',
-    desc: 'For unique workflows, requested capabilities, integrations or teams operating across locations.',
-    features: [
-      'A system designed around your brief',
-      'New capabilities scoped with you',
-      'Multi-venue controls where needed',
-      'Custom workflows and integrations',
-      'Phased delivery and ongoing evolution',
-    ],
-    featured: false,
+    n: '03',
+    name: 'Build',
+    time: 'The bulk of the project',
+    body: 'We build the system — ordering, dashboard, staff and kitchen tooling, plus any capability we agreed to scope for you.',
+    out: 'A working system on your own domain, tested against real service.',
+  },
+  {
+    n: '04',
+    name: 'Launch',
+    time: 'Around go-live',
+    body: 'Hardware set up on your floor, menu and data loaded, and your team trained on the screens they will use every shift.',
+    out: 'You take real orders with us in the room.',
+  },
+  {
+    n: '05',
+    name: 'Support',
+    time: 'Ongoing',
+    body: 'We stay on call, keep the system current and scope the next phase when your operation changes.',
+    out: 'A system that keeps developing instead of ageing.',
   },
 ];
 
@@ -87,9 +86,7 @@ const FAQ = [
 export default function Pricing() {
   return (
     <main id="main">
-      <section className="page-hero grain">
-        <div className="glow glow--violet" style={{ width: 460, height: 460, top: -150, right: -60, opacity: 0.38 }} />
-        <div className="glow glow--cyan" style={{ width: 320, height: 320, bottom: -160, left: '6%', opacity: 0.2 }} />
+      <section className="page-hero">
         <div className="container">
           <div className="page-hero__inner">
             <span className="eyebrow">Custom pricing</span>
@@ -110,37 +107,34 @@ export default function Pricing() {
 
       <section className="section pricing-scopes">
         <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">Typical scopes</span>
-            <h2>Three starting points. No fixed packages.</h2>
-            <p>Use these examples to understand the level of build. Your proposal will be shaped around your actual brief.</p>
+          <div className="section-head section-head--split">
+            <div>
+              <span className="eyebrow">What you are paying for</span>
+              <h2>Five phases, priced as one project</h2>
+            </div>
+            <p>
+              Every quote is built from the same five phases. Your proposal prices
+              each one against your brief, so you can see where the money goes
+              instead of picking a package.
+            </p>
           </div>
-          <div className="pricing-grid">
-            {SCOPES.map((scope) => (
-              <Reveal
-                className={`price-card ${scope.featured ? 'price-card--featured' : ''}`}
-                key={scope.name}
-              >
-                <span className="price-card__scope">{scope.label}</span>
-                <div className="price-card__name">{scope.name}</div>
-                <p className="price-card__desc">{scope.desc}</p>
-                <div className="price-card__price">
-                  Tailored <small>quote</small>
+
+          <ol className="phases">
+            {PHASES.map((p) => (
+              <Reveal className="phase" key={p.n} as="li">
+                <span className="phase__n">{p.n}</span>
+                <div className="phase__main">
+                  <div className="phase__head">
+                    <h3>{p.name}</h3>
+                    <span className="phase__time">{p.time}</span>
+                  </div>
+                  <p>{p.body}</p>
                 </div>
-                <ul className="price-card__list">
-                  {scope.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
-                  ))}
-                </ul>
-                <Link
-                  to="/contact"
-                  className={`btn btn-block price-card__cta ${scope.featured ? 'btn-primary' : 'btn-dark'}`}
-                >
-                  Scope this build
-                </Link>
+                <p className="phase__out"><span>You get</span>{p.out}</p>
               </Reveal>
             ))}
-          </div>
+          </ol>
+
           <p className="pricing-note">
             All CentralPass builds are commission-free. Standard payment processor, courier or other third-party service fees may apply.
           </p>
@@ -152,7 +146,7 @@ export default function Pricing() {
           <div className="section-head section-head--split">
             <div>
               <span className="eyebrow">How we price</span>
-              <h2>What shapes your quote.</h2>
+              <h2>What shapes your quote</h2>
             </div>
             <p>
               We cannot put a number on this page honestly without knowing your
@@ -184,13 +178,11 @@ export default function Pricing() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="quote-panel grain">
-            <div className="glow glow--violet" style={{ width: 400, height: 400, top: -160, left: '14%', opacity: 0.4 }} />
-            <div className="glow glow--coral" style={{ width: 340, height: 340, bottom: -170, right: '12%', opacity: 0.32 }} />
+          <Reveal className="quote-panel">
             <span className="eyebrow quote-panel__eyebrow">
               <IconSparkle /> Start with a conversation
             </span>
-            <h2>Tell us what the system needs to do.</h2>
+            <h2>Tell us what the system needs to do</h2>
             <p>
               We will show you {BRAND.name} running a real venue, map the scope
               with you and prepare a clear proposal for the build.
@@ -212,7 +204,7 @@ export default function Pricing() {
         <div className="container container--narrow">
           <div className="section-head">
             <span className="eyebrow">Questions</span>
-            <h2>Good to know.</h2>
+            <h2>Questions we get asked</h2>
           </div>
           <div className="faq-list">
             {FAQ.map((item) => (

@@ -265,7 +265,7 @@ function PrimoProject() {
         <div className="container">
           <div className="live-screens__head">
             <span className="eyebrow">For customers</span>
-            <h2>A branded experience from home page to checkout.</h2>
+            <h2>From home page to checkout</h2>
             <p>The public site is designed for the venue, then connected directly to the tools running service.</p>
           </div>
           <div className="live-customer-grid">
@@ -281,7 +281,7 @@ function PrimoProject() {
           <div className="section-head section-head--split">
             <div>
               <span className="eyebrow">For the service team</span>
-              <h2>Focused tools for the work happening now.</h2>
+              <h2>Focused tools for the work happening right now</h2>
             </div>
             <p>
               Staff see the next operational action without being exposed to the
@@ -299,7 +299,7 @@ function PrimoProject() {
           <div className="section-head section-head--split">
             <div>
               <span className="eyebrow">For the owner</span>
-              <h2>Control, reporting and payroll preparation in one place.</h2>
+              <h2>Control, reporting and payroll in one place</h2>
             </div>
             <p>
               The operations desk connects day-to-day venue changes with the
@@ -312,8 +312,7 @@ function PrimoProject() {
         </div>
       </section>
 
-      <section className="section on-dark grain">
-        <div className="glow glow--violet" style={{ width: 420, height: 420, top: '-20%', left: '30%', opacity: 0.26 }} />
+      <section className="section on-dark">
         <div className="container">
           <Reveal className="live-proof">
             <span className="eyebrow">Built in a real service environment</span>
@@ -337,7 +336,7 @@ function PrimoProject() {
         <div className="container">
           <div className="section-head">
             <span className="eyebrow">The result</span>
-            <h2>One build, working across the venue.</h2>
+            <h2>One build, working across the whole venue</h2>
           </div>
           <div className="stats-row">
             {STATS.map((stat) => (
@@ -412,9 +411,7 @@ export default function Live() {
 
   return (
     <main id="main">
-      <section className="page-hero live-hero live-collection-hero grain">
-        <div className="glow glow--violet" style={{ width: 460, height: 460, top: -150, left: -70, opacity: 0.38 }} />
-        <div className="glow glow--coral" style={{ width: 340, height: 340, bottom: -170, right: '8%', opacity: 0.28 }} />
+      <section className="page-hero live-hero live-collection-hero">
         <div className="container">
           <div className="cs-hero__grid">
             <div>
@@ -436,7 +433,7 @@ export default function Live() {
             <div className="portfolio-status" aria-label="CentralPass venue project status">
               <div className="portfolio-status__top">
                 <span>Customer portfolio</span>
-                <strong>3 venue builds</strong>
+                <strong>Venue builds</strong>
               </div>
               {VENUES.map((venue) => (
                 <div className="portfolio-status__row" key={venue.id}>
@@ -484,9 +481,7 @@ export default function Live() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="cta-band grain">
-            <div className="glow glow--violet" style={{ width: 360, height: 360, top: -140, left: '18%', opacity: 0.4 }} />
-            <div className="glow glow--coral" style={{ width: 300, height: 300, bottom: -150, right: '16%', opacity: 0.3 }} />
+          <Reveal className="cta-band">
             <h2>What should your venue system look like?</h2>
             <p>Bring us your customer journey, staff workflow and owner wish list. We will scope a custom build around them.</p>
             <div className="cta-band__actions">
