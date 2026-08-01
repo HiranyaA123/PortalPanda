@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
+import ScrollThread from '../components/ScrollThread.jsx';
 import {
   IconArrowRight,
   IconBolt,
@@ -71,6 +72,7 @@ function ProjectScreen({ src, alt, label, className = '' }) {
 export default function Home() {
   return (
     <main id="main" className="cp-home">
+      <ScrollThread />
       <section className="cp-hero">
         <div className="container cp-hero__grid">
           <div className="cp-hero__copy">
@@ -134,7 +136,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-case-study" aria-labelledby="case-study-title">
+      <section className="section cp-case-study" aria-labelledby="case-study-title" data-scroll-thread="right">
         <div className="container">
           <div className="cp-case-study__head">
             <div>
@@ -185,7 +187,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-outcomes" aria-labelledby="outcomes-title">
+      <section className="section cp-outcomes" aria-labelledby="outcomes-title" data-scroll-thread="left">
         <div className="container">
           <div className="section-head section-head--split">
             <div>
@@ -210,7 +212,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-modules" aria-labelledby="modules-title">
+      <section className="section cp-modules" aria-labelledby="modules-title" data-scroll-thread="right">
         <div className="container cp-modules__layout">
           <div className="cp-modules__intro">
             <span className="eyebrow">A connected starting point</span>
@@ -235,7 +237,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-process" aria-labelledby="process-title">
+      <section className="section cp-process" aria-labelledby="process-title" data-scroll-thread="left">
         <div className="container">
           <div className="cp-process__top">
             <div>
@@ -276,7 +278,9 @@ export default function Home() {
             <p>We will show you a live build, map the practical scope and put the proposed phases in writing.</p>
           </div>
           <div className="cp-final-cta__actions">
-            <Link to="/contact" className="btn btn-primary btn-lg">Start a project <IconArrowRight /></Link>
+            <Link to="/contact" className="btn btn-primary btn-lg" data-scroll-thread="target">
+              Start a project <IconArrowRight />
+            </Link>
             <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg"><IconPhone /> {BRAND.contactPhoneDisplay}</a>
           </div>
         </div>
