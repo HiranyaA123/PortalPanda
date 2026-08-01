@@ -302,8 +302,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   left: 0;
   right: 0;
   z-index: 60;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: saturate(140%) blur(10px);
+  background: rgba(255, 255, 255, 0.97);
   border-bottom: 1px solid rgba(174, 183, 202, 0.55);
   box-shadow: 0 5px 24px rgba(18, 25, 52, 0.045);
   transition: border-color 0.2s ease;
@@ -1048,7 +1047,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 0;
-  background: rgba(8, 8, 14, 0.74);
+  background: rgba(8, 8, 14, 0.92);
   color: #fff;
   font-family: 'Instrument Sans', sans-serif;
   font-size: 0.64rem;
@@ -1056,7 +1055,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
-  backdrop-filter: blur(6px);
 }
 .venue-card__body { display: flex; min-width: 0; flex-direction: column; padding: 22px; }
 .venue-card__topline { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 18px; }
@@ -1121,7 +1119,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   padding: 10px 14px;
   border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 0;
-  background: rgba(7, 7, 12, 0.78);
+  background: rgba(7, 7, 12, 0.92);
   color: #fff;
   font-family: 'Instrument Sans', sans-serif;
   font-size: 0.66rem;
@@ -1129,7 +1127,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   white-space: nowrap;
-  backdrop-filter: blur(8px);
 }
 .wip-shot__overlay i { width: 7px; height: 7px; border-radius: 50%; background: var(--violet-2); }
 .wip-shot__caption { display: flex; flex-direction: column; gap: 4px; padding: 20px 22px 22px; }
@@ -1768,6 +1765,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   z-index: 1;
   display: block;
   pointer-events: none;
+  contain: layout paint;
 }
 .cp-kicker {
   display: inline-flex;
@@ -1863,19 +1861,17 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   text-align: left;
   cursor: pointer;
   touch-action: manipulation;
-  transition: opacity 0.28s ease, filter 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+  transition: opacity 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
 }
 .cp-screen--interactive.is-active {
   z-index: 4;
   opacity: 1;
-  filter: none;
   border-color: rgba(117, 228, 232, 0.72);
   box-shadow: 0 30px 82px rgba(4, 7, 18, 0.34), 0 0 0 2px rgba(117, 228, 232, 0.16);
 }
 .cp-screen--interactive.is-inactive {
   z-index: 1;
   opacity: 0.76;
-  filter: saturate(0.78) brightness(0.9);
 }
 .cp-screen--interactive:hover { opacity: 1; border-color: var(--cyan); }
 .cp-screen--interactive:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
@@ -1901,7 +1897,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   border: 1px solid rgba(168, 169, 255, 0.5);
   border-radius: 12px;
   box-shadow: 0 14px 35px rgba(4, 7, 18, 0.3);
-  backdrop-filter: blur(14px);
 }
 .cp-hero__status span { color: var(--cyan); font-size: 0.61rem; font-weight: 780; letter-spacing: 0.13em; text-transform: uppercase; }
 .cp-hero__status strong { font-size: 1.08rem; }
@@ -2024,7 +2019,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .cp-commitments__list p { margin-top: 7px; color: rgba(235, 238, 255, 0.58); font-size: 0.8rem; line-height: 1.5; }
 
 .cp-final-cta { position: relative; overflow: hidden; padding: 94px 0; color: #fff; background: var(--ink); border-top: 1px solid rgba(229, 233, 255, 0.16); }
-.cp-final-cta::after { content: ''; position: absolute; width: 500px; height: 500px; right: -140px; top: -260px; border-radius: 50%; background: rgba(91, 93, 240, 0.25); filter: blur(20px); }
+.cp-final-cta::after { content: ''; position: absolute; width: 500px; height: 500px; right: -140px; top: -260px; border-radius: 50%; background: radial-gradient(circle, rgba(91, 93, 240, 0.34), rgba(91, 93, 240, 0.12) 48%, transparent 72%); }
 .cp-final-cta__inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 64px; align-items: end; }
 .cp-final-cta h2 { max-width: 13ch; margin-top: 20px; color: #fff; font-size: clamp(2.8rem, 5vw, 5.1rem); }
 .cp-final-cta p { max-width: 55ch; margin-top: 22px; color: rgba(235, 238, 255, 0.65); }

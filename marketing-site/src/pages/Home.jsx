@@ -58,7 +58,7 @@ const COMMITMENTS = [
   ['Launch support', 'Real-service testing, team training and ongoing support after go-live.'],
 ];
 
-function ProjectScreen({ src, alt, label, className = '', isActive = false, onActivate }) {
+function ProjectScreen({ src, alt, label, className = '', isActive = false, onActivate, priority = false }) {
   const interactive = typeof onActivate === 'function';
   const Tag = interactive ? 'button' : 'figure';
 
@@ -74,7 +74,13 @@ function ProjectScreen({ src, alt, label, className = '', isActive = false, onAc
         <span /><span /><span />
         <small>{label}</small>
       </div>
-      <img src={src} alt={alt} loading="lazy" decoding="async" />
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? 'eager' : 'lazy'}
+        fetchpriority={priority ? 'high' : 'auto'}
+        decoding="async"
+      />
     </Tag>
   );
 }
@@ -111,6 +117,7 @@ export default function Home() {
           <div className="cp-hero__stage" aria-label="CentralPass work for Caffe Primo Firle">
             <ProjectScreen
               className="cp-screen--hero"
+              priority
               isActive={activeHeroScreen === 'customer'}
               onActivate={() => setActiveHeroScreen('customer')}
               src="/live/venue-home.webp"
@@ -119,6 +126,7 @@ export default function Home() {
             />
             <ProjectScreen
               className="cp-screen--floating"
+              priority
               isActive={activeHeroScreen === 'staff'}
               onActivate={() => setActiveHeroScreen('staff')}
               src="/live/staff-orders.webp"
