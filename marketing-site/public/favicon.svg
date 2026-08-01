@@ -1,16 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CentralPass">
-  <defs>
-    <linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6C4DFF"/><stop offset=".54" stop-color="#A24BFF"/><stop offset="1" stop-color="#FF6B4A"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="#0B0B12"/>
-  <g fill="none" stroke="url(#g)" stroke-width="2.6" stroke-linecap="round">
-    <path d="M32 32 32 12M32 32 49.3 22M32 32 49.3 42M32 32 32 52M32 32 14.7 42M32 32 14.7 22"/>
-  </g>
-  <g fill="#0B0B12" stroke="url(#g)" stroke-width="2.6">
-    <circle cx="32" cy="12" r="4"/><circle cx="49.3" cy="22" r="4"/><circle cx="49.3" cy="42" r="4"/>
-    <circle cx="32" cy="52" r="4"/><circle cx="14.7" cy="42" r="4"/><circle cx="14.7" cy="22" r="4"/>
-  </g>
-  <circle cx="32" cy="32" r="9" fill="url(#g)"/><circle cx="32" cy="32" r="3.2" fill="#0B0B12"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 200 200" role="img" aria-label="CentralPass mark"><g fill="none" stroke="#000" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 96 C39 52 92 31 138 45 C169 54 183 85 169 113 C163 126 153 138 140 147"/><path d="M151 45 C174 79 165 124 137 151 C111 176 68 172 45 148"/><path d="M155 151 C114 169 65 151 38 117 C18 92 25 59 49 42"/><path d="M48 155 C29 117 43 70 79 47 C107 29 141 32 161 57"/><circle cx="100" cy="100" r="49" stroke-width="12"/></g><g fill="#000"><circle cx="100" cy="20" r="11"/><circle cx="151" cy="45" r="11"/><circle cx="181" cy="100" r="11"/><circle cx="153" cy="154" r="11"/><circle cx="100" cy="180" r="11"/><circle cx="46" cy="153" r="11"/><circle cx="20" cy="100" r="11"/><circle cx="49" cy="44" r="11"/></g></svg>

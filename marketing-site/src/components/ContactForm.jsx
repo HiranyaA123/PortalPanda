@@ -78,8 +78,8 @@ export default function ContactForm() {
           </div>
 
           <div className="field">
-            <label htmlFor="cf-phone">Phone <span className="req">*</span></label>
-            <input id="cf-phone" type="tel" required autoComplete="tel" value={values.phone} onChange={update('phone')} />
+            <label htmlFor="cf-phone">Phone <span className="field__optional">Optional</span></label>
+            <input id="cf-phone" type="tel" autoComplete="tel" value={values.phone} onChange={update('phone')} />
           </div>
 
           <div className="field">

@@ -8,7 +8,7 @@ export const BRAND = {
   siteUrl: 'https://www.centralpass.au',
   pitch:
     'We design and build a connected system from scratch for your venue - using proven modules, plus any new capabilities we agree to scope with you.',
-  contactEmail: 'contact@centralpass.au',
+  contactEmail: 'centralpassinfo@gmail.com',
   contactPhone: '0452145196',
   contactPhoneDisplay: '0452 145 196',
   formEndpoint: 'https://formspree.io/f/mlgqbarp',
@@ -16,9 +16,9 @@ export const BRAND = {
 
   // Keep these values in sync with the tokens in src/index.css.
   colors: {
-    ink: '#0B0B12',
-    violet: '#6C4DFF',
-    coral: '#FF6B4A',
-    cyan: '#37D6E5',
+    ink: '#0B1020',
+    violet: '#5B5DF0',
+    coral: '#FF6B5E',
+    cyan: '#4AD8DF',
   },
 };

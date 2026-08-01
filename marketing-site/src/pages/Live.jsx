@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
 import { Magnetic, CountUp } from '../components/motion.jsx';
@@ -135,6 +135,12 @@ const VENUES = [
   },
 ];
 
+const VENUE_HASHES = {
+  '#caffe-primo-firle': 'primo',
+  '#needa-pizza': 'needa',
+  '#beach-road-pizza': 'beach',
+};
+
 const STATS = [
   { count: 100, suffix: '+', label: 'Menu items, fully modifiable' },
   { num: '$0', label: 'Marketplace commission taken' },
@@ -155,6 +161,7 @@ function VenueCard({ venue, selected, onSelect }) {
   return (
     <button
       type="button"
+      id={venue.id === 'primo' ? 'caffe-primo-firle' : venue.id === 'needa' ? 'needa-pizza' : 'beach-road-pizza'}
       className={`venue-card ${selected ? 'is-selected' : ''}`}
       aria-pressed={selected}
       aria-controls="venue-project-details"
@@ -233,14 +240,14 @@ function PrimoProject() {
 
             <a
               className="live-hero__window"
-              href={CUSTOMER_SCREENS[0].src}
+              href="https://caffeprimofirle.com.au/"
               target="_blank"
               rel="noreferrer"
-              aria-label="Open the full Caffe Primo Firle website screenshot"
+              aria-label="Visit the live Caffe Primo Firle website"
             >
               <div className="live-shot__chrome" aria-hidden="true">
                 <span><i /><i /><i /></span>
-                <em>primofirle.com.au</em>
+                <em>caffeprimofirle.com.au</em>
                 <b>Live build</b>
               </div>
               <img
@@ -407,7 +414,13 @@ function WorkInProgressProject({ venue }) {
 
 export default function Live() {
   const [activeVenueId, setActiveVenueId] = useState('primo');
+  const location = useLocation();
   const activeVenue = VENUES.find((venue) => venue.id === activeVenueId) || VENUES[0];
+
+  useEffect(() => {
+    const venueId = VENUE_HASHES[location.hash];
+    if (venueId) setActiveVenueId(venueId);
+  }, [location.hash]);
 
   return (
     <main id="main">
@@ -416,10 +429,10 @@ export default function Live() {
           <div className="cs-hero__grid">
             <div>
               <span className="eyebrow"><IconStore /> Our venue work</span>
-              <h1>Built for one venue at a time.</h1>
+              <h1>Every venue gets a system of its own.</h1>
               <p>
-                Browse one launched CentralPass system and two active customer
-                builds. Every project is designed from scratch around a different venue.
+                Browse selected live and in-development CentralPass venue work.
+                Every project is designed from scratch around a different operation.
               </p>
               <div className="hero__actions page-hero__actions">
                 <Magnetic>
@@ -486,7 +499,7 @@ export default function Live() {
             <p>Bring us your customer journey, staff workflow and owner wish list. We will scope a custom build around them.</p>
             <div className="cta-band__actions">
               <Magnetic>
-                <Link to="/contact" className="btn btn-primary btn-lg">Plan my system <IconArrowRight /></Link>
+                <Link to="/contact" className="btn btn-primary btn-lg">Start a project <IconArrowRight /></Link>
               </Magnetic>
               <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg">
                 <IconPhone /> {BRAND.contactPhoneDisplay}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   IconStore,
   IconCalendar,
@@ -48,6 +48,7 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
   const [sent, setSent] = useState(false);
 
   const activeIndex = SYSTEMS.findIndex((s) => s.id === active);
+  const tabRefs = useRef([]);
 
   const lines = useMemo(() => {
     const ids = order.length ? order : DEFAULT;
@@ -232,9 +233,36 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
   // measured pixel geometry that rarely resolved cleanly, and read as
   // scattered fragments. A numbered index is legible, editorial and honest
   // about what it is — a table of contents for the platform.
+  const tabId = (i) => `sysx-tab-${i}`;
+  const panelId = (i) => `sysx-panel-${i}`;
+
+  const onKeyDown = (event) => {
+    const moves = {
+      ArrowDown: activeIndex + 1,
+      ArrowRight: activeIndex + 1,
+      ArrowUp: activeIndex - 1,
+      ArrowLeft: activeIndex - 1,
+      Home: 0,
+      End: SYSTEMS.length - 1,
+    };
+    if (!(event.key in moves)) return;
+    event.preventDefault();
+    const next = (moves[event.key] + SYSTEMS.length) % SYSTEMS.length;
+    setActive(SYSTEMS[next].id);
+    tabRefs.current[next]?.focus();
+  };
+
   return (
     <div className="sysx">
-      <ol className="sysx__index" role="tablist" aria-label="Platform systems">
+      {/* Full tab pattern: tabs own their panel, roving tabIndex keeps a single
+          tab stop, and arrow/Home/End move between systems. */}
+      <ol
+        className="sysx__index"
+        role="tablist"
+        aria-label="Platform systems"
+        aria-orientation="vertical"
+        onKeyDown={onKeyDown}
+      >
         {SYSTEMS.map((s, i) => {
           const { Icon } = s;
           const on = active === s.id;
@@ -243,7 +271,12 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
               <button
                 type="button"
                 role="tab"
+                aria-label={s.name}
+                id={tabId(i)}
                 aria-selected={on}
+                aria-controls={panelId(i)}
+                tabIndex={on ? 0 : -1}
+                ref={(el) => { tabRefs.current[i] = el; }}
                 className={`sysx__row ${on ? 'is-active' : ''}`}
                 onClick={() => setActive(s.id)}
               >
@@ -257,7 +290,13 @@ export default function SystemWeb({ active: activeProp, onSelect } = {}) {
         })}
       </ol>
 
-      <div className="sysx__panel">
+      <div
+        className="sysx__panel"
+        role="tabpanel"
+        id={panelId(activeIndex)}
+        aria-labelledby={tabId(activeIndex)}
+        tabIndex={0}
+      >
         <div className="sysx__panel-head">
           <span className="sysx__panel-title">{activeName}</span>
           <span className="sysx__panel-hint">Live — try it</span>

@@ -1,162 +1,207 @@
 import { Link } from 'react-router-dom';
-import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
-import SystemWeb from '../components/SystemWeb.jsx';
-import PhotoSlot from '../components/PhotoSlot.jsx';
-import { MockOrder, MockDashboard } from '../components/mocks.jsx';
-import { Magnetic } from '../components/motion.jsx';
 import {
   IconArrowRight,
   IconBolt,
+  IconCalendar,
+  IconChef,
+  IconChart,
+  IconClock,
+  IconLayout,
   IconPhone,
   IconShield,
   IconSparkle,
+  IconStore,
   IconUsers,
 } from '../components/icons.jsx';
+import { BRAND } from '../brand.js';
 
-const BENEFITS = [
+const OUTCOMES = [
   {
-    Icon: IconShield,
-    title: 'Keep the customer and the order',
-    body: 'Your brand stays front and centre, your customer relationship stays yours and CentralPass takes no marketplace commission.',
+    Icon: IconStore,
+    title: 'A direct customer experience',
+    body: 'Your website, ordering and bookings look and feel like your venue - not a marketplace listing.',
   },
   {
     Icon: IconBolt,
-    title: 'One change, everywhere',
-    body: 'Update an item once and the ordering site, kitchen and staff view stay in sync - without juggling separate systems.',
+    title: 'One operational source of truth',
+    body: 'Menu, orders, availability and customer context stay connected from the counter to the kitchen.',
   },
   {
     Icon: IconUsers,
-    title: 'Built with your team',
-    body: 'We design around the people doing the work, help them launch and stay close as your venue and system evolve.',
+    title: 'Software shaped around the team',
+    body: 'Every staff screen is designed around the job being done, then supported as your operation changes.',
   },
 ];
 
-const LAUNCH_STEPS = [
-  ['01', 'Define the brief', 'We map your customer journey, service flow, team roles and the tools that need to connect.'],
-  ['02', 'Design and build', 'We create your branded system from scratch, combining proven modules with any new capabilities we agree to scope.'],
-  ['03', 'Launch and evolve', 'We test the real service flow, train your team and keep improving the system as your operation changes.'],
+const MODULES = [
+  [IconStore, 'Website + ordering', 'A custom storefront with direct pickup and delivery flows.'],
+  [IconCalendar, 'Bookings', 'Reservations connected to the customer and venue view.'],
+  [IconChef, 'Kitchen + printing', 'Live orders, clear status changes and compatible receipt printing.'],
+  [IconClock, 'Staff tools', 'Role-based access, availability and time-clock workflows.'],
+  [IconLayout, 'Owner dashboard', 'Menus, hours, promotions and operations in one place.'],
+  [IconChart, 'Reporting + CRM', 'Useful customer and performance context without marketplace ownership.'],
 ];
 
-const TICKER = [
-  'Online ordering', 'Table bookings', 'Kitchen board', 'Receipt printing',
-  'Staff time clock', 'Email + SMS promotions', 'Uber Direct delivery',
-  'Customer CRM', 'Reporting', 'Commission-free',
+const PROCESS = [
+  ['01', 'Map the real service', 'We learn the customer journey, kitchen hand-offs, staff roles and current software.'],
+  ['02', 'Design the whole system', 'You see the customer and team experience before the build is locked in.'],
+  ['03', 'Build, launch and evolve', 'We test the complete flow, train the team and keep improving it after launch.'],
 ];
 
-const BRIEF_ROWS = [
-  ['Customer experience', 'Ordering, bookings, loyalty', 'Core'],
-  ['Venue operations', 'Kitchen, staff, reporting', 'Core'],
-  ['Your next idea', 'A workflow or feature unique to you', 'Custom'],
+const COMMITMENTS = [
+  ['A written scope', 'Clear phases, inclusions and cost before development begins.'],
+  ['A custom build', 'Proven building blocks, adapted to your venue rather than dropped into a template.'],
+  ['Room for new ideas', 'If a workflow is not shown here, bring it to the brief and we will scope it honestly.'],
+  ['Launch support', 'Real-service testing, team training and ongoing support after go-live.'],
 ];
+
+function ProjectScreen({ src, alt, label, className = '' }) {
+  return (
+    <figure className={`cp-screen ${className}`.trim()}>
+      <div className="cp-screen__bar" aria-hidden="true">
+        <span /><span /><span />
+        <small>{label}</small>
+      </div>
+      <img src={src} alt={alt} loading="lazy" decoding="async" />
+    </figure>
+  );
+}
 
 export default function Home() {
   return (
-    <main id="main">
-      {/* Type-first hero: the headline is the visual. A side-by-side split kept
-          shrinking the type to fit a panel; here the words run the full measure
-          and the product sits underneath as a wide anchor. */}
-      <section className="hero">
-        <div className="container">
-          <Link to="/live" className="hero__badge">
-            <b>Live</b> Running in Adelaide venues <IconArrowRight />
-          </Link>
-
-          <h1 className="hero__display">
-            <span className="hero__line">Custom venue</span>
-            <span className="hero__line">software,</span>
-            <span className="hero__line hero__line--accent">built around you.</span>
-          </h1>
-
-          <div className="hero__meta">
-            <p className="hero__sub">{BRAND.pitch}</p>
-            <div className="hero__meta-right">
-              <div className="hero__actions">
-                <Magnetic>
-                  <Link to="/contact" className="btn btn-primary btn-lg">
-                    Plan my system <IconArrowRight />
-                  </Link>
-                </Magnetic>
-                <Magnetic strength={0.25}>
-                  <Link to="/platform" className="btn btn-ghost btn-lg">
-                    Explore what is possible
-                  </Link>
-                </Magnetic>
-              </div>
-              <div className="hero__proof">
-                <span className="dot" aria-hidden="true" />
-                Built from scratch · yours to evolve · zero marketplace commission
-              </div>
-            </div>
-          </div>
-
-          <div className="hero__plate">
-            <MockDashboard />
-            <span className="hero__plate-note">Owner dashboard · a real CentralPass screen</span>
-          </div>
-        </div>
-      </section>
-
-      <div className="ticker" aria-hidden="true">
-        <div className="ticker__track">
-          {[0, 1].map((pass) => (
-            <div className="ticker__run" key={pass}>
-              {TICKER.map((t) => (
-                <span className="ticker__item" key={`${pass}-${t}`}>{t}</span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <section className="commercial-proof" aria-label="CentralPass proof points">
-        <div className="container commercial-proof__grid">
-          <div><strong>Designed for you</strong><span>No off-the-shelf template</span></div>
-          <div><strong>Open brief</strong><span>Request features not shown</span></div>
-          <div><strong>$0 commission</strong><span>On every CentralPass order</span></div>
-          <Link to="/live">See our venue work <IconArrowRight /></Link>
-        </div>
-      </section>
-
-      <section className="section product-showcase">
-        <div className="container">
-          <div className="section-head section-head--split product-showcase__head">
-            <div>
-              <span className="eyebrow">One connected build</span>
-              <h2>Six systems you can start from</h2>
-            </div>
-            <p>
-              These six proven systems show what CentralPass can connect. Choose a
-              module to explore it at your own pace. The demo only changes when you
-              choose something new.
+    <main id="main" className="cp-home">
+      <section className="cp-hero">
+        <div className="container cp-hero__grid">
+          <div className="cp-hero__copy">
+            <span className="cp-kicker"><i /> Custom restaurant and cafe software</span>
+            <h1>One custom system for your <em>whole venue.</em></h1>
+            <p className="cp-hero__lead">
+              CentralPass designs the website, direct ordering, kitchen, staff
+              and owner tools around the way your venue actually runs.
             </p>
-          </div>
-          <div className="product-showcase__surface">
-            <div className="product-showcase__hint">
-              <span className="status-dot" aria-hidden="true" />
-              Interactive preview <span>Choose any module</span>
+            <div className="cp-hero__actions">
+              <Link to="/contact" className="btn btn-primary btn-lg">
+                Start a project <IconArrowRight />
+              </Link>
+              <Link to="/live" className="btn btn-ghost btn-lg">
+                See our venue work
+              </Link>
             </div>
-            <SystemWeb />
+            <ul className="cp-hero__assurances" aria-label="CentralPass assurances">
+              <li><IconShield /> Built and supported in Adelaide</li>
+              <li><IconSparkle /> New features can be scoped for your venue</li>
+            </ul>
+          </div>
+
+          <div className="cp-hero__stage" aria-label="CentralPass work for Caffe Primo Firle">
+            <ProjectScreen
+              className="cp-screen--hero"
+              src="/live/venue-home.webp"
+              alt="Caffe Primo Firle customer website designed and built by CentralPass"
+              label="Customer website"
+            />
+            <ProjectScreen
+              className="cp-screen--floating"
+              src="/live/staff-orders.webp"
+              alt="Caffe Primo Firle live order board built by CentralPass"
+              label="Staff operations"
+            />
+            <div className="cp-hero__status">
+              <span>Featured live build</span>
+              <strong>Caffe Primo Firle</strong>
+              <small>Customer, kitchen, staff and owner tools</small>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="section section--subtle">
+      <section className="cp-project-strip" aria-label="CentralPass project status">
+        <div className="container cp-project-strip__grid">
+          <div className="cp-project-strip__intro">
+            <span className="eyebrow">Venue work</span>
+            <strong>Selected live and in-development venue work.</strong>
+          </div>
+          <Link to="/live" className="cp-project-pill cp-project-pill--live">
+            <i /> <span><small>Featured live build</small>Caffe Primo Firle</span><IconArrowRight />
+          </Link>
+          <Link to="/live#needa-pizza" className="cp-project-pill">
+            <i /> <span><small>In development</small>Needa Pizza</span><IconArrowRight />
+          </Link>
+          <Link to="/live#beach-road-pizza" className="cp-project-pill">
+            <i /> <span><small>In development</small>Beach Road Pizza</span><IconArrowRight />
+          </Link>
+        </div>
+      </section>
+
+      <section className="section cp-case-study" aria-labelledby="case-study-title">
+        <div className="container">
+          <div className="cp-case-study__head">
+            <div>
+              <span className="eyebrow">Proof, not a product mock-up</span>
+              <h2 id="case-study-title">A real venue running one connected build.</h2>
+            </div>
+            <div>
+              <p>
+                Caffe Primo Firle takes direct customer orders through a site we
+                designed, while the same system gives its team the kitchen,
+                staffing and owner controls needed to run service.
+              </p>
+              <div className="cp-inline-actions">
+                <a href="https://caffeprimofirle.com.au/" target="_blank" rel="noreferrer" className="textlink">
+                  Visit the live venue <IconArrowRight />
+                </a>
+                <Link to="/live" className="textlink">View the full project</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="cp-case-study__screens">
+            <ProjectScreen
+              src="/live/ordering-mobile.webp"
+              alt="Mobile customer ordering menu for Caffe Primo Firle"
+              label="Direct ordering"
+            />
+            <ProjectScreen
+              className="cp-screen--wide"
+              src="/live/staff-orders.webp"
+              alt="Staff order management screen for Caffe Primo Firle"
+              label="Order operations"
+            />
+            <ProjectScreen
+              className="cp-screen--wide"
+              src="/live/admin-analytics.webp"
+              alt="Owner analytics dashboard for Caffe Primo Firle"
+              label="Owner dashboard"
+            />
+          </div>
+
+          <div className="cp-case-study__facts">
+            <div><strong>100+</strong><span>menu items and modifiers</span></div>
+            <div><strong>5</strong><span>connected customer and team surfaces</span></div>
+            <div><strong>$0</strong><span>CentralPass marketplace commission</span></div>
+            <p>Payment processing, delivery and other third-party service fees may still apply.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section cp-outcomes" aria-labelledby="outcomes-title">
         <div className="container">
           <div className="section-head section-head--split">
             <div>
-              <span className="eyebrow">Built for independent venues</span>
-              <h2>Fewer moving parts, and less to keep track of</h2>
+              <span className="eyebrow">Why venues come to us</span>
+              <h2 id="outcomes-title">Less software patchwork. More control.</h2>
             </div>
             <p>
-              CentralPass replaces the disconnected hand-offs that slow service,
-              lose customer context and make simple updates harder than they should be.
+              The goal is not to give your team more tools. It is to connect the
+              customer experience and daily operation so fewer things fall between systems.
             </p>
           </div>
-          <div className="benefit-grid">
-            {BENEFITS.map(({ Icon, title, body }) => (
-              <Reveal className="benefit-card" key={title}>
-                <span className="benefit-card__icon"><Icon /></span>
+          <div className="cp-outcome-grid">
+            {OUTCOMES.map(({ Icon, title, body }, index) => (
+              <Reveal className="cp-outcome" key={title}>
+                <span className="cp-outcome__number">0{index + 1}</span>
+                <Icon />
                 <h3>{title}</h3>
                 <p>{body}</p>
               </Reveal>
@@ -165,118 +210,75 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section custom-build">
-        <div className="container custom-build__grid">
-          <Reveal className="custom-build__copy">
-            <span className="eyebrow">Your venue is the brief</span>
-            <h2>Not on the feature list? Ask us to build it.</h2>
+      <section className="section cp-modules" aria-labelledby="modules-title">
+        <div className="container cp-modules__layout">
+          <div className="cp-modules__intro">
+            <span className="eyebrow">A connected starting point</span>
+            <h2 id="modules-title">Choose what you need. Add what is missing.</h2>
             <p>
-              CentralPass is not a locked product catalogue. Every customer gets a
-              bespoke design and build. If your venue needs a capability we do not
-              currently offer, bring it to the discovery session and we will scope
-              the practical way to make it part of your system.
+              Start with proven CentralPass capabilities, then adapt the system
+              to your brand, service model and the workflows unique to your venue.
             </p>
-            <Link to="/contact" className="textlink">
-              Tell us what you need <IconArrowRight />
+            <Link to="/platform" className="btn btn-dark">
+              Explore the platform <IconArrowRight />
             </Link>
-          </Reveal>
-
-          <Reveal className="build-brief">
-            <div className="build-brief__top">
-              <div>
-                <span className="build-brief__label">Build brief</span>
-                <strong>CentralPass / your venue</strong>
+          </div>
+          <div className="cp-module-list">
+            {MODULES.map(([Icon, title, body], index) => (
+              <div className="cp-module" key={title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <Icon />
+                <div><h3>{title}</h3><p>{body}</p></div>
               </div>
-              <span className="build-brief__status"><i /> Open</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section cp-process" aria-labelledby="process-title">
+        <div className="container">
+          <div className="cp-process__top">
+            <div>
+              <span className="eyebrow">Custom, without the mystery</span>
+              <h2 id="process-title">From the messy brief to a working service.</h2>
             </div>
-            <div className="build-brief__rows">
-              {BRIEF_ROWS.map(([title, body, type], index) => (
-                <div className="build-brief__row" key={title}>
-                  <span className="build-brief__num">0{index + 1}</span>
-                  <span><strong>{title}</strong><small>{body}</small></span>
-                  <em className={type === 'Custom' ? 'is-custom' : ''}>{type}</em>
-                </div>
+            <p>
+              You do not need a technical specification. Bring the bottlenecks,
+              the manual workarounds and the outcome you want.
+            </p>
+          </div>
+          <ol className="cp-process__steps">
+            {PROCESS.map(([number, title, body]) => (
+              <li key={number}>
+                <span>{number}</span><h3>{title}</h3><p>{body}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="cp-commitments">
+            <div className="cp-commitments__lead">
+              <IconShield />
+              <span><small>What you can expect</small><strong>A commercial build with clear edges.</strong></span>
+            </div>
+            <div className="cp-commitments__list">
+              {COMMITMENTS.map(([title, body]) => (
+                <div key={title}><strong>{title}</strong><p>{body}</p></div>
               ))}
             </div>
-            <div className="build-brief__callout">
-              <IconSparkle />
-              <span><strong>No fixed ceiling</strong>New workflows can be designed into the build.</span>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section section--tight on-dark">
-        <div className="container">
-          <div className="stats-row">
-            <Reveal className="stat-tile">
-              <div className="stat-tile__num">100%</div>
-              <div className="stat-tile__label">of every order stays yours</div>
-            </Reveal>
-            <Reveal className="stat-tile">
-              <div className="stat-tile__num">$0</div>
-              <div className="stat-tile__label">marketplace commission taken</div>
-            </Reveal>
-            <Reveal className="stat-tile">
-              <div className="stat-tile__num">1:1</div>
-              <div className="stat-tile__label">discovery before we design</div>
-            </Reveal>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head center">
-            <span className="eyebrow">From brief to service</span>
-            <h2>You will always know what is being built, and why</h2>
-            <p>You will know what is being built, why it matters and what comes next.</p>
+      <section className="cp-final-cta">
+        <div className="container cp-final-cta__inner">
+          <div>
+            <span className="cp-kicker"><i /> Discovery starts with your venue</span>
+            <h2>Tell us what your ideal system should do.</h2>
+            <p>We will show you a live build, map the practical scope and put the proposed phases in writing.</p>
           </div>
-          <div className="steps launch-steps">
-            {LAUNCH_STEPS.map(([num, title, body]) => (
-              <Reveal className="step" key={num}>
-                <span className="step__num">{num}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </Reveal>
-            ))}
+          <div className="cp-final-cta__actions">
+            <Link to="/contact" className="btn btn-primary btn-lg">Start a project <IconArrowRight /></Link>
+            <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg"><IconPhone /> {BRAND.contactPhoneDisplay}</a>
           </div>
-        </div>
-      </section>
-
-      <section className="section section--tight">
-        <div className="container">
-          <Reveal className="cta-band cta-band--case-study">
-            <div className="cta-band__kicker">
-              <span className="status-dot" aria-hidden="true" /> Live in Adelaide
-            </div>
-            <h2>See it running in a real venue</h2>
-            <p>
-              Caffe Primo Firle runs a 100+ item pickup menu through CentralPass,
-              from customer order to kitchen board and printed docket.
-            </p>
-            <div className="cta-band__actions">
-              <Link to="/live" className="btn btn-primary btn-lg">Explore our venue work <IconArrowRight /></Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      <section className="section section--tight">
-        <div className="container">
-          <Reveal className="cta-band">
-            <span className="eyebrow">Bring us your ideal system</span>
-            <h2>Start with the messy version.</h2>
-            <p>Show us how your venue runs today, what is getting in the way and what you wish your software could do.</p>
-            <div className="cta-band__actions">
-              <Magnetic>
-                <Link to="/contact" className="btn btn-primary btn-lg">Plan my system <IconArrowRight /></Link>
-              </Magnetic>
-              <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg">
-                <IconPhone /> {BRAND.contactPhoneDisplay}
-              </a>
-            </div>
-          </Reveal>
         </div>
       </section>
     </main>

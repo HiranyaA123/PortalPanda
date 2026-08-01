@@ -11,12 +11,11 @@ export default function Footer() {
         <div className="footer__grid">
           <div>
             <Link to="/" className="logomark" aria-label={`${BRAND.name} home`}>
-              <Logo className="logomark__mark" />
-              {BRAND.name}
+              <Logo variant="lockup" className="footer__brand-lockup" />
             </Link>
             <p className="footer__desc">
-              Bespoke, commission-free venue software for independent restaurants
-              and cafes. Designed and built from scratch in Adelaide.
+              Custom customer and operations software for independent restaurants
+              and cafes. Designed, built and supported in Adelaide.
             </p>
           </div>
 
@@ -29,7 +28,7 @@ export default function Footer() {
 
           <div className="footer__col">
             <h4>Company</h4>
-            <Link to="/contact">Plan your build</Link>
+            <Link to="/contact">Start a project</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms</Link>
           </div>

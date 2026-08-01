@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Logo from './Logo.jsx';
@@ -17,6 +17,8 @@ const LINKS = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const burgerRef = useRef(null);
+  const menuRef = useRef(null);
   const location = useLocation();
 
   // Close the mobile menu whenever the route changes.
@@ -27,10 +29,30 @@ export default function Header() {
   useEffect(() => {
     if (!open) return undefined;
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        setOpen(false);
+        burgerRef.current?.focus();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusable = menuRef.current?.querySelectorAll('a, button:not([disabled])');
+      if (!focusable?.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.body.classList.add('menu-open');
     window.addEventListener('keydown', onKeyDown);
+    window.requestAnimationFrame(() => menuRef.current?.querySelector('a')?.focus());
     return () => {
       document.body.classList.remove('menu-open');
       window.removeEventListener('keydown', onKeyDown);
@@ -48,12 +70,11 @@ export default function Header() {
     <header className={`header ${scrolled ? 'header--scrolled' : ''}`}>
       <div className="container header__inner">
         <Link to="/" className="logomark" aria-label={`${BRAND.name} home`}>
-          <Logo className="logomark__mark" />
-          {BRAND.name}
+          <Logo className="logomark__brand" />
         </Link>
 
         <nav className={`nav ${open ? 'nav--open' : ''}`} aria-label="Primary">
-          <ul className="nav__links" id="primary-navigation">
+          <ul className="nav__links" id="primary-navigation" ref={menuRef}>
             {LINKS.map((l) => (
               <li key={l.to}>
                 <NavLink
@@ -67,16 +88,17 @@ export default function Header() {
             ))}
             <li>
               <Link to="/contact" className="btn btn-primary nav__cta-mobile">
-                Book a demo
+                Start a project
               </Link>
             </li>
           </ul>
 
           <div className="nav__right">
             <Link to="/contact" className="btn btn-primary nav__cta-desktop">
-              Book a demo
+              Start a project
             </Link>
             <button
+              ref={burgerRef}
               type="button"
               className="nav__burger"
               aria-label={open ? 'Close menu' : 'Open menu'}

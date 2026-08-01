@@ -1,57 +1,87 @@
-import { useEffect, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 
 // Interactive module explorer: a vertical list of modules; picking one swaps the
-// panel (copy + a live coded mockup). Gently auto-advances until the visitor
-// takes over, then stays put.
-export default function ModuleExplorer({ modules, autoMs = 4200 }) {
+// panel (copy + a coded mockup).
+//
+// Auto-advance was removed deliberately. It changed the panel every 4.2s while
+// people were still reading, shifted the page height by ~226px at mobile
+// widths, could not be paused by keyboard users, and could not be paused at all
+// on touch (no hover). Content now only changes when the visitor asks it to.
+//
+// Implements the WAI-ARIA tab pattern properly: tabs own their panel via
+// aria-controls, roving tabIndex keeps one stop in the tab order, and
+// arrow/Home/End keys move between tabs.
+export default function ModuleExplorer({ modules }) {
   const [active, setActive] = useState(0);
-  const [taken, setTaken] = useState(false);
-  const hovering = useRef(false);
+  const baseId = useId().replace(/:/g, '');
+  const tabRefs = useRef([]);
 
-  useEffect(() => {
-    if (taken) return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    const id = setInterval(() => {
-      if (!hovering.current) setActive((a) => (a + 1) % modules.length);
-    }, autoMs);
-    return () => clearInterval(id);
-  }, [taken, modules.length, autoMs]);
+  const tabId = (i) => `${baseId}-tab-${i}`;
+  const panelId = (i) => `${baseId}-panel-${i}`;
 
-  const pick = (i) => {
-    setTaken(true);
-    setActive(i);
+  const focusTab = (i) => {
+    const next = (i + modules.length) % modules.length;
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  };
+
+  const onKeyDown = (event) => {
+    const keys = {
+      ArrowDown: active + 1,
+      ArrowRight: active + 1,
+      ArrowUp: active - 1,
+      ArrowLeft: active - 1,
+      Home: 0,
+      End: modules.length - 1,
+    };
+    if (!(event.key in keys)) return;
+    event.preventDefault();
+    focusTab(keys[event.key]);
   };
 
   const m = modules[active];
   const Mock = m.Mock;
 
   return (
-    <div
-      className="explorer"
-      onMouseEnter={() => { hovering.current = true; }}
-      onMouseLeave={() => { hovering.current = false; }}
-    >
-      <div className="explorer__tabs" role="tablist" aria-label="Platform modules">
+    <div className="explorer">
+      <div
+        className="explorer__tabs"
+        role="tablist"
+        aria-label="Platform modules"
+        aria-orientation="vertical"
+        onKeyDown={onKeyDown}
+      >
         {modules.map((mod, i) => {
           const Icon = mod.Icon;
+          const selected = i === active;
           return (
             <button
               key={mod.id}
               type="button"
               role="tab"
-              aria-selected={i === active}
-              className={`explorer__tab ${i === active ? 'is-active' : ''}`}
-              onClick={() => pick(i)}
+              aria-label={mod.name}
+              id={tabId(i)}
+              aria-selected={selected}
+              aria-controls={panelId(i)}
+              tabIndex={selected ? 0 : -1}
+              ref={(el) => { tabRefs.current[i] = el; }}
+              className={`explorer__tab ${selected ? 'is-active' : ''}`}
+              onClick={() => setActive(i)}
             >
               <span className="explorer__tab-icon"><Icon /></span>
               <span className="explorer__tab-name">{mod.name}</span>
-              {i === active && !taken && <span className="explorer__progress" style={{ animationDuration: `${autoMs}ms` }} />}
             </button>
           );
         })}
       </div>
 
-      <div className="explorer__panel" key={active}>
+      <div
+        className="explorer__panel"
+        role="tabpanel"
+        id={panelId(active)}
+        aria-labelledby={tabId(active)}
+        tabIndex={0}
+      >
         <div className="explorer__copy">
           <span className="eyebrow">{m.eyebrow}</span>
           <h3>{m.heading}</h3>
