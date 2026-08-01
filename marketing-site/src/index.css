@@ -2210,6 +2210,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
    Module explorer
    ============================================================ */
 .explorer { display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: start; }
+.explorer__rail { min-width: 0; }
 .explorer__tabs { display: flex; flex-direction: column; gap: 8px; }
 .explorer__tab {
   position: relative;
@@ -2257,6 +2258,92 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .explorer__copy .feature-list li { font-size: 0.96rem; margin-bottom: 11px; }
 @keyframes panel-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
+.explorer__capability {
+  position: relative;
+  grid-column: 1 / -1;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto minmax(280px, 1.35fr) minmax(260px, 0.85fr) auto;
+  gap: 24px;
+  align-items: center;
+  margin-top: 2px;
+  padding: 28px 30px;
+  color: #fff;
+  border: 1px solid rgba(137, 139, 255, 0.45);
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 78% -40%, rgba(91, 93, 240, 0.7), transparent 42%),
+    linear-gradient(120deg, #11172b, #0b1020);
+  box-shadow: 0 18px 48px rgba(21, 29, 61, 0.16);
+}
+.explorer__capability::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  background-image:
+    linear-gradient(rgba(189, 194, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(189, 194, 255, 0.18) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(90deg, transparent, #000);
+}
+.explorer__capability > * { position: relative; z-index: 1; }
+.explorer__capability-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 12px 30px rgba(91, 93, 240, 0.32);
+}
+.explorer__capability-icon svg { width: 24px; height: 24px; }
+.explorer__capability-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #aeb0ff;
+  font-size: 0.7rem;
+  font-weight: 760;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.explorer__capability h3 { color: #fff; font-size: clamp(1.35rem, 2vw, 1.8rem); }
+.explorer__capability p { max-width: 62ch; margin-top: 6px; color: rgba(235, 238, 255, 0.7); font-size: 0.94rem; }
+.explorer__capability-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.explorer__capability-examples li {
+  padding: 7px 10px;
+  border: 1px solid rgba(205, 210, 255, 0.18);
+  border-radius: 999px;
+  color: rgba(244, 246, 255, 0.82);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+  font-weight: 620;
+}
+.explorer__capability-action {
+  min-width: 202px;
+  color: var(--ink);
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+.explorer__capability-action:hover { color: #fff; border-color: var(--accent); background: var(--accent); }
+
+@media (max-width: 1120px) {
+  .explorer__capability { grid-template-columns: auto 1fr auto; }
+  .explorer__capability-examples { grid-column: 2; }
+  .explorer__capability-action { grid-column: 3; grid-row: 1 / span 2; }
+}
+
 @media (max-width: 900px) {
   .explorer { grid-template-columns: 1fr; gap: 20px; }
   .explorer__tabs { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
@@ -2264,6 +2351,21 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   .explorer__tab-name { display: none; }
   .explorer__panel { grid-template-columns: 1fr; gap: 26px; }
   .explorer__media { order: -1; }
+  .explorer__capability {
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    padding: 24px;
+  }
+  .explorer__capability-examples,
+  .explorer__capability-action { grid-column: 1 / -1; }
+  .explorer__capability-action { grid-row: auto; width: 100%; min-width: 0; }
+}
+
+@media (max-width: 520px) {
+  .explorer__capability { grid-template-columns: 1fr; padding: 22px 20px; }
+  .explorer__capability-icon { width: 46px; height: 46px; }
+  .explorer__capability-examples,
+  .explorer__capability-action { grid-column: 1; }
 }
 
 /* Centered hero variant */

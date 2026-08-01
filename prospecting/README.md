@@ -25,9 +25,15 @@ Takes about a minute. Writes to `output/`:
  -180 shopping-centre tenancies dropped
  2001 kept
 
- 1035 sit in one of 62 strips
-  966 isolated (standalone suburban venues)
+ 1220 in 62 strips    - 6+ venues, a full session on foot
+  279 in 76 pockets   - 3-5 venues, a worthwhile stop
+  502 on their own    - tagged with nearest strip + distance
 ```
+
+Expect the totals to move by 1-2% between runs. Overpass mirrors sync from OSM
+at different intervals and disagree slightly on how many venues exist; the
+script sticks to one mirror per run so venues and shopping centres always come
+from the same snapshot, but which mirror is reachable varies.
 
 Venue types covered: restaurant, cafe, fast_food, pub, bar, ice_cream, bakery,
 pastry, deli, coffee, confectionery, chocolate, tea. Note that OSM tags bakeries
@@ -76,6 +82,22 @@ of the data. Anything over 60 venues is re-clustered tighter, which is what
 breaks the CBD into Peel / Leigh / Gouger / Waymouth rather than one 365-venue
 blob. Strips with no address tags at all are named by reverse-geocoding the
 centroid through Nominatim (cached in `.geocode-cache.json`).
+
+**Everything not in a strip** goes through two more passes, so nothing is left
+as an undifferentiated pile:
+
+1. *Absorb* — a venue within 400m of a strip joins that strip's session; you'd
+   walk past it anyway. This repeats with a decaying radius, because a venue
+   25m from a just-absorbed venue is obviously part of the same walk, and a
+   single pass never reconsiders it. The decay stops one strip chaining across
+   the suburbs in 400m hops.
+2. *Pocket* — what's left is re-clustered at 3+ venues. Three cafes on a
+   suburban corner is a real stop, just not a whole afternoon.
+
+Whatever is still alone gets a `nearest_strip` and `nearest_strip_m`, so a
+single reads as "600m off Prospect Road, easy detour" rather than "isolated".
+The `tier` column is `strip`, `pocket` or `single`, and the CSV is sorted so it
+reads top-to-bottom as descending priority.
 
 ## What this does NOT tell you
 
