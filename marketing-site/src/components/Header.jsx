@@ -60,8 +60,14 @@ export default function Header() {
   }, [open]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
+    let isScrolled = window.scrollY > 8;
+    const onScroll = () => {
+      const next = window.scrollY > 8;
+      if (next === isScrolled) return;
+      isScrolled = next;
+      setScrolled(next);
+    };
+    setScrolled(isScrolled);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);

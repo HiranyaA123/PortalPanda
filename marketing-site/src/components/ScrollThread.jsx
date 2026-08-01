@@ -138,53 +138,81 @@ function buildThreadPoints(nodes, home, pageWidth) {
     return { ...anchor, distance: closest?.distance ?? 0 };
   });
 
-  return { anchors: measuredAnchors, points: measured, total };
+  return { anchors: measuredAnchors, points: measured, total, compact };
 }
 
-function traceToDistance(context, points, distance) {
-  if (!points.length) return null;
-  context.beginPath();
-  context.moveTo(points[0].x, points[0].y);
-  let lead = points[0];
+function indexAtOrAfterDistance(points, distance) {
+  let low = 0;
+  let high = points.length - 1;
 
-  for (let index = 1; index < points.length; index += 1) {
-    const point = points[index];
-    const previous = points[index - 1];
-    if (point.distance <= distance) {
-      context.lineTo(point.x, point.y);
-      lead = point;
-      continue;
-    }
-
-    const segment = point.distance - previous.distance;
-    const ratio = segment > 0 ? clamp((distance - previous.distance) / segment, 0, 1) : 0;
-    lead = {
-      x: previous.x + (point.x - previous.x) * ratio,
-      y: previous.y + (point.y - previous.y) * ratio,
-      distance,
-    };
-    context.lineTo(lead.x, lead.y);
-    break;
+  while (low < high) {
+    const middle = Math.floor((low + high) / 2);
+    if (points[middle].distance < distance) low = middle + 1;
+    else high = middle;
   }
 
-  return lead;
+  return low;
+}
+
+function pointAtDistance(points, distance) {
+  if (!points.length) return null;
+  const target = clamp(distance, 0, points[points.length - 1].distance);
+  const index = indexAtOrAfterDistance(points, target);
+  if (index === 0) return { ...points[0], distance: target };
+
+  const point = points[index];
+  const previous = points[index - 1];
+  const segment = point.distance - previous.distance;
+  const ratio = segment > 0 ? clamp((target - previous.distance) / segment, 0, 1) : 0;
+
+  return {
+    x: previous.x + (point.x - previous.x) * ratio,
+    y: previous.y + (point.y - previous.y) * ratio,
+    distance: target,
+  };
+}
+
+function traceDistanceRange(context, points, startDistance, endDistance) {
+  if (!points.length || endDistance <= startDistance) return null;
+  const start = pointAtDistance(points, startDistance);
+  const end = pointAtDistance(points, endDistance);
+  if (!start || !end) return null;
+
+  context.beginPath();
+  context.moveTo(start.x, start.y);
+  const firstIndex = indexAtOrAfterDistance(points, startDistance);
+
+  for (let index = firstIndex; index < points.length; index += 1) {
+    const point = points[index];
+    if (point.distance <= startDistance) continue;
+    if (point.distance >= endDistance) break;
+    context.lineTo(point.x, point.y);
+  }
+
+  context.lineTo(end.x, end.y);
+  return end;
 }
 
 function distanceAtY(points, targetY) {
   if (!points.length || targetY <= points[0].y) return 0;
+  const last = points[points.length - 1];
+  if (targetY >= last.y) return last.distance;
 
-  for (let index = 1; index < points.length; index += 1) {
-    const point = points[index];
-    if (point.y < targetY) continue;
-    const previous = points[index - 1];
-    const verticalSpan = point.y - previous.y;
-    const ratio = verticalSpan > 0
-      ? clamp((targetY - previous.y) / verticalSpan, 0, 1)
-      : 0;
-    return previous.distance + (point.distance - previous.distance) * ratio;
+  let low = 1;
+  let high = points.length - 1;
+  while (low < high) {
+    const middle = Math.floor((low + high) / 2);
+    if (points[middle].y < targetY) low = middle + 1;
+    else high = middle;
   }
 
-  return points[points.length - 1].distance;
+  const point = points[low];
+  const previous = points[low - 1];
+  const verticalSpan = point.y - previous.y;
+  const ratio = verticalSpan > 0
+    ? clamp((targetY - previous.y) / verticalSpan, 0, 1)
+    : 0;
+  return previous.distance + (point.distance - previous.distance) * ratio;
 }
 
 export default function ScrollThread() {
@@ -199,30 +227,53 @@ export default function ScrollThread() {
 
     const context = canvas.getContext('2d');
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let thread = { anchors: [], points: [], total: 0 };
+    let thread = { anchors: [], points: [], total: 0, compact: false };
     let frame = 0;
     let resizeFrame = 0;
+    let resizeMustRebuild = false;
     let pixelRatio = 1;
     let targetReached = false;
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+    let documentHeight = 0;
+    let homePageTop = 0;
+    let threadGradient = null;
 
-    const resize = () => {
+    const resize = (force = false) => {
       const width = home.clientWidth;
       const height = home.scrollHeight;
-      const safeRatio = Math.min(16384 / Math.max(width, 1), 16384 / Math.max(height, 1));
-      pixelRatio = Math.max(0.75, Math.min(window.devicePixelRatio || 1, 1.25, safeRatio));
+      const nextPixelRatio = Math.min(window.devicePixelRatio || 1, 1);
+      homePageTop = home.getBoundingClientRect().top + window.scrollY;
+      documentHeight = document.documentElement.scrollHeight;
+
+      if (!force && width === canvasWidth && height === canvasHeight && nextPixelRatio === pixelRatio) {
+        draw();
+        return;
+      }
+
+      canvasWidth = width;
+      canvasHeight = height;
+      pixelRatio = nextPixelRatio;
       canvas.width = Math.round(width * pixelRatio);
       canvas.height = Math.round(height * pixelRatio);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       thread = buildThreadPoints(nodes, home, width);
+      const startY = thread.points[0]?.y ?? 0;
+      const endY = thread.points[thread.points.length - 1]?.y ?? height;
+      threadGradient = context.createLinearGradient(0, startY, width, endY);
+      threadGradient.addColorStop(0, '#7578ff');
+      threadGradient.addColorStop(0.55, '#8c8eff');
+      threadGradient.addColorStop(1, '#71e1e6');
       draw();
     };
 
-    const drawNodes = (activeDistance) => {
+    const drawNodes = (activeDistance, dirtyTop, dirtyBottom) => {
       thread.anchors.forEach((anchor) => {
         if (anchor.isTarget) return;
         if (anchor.distance > activeDistance + 12) return;
+        if (anchor.y < dirtyTop - 28 || anchor.y > dirtyBottom + 28) return;
 
         context.save();
         context.shadowBlur = 18;
@@ -242,20 +293,28 @@ export default function ScrollThread() {
 
     const draw = () => {
       frame = 0;
-      const width = window.innerWidth;
       const height = window.innerHeight;
       const scrollY = window.scrollY;
-      const canvasWidth = home.clientWidth;
-      const canvasHeight = home.scrollHeight;
-      context.clearRect(0, 0, canvasWidth, canvasHeight);
       if (!thread.points.length || !thread.total) return;
 
-      const startY = thread.points[0].y;
-      const endY = thread.points[thread.points.length - 1].y;
-      const homePageTop = home.getBoundingClientRect().top + scrollY;
+      // Only repaint the strip currently on screen. The previous version
+      // cleared and redrew the full multi-thousand-pixel canvas on every scroll
+      // frame, which was especially expensive on high-DPI phones.
+      const overscan = thread.compact ? 56 : 96;
+      const viewportTop = scrollY - homePageTop;
+      const dirtyTop = clamp(viewportTop - overscan, 0, canvasHeight);
+      const dirtyBottom = clamp(viewportTop + height + overscan, 0, canvasHeight);
+      const dirtyHeight = Math.max(0, dirtyBottom - dirtyTop);
+      if (!dirtyHeight) return;
+
+      context.clearRect(0, dirtyTop, canvasWidth, dirtyHeight);
+      context.save();
+      context.beginPath();
+      context.rect(0, dirtyTop, canvasWidth, dirtyHeight);
+      context.clip();
 
       const probe = scrollY + height * 0.5 - homePageTop;
-      const atPageEnd = scrollY + height >= document.documentElement.scrollHeight - 2;
+      const atPageEnd = scrollY + height >= documentHeight - 2;
       const activeDistance = reduceMotion || atPageEnd
         ? thread.total
         : distanceAtY(thread.points, probe);
@@ -266,83 +325,93 @@ export default function ScrollThread() {
         targetReached = true;
         target?.classList.add('is-thread-reached');
       }
-      const gradient = context.createLinearGradient(0, startY, canvasWidth, endY);
-      gradient.addColorStop(0, '#7578ff');
-      gradient.addColorStop(0.55, '#8c8eff');
-      gradient.addColorStop(1, '#71e1e6');
+      const visibleStartDistance = distanceAtY(thread.points, dirtyTop);
+      const visibleEndDistance = distanceAtY(thread.points, dirtyBottom);
 
       context.save();
       context.lineCap = 'round';
       context.lineJoin = 'round';
-      traceToDistance(context, thread.points, thread.total);
-      context.strokeStyle = 'rgba(112, 117, 240, 0.12)';
-      context.lineWidth = 1.2;
-      context.stroke();
+      const visiblePath = traceDistanceRange(context, thread.points, visibleStartDistance, visibleEndDistance);
+      if (visiblePath) {
+        context.strokeStyle = 'rgba(112, 117, 240, 0.12)';
+        context.lineWidth = 1.2;
+        context.stroke();
+      }
       context.restore();
 
       if (!reduceMotion && activeDistance > 0) {
-        context.save();
-        context.lineCap = 'round';
-        context.lineJoin = 'round';
-        const lead = traceToDistance(context, thread.points, activeDistance);
-        context.strokeStyle = 'rgba(104, 111, 255, 0.17)';
-        context.lineWidth = 13;
-        context.shadowBlur = 22;
-        context.shadowColor = '#676cff';
-        context.stroke();
+        const activeEndDistance = Math.min(activeDistance, visibleEndDistance);
+        const lead = pointAtDistance(thread.points, activeDistance);
 
-        context.shadowBlur = 8;
-        context.strokeStyle = gradient;
-        context.lineWidth = 2.4;
-        context.stroke();
-        context.restore();
+        if (activeEndDistance > visibleStartDistance) {
+          context.save();
+          context.lineCap = 'round';
+          context.lineJoin = 'round';
+          traceDistanceRange(context, thread.points, visibleStartDistance, activeEndDistance);
+          context.strokeStyle = 'rgba(104, 111, 255, 0.17)';
+          context.lineWidth = 13;
+          context.shadowBlur = thread.compact ? 12 : 18;
+          context.shadowColor = '#676cff';
+          context.stroke();
+
+          context.shadowBlur = thread.compact ? 4 : 7;
+          context.strokeStyle = threadGradient;
+          context.lineWidth = 2.4;
+          context.stroke();
+          context.restore();
+        }
 
         if (lead) {
           canvas.dataset.threadLeadViewportY = `${Math.round(lead.y + homePageTop - scrollY)}`;
-          const glow = context.createRadialGradient(lead.x, lead.y, 0, lead.x, lead.y, 19);
-          glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
-          glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
-          glow.addColorStop(1, 'rgba(91, 93, 240, 0)');
-          context.fillStyle = glow;
-          context.beginPath();
-          context.arc(lead.x, lead.y, 19, 0, Math.PI * 2);
-          context.fill();
+          if (lead.y >= dirtyTop - 20 && lead.y <= dirtyBottom + 20) {
+            const glow = context.createRadialGradient(lead.x, lead.y, 0, lead.x, lead.y, 19);
+            glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
+            glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
+            glow.addColorStop(1, 'rgba(91, 93, 240, 0)');
+            context.fillStyle = glow;
+            context.beginPath();
+            context.arc(lead.x, lead.y, 19, 0, Math.PI * 2);
+            context.fill();
+          }
         }
       } else {
         canvas.dataset.threadLeadViewportY = '';
       }
 
-      drawNodes(activeDistance);
+      drawNodes(activeDistance, dirtyTop, dirtyBottom);
+      context.restore();
     };
 
     const requestDraw = () => {
       if (!frame) frame = window.requestAnimationFrame(draw);
     };
 
-    const requestResize = () => {
+    const requestResize = (mustRebuild = false) => {
+      resizeMustRebuild ||= mustRebuild;
       if (resizeFrame) return;
       resizeFrame = window.requestAnimationFrame(() => {
         resizeFrame = 0;
-        resize();
+        const force = resizeMustRebuild;
+        resizeMustRebuild = false;
+        resize(force);
       });
     };
 
     const observer = typeof ResizeObserver === 'undefined'
       ? null
-      : new ResizeObserver(requestResize);
+      : new ResizeObserver(() => requestResize(true));
     observer?.observe(home);
     nodes.forEach((node) => observer?.observe(node));
-    window.addEventListener('resize', requestResize);
-    window.visualViewport?.addEventListener('resize', requestResize);
+    const onResize = () => requestResize(false);
+    window.addEventListener('resize', onResize);
     window.addEventListener('scroll', requestDraw, { passive: true });
-    resize();
+    resize(true);
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
       observer?.disconnect();
-      window.removeEventListener('resize', requestResize);
-      window.visualViewport?.removeEventListener('resize', requestResize);
+      window.removeEventListener('resize', onResize);
       window.removeEventListener('scroll', requestDraw);
       target?.classList.remove('is-thread-reached');
     };
