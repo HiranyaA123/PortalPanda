@@ -3412,7 +3412,17 @@ h1, h2, h3, h4 {
   box-shadow: var(--shadow-soft);
 }
 
-.cp-home { background: var(--bg); }
+.cp-home { position: relative; isolation: isolate; background: var(--bg); }
+.cp-home > section > .container { position: relative; z-index: 2; }
+.cp-scroll-thread {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
 .cp-kicker {
   display: inline-flex;
   align-items: center;
@@ -3652,6 +3662,35 @@ h1, h2, h3, h4 {
 .cp-final-cta h2 { max-width: 13ch; margin-top: 20px; color: #fff; font-size: clamp(2.8rem, 5vw, 5.1rem); }
 .cp-final-cta p { max-width: 55ch; margin-top: 22px; color: rgba(235, 238, 255, 0.65); }
 .cp-final-cta__actions { display: flex; flex-direction: column; gap: 12px; }
+.cp-final-cta .btn-primary[data-scroll-thread='target'] {
+  position: relative;
+  isolation: isolate;
+}
+.cp-final-cta .btn-primary[data-scroll-thread='target']::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid rgba(132, 236, 240, 0);
+  border-radius: inherit;
+}
+.cp-final-cta .btn-primary.is-thread-reached {
+  animation: cp-thread-cta-arrive 0.95s var(--ease) both;
+}
+.cp-final-cta .btn-primary.is-thread-reached::after {
+  animation: cp-thread-cta-ring 1.05s var(--ease) both;
+}
+@keyframes cp-thread-cta-arrive {
+  0% { box-shadow: 0 10px 28px rgba(91, 93, 240, 0.22); }
+  48% { box-shadow: 0 0 0 2px rgba(117, 228, 232, 0.5), 0 0 42px rgba(91, 93, 240, 0.58); }
+  100% { box-shadow: 0 12px 34px rgba(91, 93, 240, 0.34); }
+}
+@keyframes cp-thread-cta-ring {
+  0% { opacity: 0; transform: scale(0.985); }
+  45% { opacity: 1; transform: scale(1.018); border-color: rgba(132, 236, 240, 0.72); }
+  100% { opacity: 0; transform: scale(1.035); border-color: rgba(132, 236, 240, 0); }
+}
 
 .field__optional { margin-left: 6px; color: var(--text-muted); font-size: 0.67rem; font-weight: 550; letter-spacing: 0.08em; text-transform: uppercase; }
 .contact-brief > strong { font-family: 'Instrument Sans', system-ui, sans-serif; font-weight: 720; }
@@ -3738,6 +3777,7 @@ h1, h2, h3, h4 {
   .cp-final-cta { padding: 72px 0; }
   .cp-final-cta__actions .btn { width: 100%; }
   .footer__brand-lockup { width: 280px; }
+  .cp-scroll-thread { opacity: 0.58; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3747,4 +3787,5 @@ h1, h2, h3, h4 {
   .cp-kicker i { animation: none; }
   .cp-screen--hero,
   .cp-screen--floating { transform: none; }
+  .cp-scroll-thread { opacity: 0.3; }
 }
