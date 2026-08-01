@@ -2,18 +2,8 @@ import { useEffect, useRef } from 'react';
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-const pointOnCurve = (start, end, t) => {
+const pointOnCurve = (start, controlOne, controlTwo, end, t) => {
   const inverse = 1 - t;
-  const deltaX = end.x - start.x;
-  const deltaY = end.y - start.y;
-  const controlOne = {
-    x: start.x + deltaX * 0.18,
-    y: start.y + deltaY * 0.34,
-  };
-  const controlTwo = {
-    x: end.x - deltaX * 0.24,
-    y: start.y + deltaY * 0.7,
-  };
 
   return {
     x: inverse ** 3 * start.x
@@ -59,14 +49,48 @@ function buildThreadPoints(nodes, home, pageWidth) {
     };
   });
 
+  // Route through alternating outer waypoints. The labels remain exact anchors,
+  // while these stable page-local guides restore the large cross-page sweeps.
+  const routeInset = compact ? 22 : clamp(pageWidth * 0.07, 72, 168);
   const points = [];
+  const appendCurve = (start, controlOne, controlTwo, end) => {
+    for (let step = 0; step <= 46; step += 1) {
+      if (points.length && step === 0) continue;
+      const point = pointOnCurve(start, controlOne, controlTwo, end, step / 46);
+      points.push({
+        x: clamp(point.x, edgeInset, pageWidth - edgeInset),
+        y: point.y,
+      });
+    }
+  };
+
   anchors.forEach((anchor, index) => {
     if (index === anchors.length - 1) return;
     const next = anchors[index + 1];
-    for (let step = 0; step <= 72; step += 1) {
-      if (index > 0 && step === 0) continue;
-      points.push(pointOnCurve(anchor, next, step / 72));
-    }
+    const routeRight = index % 2 === 0;
+    const verticalSpan = next.y - anchor.y;
+    const route = {
+      x: routeRight ? pageWidth - routeInset : routeInset,
+      y: anchor.y + verticalSpan * 0.5,
+    };
+    const bend = verticalSpan * 0.2;
+    const finalSegment = index === anchors.length - 2;
+
+    appendCurve(
+      anchor,
+      { x: anchor.x, y: anchor.y + bend },
+      { x: route.x, y: route.y - bend },
+      route,
+    );
+    appendCurve(
+      route,
+      { x: route.x, y: route.y + bend },
+      {
+        x: finalSegment ? next.x + (route.x - next.x) * 0.34 : next.x,
+        y: next.y - bend,
+      },
+      next,
+    );
   });
 
   let total = 0;
@@ -78,7 +102,15 @@ function buildThreadPoints(nodes, home, pageWidth) {
     return { ...point, distance: total };
   });
 
-  return { anchors, points: measured, total };
+  const measuredAnchors = anchors.map((anchor) => {
+    const closest = measured.reduce((best, point) => (
+      Math.hypot(point.x - anchor.x, point.y - anchor.y)
+        < Math.hypot(best.x - anchor.x, best.y - anchor.y) ? point : best
+    ), measured[0]);
+    return { ...anchor, distance: closest?.distance ?? 0 };
+  });
+
+  return { anchors: measuredAnchors, points: measured, total };
 }
 
 function traceToDistance(context, points, distance) {
@@ -145,10 +177,7 @@ export default function ScrollThread() {
     const drawNodes = (activeDistance) => {
       thread.anchors.forEach((anchor) => {
         if (anchor.isTarget) return;
-        const closest = thread.points.reduce((best, point) => (
-          Math.abs(point.y - anchor.y) < Math.abs(best.y - anchor.y) ? point : best
-        ), thread.points[0]);
-        if (!closest || closest.distance > activeDistance + 12) return;
+        if (anchor.distance > activeDistance + 12) return;
 
         context.save();
         context.shadowBlur = 18;
