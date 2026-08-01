@@ -1,6 +1,11 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconArrowRight, IconSparkle } from './icons.jsx';
+
+// Mirrors the 900px breakpoint in index.css, where .explorer__tabs flips from a
+// vertical column to a horizontal scroller. aria-orientation must follow the
+// axis the user actually sees, or screen readers advertise the wrong keys.
+const HORIZONTAL_QUERY = '(max-width: 900px)';
 
 // Interactive module explorer: a vertical list of modules; picking one swaps the
 // panel (copy + a coded mockup).
@@ -15,8 +20,38 @@ import { IconArrowRight, IconSparkle } from './icons.jsx';
 // arrow/Home/End keys move between tabs.
 export default function ModuleExplorer({ modules, capabilityExamples = [] }) {
   const [active, setActive] = useState(0);
+  const [isHorizontal, setIsHorizontal] = useState(false);
   const baseId = useId().replace(/:/g, '');
   const tabRefs = useRef([]);
+  const railRef = useRef(null);
+  const tabsRef = useRef(null);
+
+  useEffect(() => {
+    const query = window.matchMedia(HORIZONTAL_QUERY);
+    const sync = () => setIsHorizontal(query.matches);
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
+  // Drop the "more to the right" fade once there is nothing left to scroll to.
+  useEffect(() => {
+    const tabs = tabsRef.current;
+    const rail = railRef.current;
+    if (!tabs || !rail) return undefined;
+
+    const sync = () => {
+      const atEnd = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 4;
+      rail.classList.toggle('is-scroll-end', atEnd);
+    };
+    sync();
+    tabs.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    return () => {
+      tabs.removeEventListener('scroll', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, [isHorizontal]);
 
   const tabId = (i) => `${baseId}-tab-${i}`;
   const panelId = (i) => `${baseId}-panel-${i}`;
@@ -46,12 +81,13 @@ export default function ModuleExplorer({ modules, capabilityExamples = [] }) {
 
   return (
     <div className="explorer">
-      <div className="explorer__rail">
+      <div className="explorer__rail" ref={railRef}>
         <div
           className="explorer__tabs"
+          ref={tabsRef}
           role="tablist"
           aria-label="Platform modules"
-          aria-orientation="vertical"
+          aria-orientation={isHorizontal ? 'horizontal' : 'vertical'}
           onKeyDown={onKeyDown}
         >
           {modules.map((mod, i) => {

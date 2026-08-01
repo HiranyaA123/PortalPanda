@@ -6,6 +6,16 @@ import postcss from 'postcss';
 
 const traverse = traverseModule.default || traverseModule;
 const fix = process.argv.includes('--fix');
+
+// Classes that are real but that no static scan can be trusted to prove are
+// real - state flags toggled at runtime, and anything a future refactor might
+// express in a way the AST walker below does not model. `--fix` will never
+// remove these. Add to this list rather than loosening the walker.
+const KEEP = new Set([
+  'reveal', 'is-visible', 'is-active', 'is-inactive', 'is-selected',
+  'is-wip', 'is-thread-reached', 'menu-open', 'nav--open', 'header--scrolled',
+]);
+
 const used = new Set();
 const dynamicPrefixes = new Set();
 const sourceStrings = new Set();
@@ -58,7 +68,15 @@ function collectExpression(node) {
     collectExpression(node.right);
     return;
   }
-  if (node.type === 'CallExpression') node.arguments.forEach(collectExpression);
+  if (node.type === 'CallExpression') {
+    // `cls`.trim() / value.concat(...) put the class source on the callee's
+    // object, not in the argument list. Missing this is what silently deleted
+    // the whole `.reveal` / `.is-visible` block: Reveal.jsx builds its class
+    // with a template literal followed by .trim(), so the literal was never
+    // scanned and every class only named inside it looked unused.
+    if (node.callee?.type === 'MemberExpression') collectExpression(node.callee.object);
+    node.arguments.forEach(collectExpression);
+  }
 }
 
 walk('src');
@@ -93,7 +111,8 @@ const cssPath = 'src/index.css';
 const original = readFileSync(cssPath, 'utf8');
 const root = postcss.parse(original, { from: cssPath });
 const classPattern = /\.([A-Za-z][A-Za-z0-9_-]*)/g;
-const isUsed = (name) => used.has(name)
+const isUsed = (name) => KEEP.has(name)
+  || used.has(name)
   || sourceStrings.has(name)
   || [...dynamicPrefixes].some((prefix) => name.startsWith(prefix));
 const defined = new Set();
@@ -131,6 +150,14 @@ const unusedBefore = [...defined].filter((name) => !isUsed(name)).sort();
 let removedRules = 0;
 
 if (fix) {
+  // Say out loud what is about to be deleted. A silent --fix is how the
+  // scroll-reveal block disappeared without anyone noticing.
+  if (unusedBefore.length) {
+    console.log(`\nRemoving rules for ${unusedBefore.length} unreferenced class(es):`);
+    console.log(unusedBefore.map((name) => `  .${name}`).join('\n'));
+    console.log('');
+  }
+
   root.walkRules((rule) => {
     const selectors = splitSelectors(rule.selector);
     const keptSelectors = selectors.filter((selector) => {

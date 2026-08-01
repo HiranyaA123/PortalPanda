@@ -35,7 +35,7 @@ export default function Reveal({ as: Tag = 'div', className = '', children, ...r
   return (
     <Tag
       ref={ref}
-      className={`reveal ${visible ? 'is-visible' : ''} ${className}`.trim()}
+      className={['reveal', visible && 'is-visible', className].filter(Boolean).join(' ')}
       {...rest}
     >
       {children}
