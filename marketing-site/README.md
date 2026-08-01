@@ -1,144 +1,89 @@
 # CentralPass marketing site
 
-Static marketing website for **CentralPass** — the all-in-one, commission-free
-system for independent restaurants and cafés: online ordering, bookings, a live
-kitchen and staff portal, receipt printing, email + SMS promotions and Uber
-Direct delivery, wired into one core. The home page centres on an interactive
-"web of data" (`src/components/SystemWeb.jsx`) — a CentralPass hub with live
-data flowing to six clickable system components.
+Commercial React website for CentralPass, a custom software studio for independent restaurants and cafes. The site presents the platform, pricing approach, live and in-development venue work, and the project enquiry flow.
 
-Built with **React 18 + Vite + React Router v6** and plain CSS. No backend, no
-CMS, no analytics. `vite build` produces a fully static site deployable to any
-static host.
+## Stack
 
-> **Renaming the business is a one-file edit.** Every brand-specific string and
-> contact detail comes from [`src/brand.js`](src/brand.js); the design tokens
-> (colours) live in the `:root` block of [`src/index.css`](src/index.css). See
-> [Changing the brand](#changing-the-brand).
+- React 18
+- Vite 5
+- React Router 6
+- Plain CSS
 
-## Requirements
-
-- Node 18+ and npm.
-
-## Install / run / build
+## Local development
 
 ```bash
-npm install      # install dependencies
-npm run dev      # start the dev server (http://localhost:5173)
-npm run build    # produce the static site in dist/
-npm run preview  # serve the built dist/ locally to check it
+npm install
+npm run dev
+npm run build
+npm run preview
 ```
+
+The production build is written to `dist/`.
 
 ## Project structure
 
-```
+```text
 src/
-  brand.js                 # single source of truth for name/contact/form/colours
-  seo.js                   # route metadata, canonicals, social tags and schema
-  index.css                # design tokens (:root) + all styles
-  main.jsx                 # app entry (BrowserRouter)
-  App.jsx                  # routes, page title, scroll-to-top
+  App.jsx                 Routes and shared page behaviour
+  brand.js                Business name, contact details and public URL
+  seo.js                  Route metadata and structured data
+  index.css               Shared design system and responsive styles
   components/
-    Header.jsx             # sticky header, multi-page nav, burger menu < 860px
-    Footer.jsx
-    Logo.jsx               # the CentralPass mark (hub + spokes, SVG)
-    SystemWeb.jsx          # the interactive "web of data" (home centrepiece)
-    ContactForm.jsx        # submits to the form endpoint; degrades gracefully
-    DeviceFrame.jsx        # phone/tablet/desktop frames + screenshot fallback
-    Reveal.jsx             # IntersectionObserver scroll-reveal
-    icons.jsx              # inline SVG icons (no icon library)
+    Header.jsx            Desktop and mobile navigation
+    Footer.jsx            Shared commercial footer
+    Logo.jsx              CentralPass logo assets
+    ModuleExplorer.jsx    Interactive Platform module selector
+    ScrollThread.jsx      Home-page scroll path
+    ContactForm.jsx       Project enquiry form
+    mocks.jsx             Product interface illustrations
+    motion.jsx            Magnetic CTA and count-up utilities
   pages/
-    Home.jsx               # "/"         — the flagship pitch
-    Platform.jsx           # "/platform" — the full six-module platform
-    Pricing.jsx            # "/pricing"  — plans + call-for-quote panel
-    Live.jsx               # "/live"     — Caffe Primo Firle (running today)
-    Contact.jsx            # "/contact"  — book-a-demo form
-    Legal.jsx              # privacy policy + website terms
-    NotFound.jsx           # accessible 404 page
-  assets/
-    screenshots/           # drop real screenshots here (see below)
+    Home.jsx
+    Platform.jsx
+    Pricing.jsx
+    Live.jsx
+    Contact.jsx
+    Legal.jsx
+    NotFound.jsx
 public/
-  centralpass-logo.svg/png # full reusable logo lockup
-  centralpass-mark.svg/png # standalone brand mark and app-icon sizes
-  og.png                   # social sharing card
-  robots.txt               # crawler rules
-  sitemap.xml              # production route index
-  site.webmanifest         # install/app metadata
+  brand/                   Header and footer logo assets
+  live/                    Venue screenshots
+  robots.txt
+  sitemap.xml
+  site.webmanifest
 ```
 
-## Changing the brand
+## Brand and contact details
 
-Edit **only** [`src/brand.js`](src/brand.js):
+Update `src/brand.js` when the business name, public URL, phone number, email address or location changes. Route metadata is defined in `src/seo.js`.
 
-```js
-export const BRAND = {
-  name: 'CentralPass',
-  tagline: 'Every system your venue runs, connected.',
-  pitch: '…',                          // one-liner used in hero + meta
-  contactEmail: 'you@example.com',
-  contactPhone: '0452145196',          // used for tel: links (no spaces)
-  contactPhoneDisplay: '0452 145 196', // shown to humans
-  formEndpoint: '',                    // see "Contact form endpoint" below
-  location: 'Adelaide, South Australia',
-  colors: { … },                       // reference copy of the brand palette
-};
+## CSS maintenance
+
+Report classes that are no longer referenced by the current React source:
+
+```bash
+npm run audit:css
 ```
 
-No component hardcodes the name, email or phone number. The **colours** used for
-styling live in the `:root` block of [`src/index.css`](src/index.css) — the
-"portal spectrum" is `--violet` / `--coral` / `--cyan`, composed into
-`--grad-brand`, `--grad-portal` and `--grad-text`. Change them there to re-theme
-the whole site.
+The `--fix` option removes fully unused class rules, orphaned animations and empty media queries:
 
-## Contact form endpoint
+```bash
+npm run audit:css:fix
+```
 
-The contact form on `/contact` submits with a plain `fetch` POST
-to `BRAND.formEndpoint`.
+Always run the production build and responsive browser checks after using `--fix`.
 
-1. Create a free form endpoint — e.g. a [Formspree](https://formspree.io) form.
-2. Paste its URL into `formEndpoint` in `src/brand.js`.
+## Deployment
 
-Behaviour:
+- Vercel SPA fallback: `vercel.json`
+- Static-host SPA fallback: `public/_redirects`
+- Sites configuration: `.openai/hosting.json`
 
-- **Endpoint set:** on submit, shows _"Thanks — we'll be in touch within one
-  business day."_ on success, or _"Something went wrong — email us at
-  {email}"_ on failure.
-- **Endpoint blank (default):** the form still renders and validates, but
-  submitting shows the fallback message pointing at the email and phone. It
-  never throws.
+Build command: `npm run build`
+Publish directory: `dist/`
 
-The email and phone are also rendered as clickable `mailto:` / `tel:` links
-beside the form as a fallback path.
+## Supporting assets
 
-## Swapping in real screenshots
+Reusable logo exports and business-card artwork are retained under `output/`. Generated browser profiles, temporary test captures and export logs are intentionally ignored and should not be committed.
 
-Placeholders are shown until real images exist. To use real screenshots, drop
-files into [`src/assets/screenshots/`](src/assets/screenshots/) using the exact
-filenames documented in
-[`src/assets/screenshots/README.md`](src/assets/screenshots/README.md)
-(`customer-menu-phone.png`, `kitchen-board-tablet.png`, etc.). They're picked up
-automatically — no code change needed.
-
-## Deploying (SPA fallback)
-
-This is a client-side–routed single-page app, so the host must serve
-`index.html` for unknown paths (otherwise a direct load of `/case-study`
-404s). Config for the common hosts is included:
-
-- **Netlify / Cloudflare Pages:** [`public/_redirects`](public/_redirects)
-  (`/* /index.html 200`).
-- **Vercel:** [`vercel.json`](vercel.json) rewrites all paths to `/index.html`.
-- **Other hosts:** configure a catch-all rewrite to `/index.html`.
-
-Build command: `npm run build`. Publish directory: `dist/`.
-
-## Search, social and logo assets
-
-Route-specific titles, descriptions, canonical links, social tags and JSON-LD
-live in [`src/seo.js`](src/seo.js). The production hostname is set in
-[`src/brand.js`](src/brand.js) and is also used by `robots.txt` and
-`sitemap.xml`; update all three if the public domain changes.
-
-The reusable SVG/PNG logo files live in `public/`. Treat
-`public/centralpass-mark.svg` as the source-of-truth mark; the checked-in PNG,
-favicon and app-icon variants are exported from that supplied vector artwork.
+The current Gmail-compatible signature is `gmail-signature.html`. `WEBSITE_AUDIT.md` remains as the pre-redesign decision record.

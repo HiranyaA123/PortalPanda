@@ -36,35 +36,6 @@ export function Magnetic({ children, strength = 0.35, className = '', ...rest })
   );
 }
 
-// Tilt — 3D tilt toward the pointer for cards.
-export function Tilt({ children, max = 9, className = '', ...rest }) {
-  const ref = useRef(null);
-  const active = finePointer() && !reduced();
-
-  const onMove = (e) => {
-    if (!active || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    ref.current.style.transform = `perspective(900px) rotateX(${-py * max}deg) rotateY(${px * max}deg)`;
-  };
-  const reset = () => {
-    if (ref.current) ref.current.style.transform = '';
-  };
-
-  return (
-    <div
-      ref={ref}
-      className={`tilt ${className}`}
-      onMouseMove={onMove}
-      onMouseLeave={reset}
-      {...rest}
-    >
-      {children}
-    </div>
-  );
-}
-
 // CountUp — animates a number into view once it's on screen.
 //
 // The truthful final value is what lives in the DOM and what assistive tech

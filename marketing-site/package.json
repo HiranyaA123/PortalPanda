@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "postbuild": "node scripts/prepare-sites-build.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audit:css": "node scripts/audit-css-usage.mjs",
+    "audit:css:fix": "node scripts/audit-css-usage.mjs --fix"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -15,7 +17,10 @@
     "react-router-dom": "^6.26.2"
   },
   "devDependencies": {
+    "@babel/parser": "^7.29.7",
+    "@babel/traverse": "^7.29.7",
     "@vitejs/plugin-react": "^4.3.1",
+    "postcss": "^8.5.19",
     "vite": "^5.4.8"
   }
 }

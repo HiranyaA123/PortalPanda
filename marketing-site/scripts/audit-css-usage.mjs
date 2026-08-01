@@ -1,37 +1,179 @@
-// Dev utility: report which CSS class prefixes are still referenced from JSX,
-// so a design-system rewrite can drop dead blocks without deleting live styles.
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { parse } from '@babel/parser';
+import traverseModule from '@babel/traverse';
+import postcss from 'postcss';
 
+const traverse = traverseModule.default || traverseModule;
+const fix = process.argv.includes('--fix');
 const used = new Set();
+const dynamicPrefixes = new Set();
+const sourceStrings = new Set();
+const sourceFiles = [];
 
 function walk(dir) {
   for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    if (statSync(p).isDirectory()) { walk(p); continue; }
-    if (!/\.(jsx|js)$/.test(name)) continue;
-    const src = readFileSync(p, 'utf8');
-    // className="a b c" and className={`a b ${x}`}
-    for (const m of src.matchAll(/className=(?:"([^"]+)"|\{`([^`]+)`\})/g)) {
-      const raw = m[1] || m[2] || '';
-      raw.replace(/\$\{[^}]*\}/g, ' ').split(/\s+/).forEach((c) => c && used.add(c));
+    const path = join(dir, name);
+    if (statSync(path).isDirectory()) {
+      walk(path);
+    } else if (/\.(jsx|js)$/.test(name)) {
+      sourceFiles.push(path);
     }
-    // class names passed as plain strings (e.g. className={cond ? 'x' : 'y'})
-    for (const m of src.matchAll(/'([a-z][a-z0-9-]*(?:__|--)[a-z0-9-]+)'/gi)) used.add(m[1]);
   }
 }
-walk('src');
 
-const css = readFileSync('src/index.css', 'utf8');
-const defined = new Set();
-for (const m of css.matchAll(/\.([a-zA-Z][a-zA-Z0-9_-]*)/g)) defined.add(m[1]);
-
-const prefixes = ['ofd', 'device', 'ph', 'marquee', 'journey', 'stage', 'jv', 'printer',
-  'receipt', 'webz', 'mk', 'explorer', 'bento', 'cost', 'commitments', 'venue', 'live'];
-
-for (const p of prefixes) {
-  const def = [...defined].filter((c) => c === p || c.startsWith(`${p}-`) || c.startsWith(`${p}_`));
-  const live = def.filter((c) => used.has(c));
-  const verdict = live.length === 0 ? 'DEAD' : `live (${live.length}/${def.length})`;
-  console.log(`${p.padEnd(12)} ${String(def.length).padStart(3)} defined  ->  ${verdict}`);
+function addClasses(value) {
+  value
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter((token) => /^[A-Za-z][A-Za-z0-9_-]*$/.test(token))
+    .forEach((token) => used.add(token));
 }
+
+function collectExpression(node) {
+  if (!node) return;
+  if (node.type === 'StringLiteral') {
+    addClasses(node.value);
+    return;
+  }
+  if (node.type === 'TemplateLiteral') {
+    node.quasis.forEach((quasi, index) => {
+      const value = quasi.value.cooked || '';
+      addClasses(value);
+      if (index < node.expressions.length) {
+        const prefix = value.split(/\s+/).at(-1);
+        if (/^[A-Za-z][A-Za-z0-9_-]*--$/.test(prefix)) dynamicPrefixes.add(prefix);
+      }
+    });
+    node.expressions.forEach(collectExpression);
+    return;
+  }
+  if (node.type === 'ConditionalExpression') {
+    collectExpression(node.consequent);
+    collectExpression(node.alternate);
+    return;
+  }
+  if (node.type === 'LogicalExpression' || node.type === 'BinaryExpression') {
+    collectExpression(node.left);
+    collectExpression(node.right);
+    return;
+  }
+  if (node.type === 'CallExpression') node.arguments.forEach(collectExpression);
+}
+
+walk('src');
+for (const file of sourceFiles) {
+  const source = readFileSync(file, 'utf8');
+  const ast = parse(source, { sourceType: 'module', plugins: ['jsx'] });
+  traverse(ast, {
+    StringLiteral(path) {
+      const value = path.node.value.trim();
+      if (/^[A-Za-z][A-Za-z0-9_-]*$/.test(value)) sourceStrings.add(value);
+    },
+    JSXAttribute(path) {
+      if (path.node.name?.name !== 'className') return;
+      const value = path.node.value;
+      if (value?.type === 'StringLiteral') addClasses(value.value);
+      if (value?.type === 'JSXExpressionContainer') collectExpression(value.expression);
+    },
+    CallExpression(path) {
+      const callee = path.node.callee;
+      if (
+        callee?.type === 'MemberExpression'
+        && callee.object?.type === 'MemberExpression'
+        && callee.object.property?.name === 'classList'
+      ) {
+        path.node.arguments.forEach(collectExpression);
+      }
+    },
+  });
+}
+
+const cssPath = 'src/index.css';
+const original = readFileSync(cssPath, 'utf8');
+const root = postcss.parse(original, { from: cssPath });
+const classPattern = /\.([A-Za-z][A-Za-z0-9_-]*)/g;
+const isUsed = (name) => used.has(name)
+  || sourceStrings.has(name)
+  || [...dynamicPrefixes].some((prefix) => name.startsWith(prefix));
+const defined = new Set();
+
+function splitSelectors(selectorList) {
+  const selectors = [];
+  let start = 0;
+  let depth = 0;
+  let quote = '';
+
+  for (let index = 0; index < selectorList.length; index += 1) {
+    const character = selectorList[index];
+    if (quote) {
+      if (character === quote && selectorList[index - 1] !== '\\') quote = '';
+      continue;
+    }
+    if (character === '"' || character === "'") quote = character;
+    else if (character === '(' || character === '[') depth += 1;
+    else if (character === ')' || character === ']') depth = Math.max(0, depth - 1);
+    else if (character === ',' && depth === 0) {
+      selectors.push(selectorList.slice(start, index).trim());
+      start = index + 1;
+    }
+  }
+
+  selectors.push(selectorList.slice(start).trim());
+  return selectors.filter(Boolean);
+}
+
+root.walkRules((rule) => {
+  for (const match of rule.selector.matchAll(classPattern)) defined.add(match[1]);
+});
+
+const unusedBefore = [...defined].filter((name) => !isUsed(name)).sort();
+let removedRules = 0;
+
+if (fix) {
+  root.walkRules((rule) => {
+    const selectors = splitSelectors(rule.selector);
+    const keptSelectors = selectors.filter((selector) => {
+      const classes = [...selector.matchAll(classPattern)].map((match) => match[1]);
+      return !classes.length || classes.every(isUsed);
+    });
+    removedRules += selectors.length - keptSelectors.length;
+    if (!keptSelectors.length) {
+      rule.remove();
+    } else if (keptSelectors.length !== selectors.length) {
+      rule.selector = keptSelectors.join(',\n');
+    }
+  });
+
+  const animationNames = new Set();
+  root.walkDecls((declaration) => {
+    if (!/^animation(?:-name)?$/.test(declaration.prop)) return;
+    declaration.value
+      .split(/[\s,]+/)
+      .filter((token) => /^[A-Za-z][A-Za-z0-9_-]*$/.test(token))
+      .forEach((token) => animationNames.add(token));
+  });
+  root.walkAtRules((rule) => {
+    if (/^(?:-webkit-)?keyframes$/.test(rule.name) && !animationNames.has(rule.params)) {
+      rule.remove();
+    }
+  });
+
+  let removedEmpty = true;
+  while (removedEmpty) {
+    removedEmpty = false;
+    root.walkAtRules((rule) => {
+      if (!rule.nodes?.length) {
+        removedEmpty = true;
+        rule.remove();
+      }
+    });
+  }
+
+  writeFileSync(cssPath, root.toString(), 'utf8');
+}
+
+console.log(`CSS classes defined: ${defined.size}`);
+console.log(`Classes unreferenced by current source: ${unusedBefore.length}`);
+if (fix) console.log(`Legacy rules removed: ${removedRules}`);
+if (!fix && unusedBefore.length) console.log(unusedBefore.join('\n'));
