@@ -67,8 +67,36 @@ function buildThreadPoints(nodes, home, pageWidth) {
   anchors.forEach((anchor, index) => {
     if (index === anchors.length - 1) return;
     const next = anchors[index + 1];
-    const routeRight = index % 2 === 0;
     const verticalSpan = next.y - anchor.y;
+    if (compact) {
+      const startsLeft = anchor.x <= pageWidth / 2;
+      const nearEdge = startsLeft ? routeInset : pageWidth - routeInset;
+      const farEdge = startsLeft ? pageWidth - routeInset : routeInset;
+      const firstWaypoint = { x: farEdge, y: anchor.y + verticalSpan * 0.3 };
+      const secondWaypoint = { x: nearEdge, y: anchor.y + verticalSpan * 0.66 };
+      const bend = verticalSpan * 0.085;
+      appendCurve(
+        anchor,
+        { x: anchor.x, y: anchor.y + bend },
+        { x: firstWaypoint.x, y: firstWaypoint.y - bend },
+        firstWaypoint,
+      );
+      appendCurve(
+        firstWaypoint,
+        { x: firstWaypoint.x, y: firstWaypoint.y + bend },
+        { x: secondWaypoint.x, y: secondWaypoint.y - bend },
+        secondWaypoint,
+      );
+      appendCurve(
+        secondWaypoint,
+        { x: secondWaypoint.x, y: secondWaypoint.y + bend },
+        { x: next.x, y: next.y - bend },
+        next,
+      );
+      return;
+    }
+
+    const routeRight = index % 2 === 0;
     const route = {
       x: routeRight ? pageWidth - routeInset : routeInset,
       y: anchor.y + verticalSpan * 0.5,
@@ -142,6 +170,23 @@ function traceToDistance(context, points, distance) {
   return lead;
 }
 
+function distanceAtY(points, targetY) {
+  if (!points.length || targetY <= points[0].y) return 0;
+
+  for (let index = 1; index < points.length; index += 1) {
+    const point = points[index];
+    if (point.y < targetY) continue;
+    const previous = points[index - 1];
+    const verticalSpan = point.y - previous.y;
+    const ratio = verticalSpan > 0
+      ? clamp((targetY - previous.y) / verticalSpan, 0, 1)
+      : 0;
+    return previous.distance + (point.distance - previous.distance) * ratio;
+  }
+
+  return points[points.length - 1].distance;
+}
+
 export default function ScrollThread() {
   const canvasRef = useRef(null);
 
@@ -209,10 +254,15 @@ export default function ScrollThread() {
       const endY = thread.points[thread.points.length - 1].y;
       const homePageTop = home.getBoundingClientRect().top + scrollY;
 
-      const probe = scrollY + height * 0.74 - homePageTop;
-      const progress = clamp((probe - startY) / Math.max(endY - startY, 1), 0, 1);
-      const activeDistance = reduceMotion ? thread.total : thread.total * progress;
-      if (!reduceMotion && !targetReached && progress >= 0.985) {
+      const probe = scrollY + height * 0.5 - homePageTop;
+      const atPageEnd = scrollY + height >= document.documentElement.scrollHeight - 2;
+      const activeDistance = reduceMotion || atPageEnd
+        ? thread.total
+        : distanceAtY(thread.points, probe);
+      const progress = clamp(activeDistance / thread.total, 0, 1);
+      canvas.dataset.threadProbeViewportY = `${Math.round(height * 0.5)}`;
+      canvas.dataset.threadProgress = progress.toFixed(4);
+      if (!reduceMotion && !targetReached && activeDistance >= thread.total - 2) {
         targetReached = true;
         target?.classList.add('is-thread-reached');
       }
@@ -248,6 +298,7 @@ export default function ScrollThread() {
         context.restore();
 
         if (lead) {
+          canvas.dataset.threadLeadViewportY = `${Math.round(lead.y + homePageTop - scrollY)}`;
           const glow = context.createRadialGradient(lead.x, lead.y, 0, lead.x, lead.y, 19);
           glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
           glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
@@ -257,6 +308,8 @@ export default function ScrollThread() {
           context.arc(lead.x, lead.y, 19, 0, Math.PI * 2);
           context.fill();
         }
+      } else {
+        canvas.dataset.threadLeadViewportY = '';
       }
 
       drawNodes(activeDistance);
