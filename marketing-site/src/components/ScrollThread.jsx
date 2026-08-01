@@ -26,13 +26,17 @@ function buildThreadPoints(nodes, pageWidth) {
     const rect = node.getBoundingClientRect();
     const side = node.dataset.scrollThread === 'left' ? 'left' : 'right';
     const isTarget = node.dataset.scrollThread === 'target';
+    const mobileTrack = side === 'left'
+      ? clamp(pageWidth * 0.3, 92, pageWidth * 0.38)
+      : clamp(pageWidth * 0.78, pageWidth * 0.67, pageWidth - 52);
     return {
-      // A wide desktop weave would pass through too much copy on a phone.
-      // Keep a gentle right-edge wave there instead.
+      // On small screens, use the semantic left/right anchors to make a broad
+      // weave. The thread stays behind the content, but no longer resembles a
+      // fixed rail along the right edge.
       x: isTarget
-        ? rect.right - 4
+        ? rect.left + rect.width / 2
         : mobile
-          ? pageWidth - (index % 2 === 0 ? 28 : 50)
+          ? mobileTrack
           : side === 'left' ? sideInset : pageWidth - sideInset,
       y: isTarget
         ? rect.top + window.scrollY + rect.height / 2
