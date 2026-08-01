@@ -42,12 +42,11 @@ async function reverse(lat, lon) {
 // legitimately produces several separate strips; without the suburb they all
 // read "Magill Road" and you can't tell which session is which.
 export async function nameStrips(clusters) {
-  const needsLookup = clusters.filter((c) => !c.name);
-  const seen = new Map();
-  for (const c of clusters) if (c.name) seen.set(c.name, (seen.get(c.name) || 0) + 1);
-  const ambiguous = clusters.filter((c) => c.name && seen.get(c.name) > 1);
-
-  const todo = [...needsLookup, ...ambiguous];
+  // Look up anything with no name, and anything missing a suburb. Every strip
+  // ending up as "Road, Suburb" is what makes the duplicate check below safe:
+  // "Main Street, Hahndorf" and "Main Street, Mawson Lakes" are different
+  // roads that share a name, and must not be treated as one.
+  const todo = clusters.filter((c) => !c.name || !c.name.includes(','));
   const uncached = todo.filter((c) => !cache[`${c.lat.toFixed(4)},${c.lon.toFixed(4)}`]).length;
   if (todo.length) {
     console.log(`  naming ${todo.length} strips via Nominatim (${uncached} uncached, ~${uncached}s)...`);
@@ -71,21 +70,17 @@ export async function nameStrips(clusters) {
 // so the route plan ends up with two rows both reading "Waymouth Street,
 // Adelaide". Add which end of the road each one is.
 function disambiguate(clusters) {
-  // Group on the street portion, not the whole name. "Rundle Street" and
-  // "Rundle Street, Adelaide" aren't equal as strings but are the same road,
-  // and reading both in a route plan tells you nothing about which is which.
-  const road = (name) => name.split(',')[0].trim().toLowerCase();
+  // Safe to group on the full name now that every strip carries its suburb:
+  // a collision here means the same road in the same suburb, split into
+  // separate segments, which genuinely does need a which-end label.
   const byName = new Map();
   for (const c of clusters) {
-    const key = road(c.name);
-    if (!byName.has(key)) byName.set(key, []);
-    byName.get(key).push(c);
+    if (!byName.has(c.name)) byName.set(c.name, []);
+    byName.get(c.name).push(c);
   }
 
-  for (const [, list] of byName) {
+  for (const [name, list] of byName) {
     if (list.length < 2) continue;
-    // Use the longest name in the group as the base, so the suburb survives.
-    const name = list.map((c) => c.name).sort((a, b) => b.length - a.length)[0];
     const meanLat = list.reduce((s, c) => s + c.lat, 0) / list.length;
     const meanLon = list.reduce((s, c) => s + c.lon, 0) / list.length;
     const used = new Set();

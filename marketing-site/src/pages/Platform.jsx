@@ -26,7 +26,6 @@ import {
   IconRefresh,
   IconArrowRight,
   IconPhone,
-  IconSparkle,
 } from '../components/icons.jsx';
 
 const MODULES = [
@@ -157,37 +156,7 @@ export default function Platform() {
             <h2>Start with what you need</h2>
             <p>Explore six connected modules we already know well. Your final build can use some, all or go beyond them.</p>
           </div>
-          <ModuleExplorer modules={MODULES} />
-        </div>
-      </section>
-
-      <section className="section section--subtle custom-capabilities">
-        <div className="container">
-          <div className="section-head section-head--split">
-            <div>
-              <span className="eyebrow">Beyond the current platform</span>
-              <h2>Need something different? Put it in the brief.</h2>
-            </div>
-            <p>
-              You are not limited to this website's feature list. We will listen,
-              test the idea against the rest of your operation and clearly scope
-              what is practical before the build starts.
-            </p>
-          </div>
-          <div className="custom-capabilities__grid">
-            {CUSTOM_EXAMPLES.map(([title, body], index) => (
-              <Reveal className="capability-card" key={title}>
-                <span className="capability-card__num">0{index + 1}</span>
-                <IconSparkle />
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </Reveal>
-            ))}
-          </div>
-          <div className="custom-capabilities__action">
-            <p><strong>Your idea is not listed?</strong> Tell us what the outcome needs to be.</p>
-            <Link to="/contact" className="btn btn-primary">Request a capability <IconArrowRight /></Link>
-          </div>
+          <ModuleExplorer modules={MODULES} capabilityExamples={CUSTOM_EXAMPLES} />
         </div>
       </section>
 

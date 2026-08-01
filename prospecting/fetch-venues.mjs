@@ -33,12 +33,22 @@ const VENUE_COLS = ['tier', 'strip_rank', 'strip', 'strip_size', 'nearest_strip'
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Mirrors sync from OSM at different intervals, so they disagree by 1-2% on how
+// many venues exist. Harmless in itself, but taking venues from one mirror and
+// shopping centres from another mixes two snapshots - so once a mirror answers,
+// stick with it for the rest of the run.
+let preferred = null;
+
 async function overpass(query, label) {
   let lastErr;
+  const order = preferred
+    ? [preferred, ...OVERPASS_ENDPOINTS.filter((e) => e !== preferred)]
+    : OVERPASS_ENDPOINTS;
+
   // Two passes: a 429 means the mirror is busy right now, not broken, so it's
   // worth coming back to it after the other mirrors have been tried.
   for (let attempt = 1; attempt <= 2; attempt++) {
-    for (const endpoint of OVERPASS_ENDPOINTS) {
+    for (const endpoint of order) {
       try {
         process.stdout.write(`  ${label}: ${new URL(endpoint).host} ... `);
         const res = await fetch(endpoint, {
@@ -54,6 +64,7 @@ async function overpass(query, label) {
         // A mirror that only carries another region answers 200 with nothing.
         if (!json.elements?.length) throw new Error('0 elements - wrong region?');
         console.log(`${json.elements.length} elements`);
+        preferred = endpoint;
         return json.elements;
       } catch (err) {
         console.log(`failed (${err.message})`);
