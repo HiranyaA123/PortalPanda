@@ -141,7 +141,7 @@ export default function Platform() {
             <div className="hero__actions page-hero__actions">
               <Magnetic>
                 <Link to="/contact" className="btn btn-primary btn-lg">
-                  Plan my system <IconArrowRight />
+                  Start a project <IconArrowRight />
                 </Link>
               </Magnetic>
               <Link to="/pricing" className="btn btn-ghost btn-lg">How pricing works</Link>
@@ -217,7 +217,7 @@ export default function Platform() {
             <p>We will show you a live build, learn what your venue needs and map a practical system of your own.</p>
             <div className="cta-band__actions">
               <Magnetic>
-                <Link to="/contact" className="btn btn-primary btn-lg">Plan my system <IconArrowRight /></Link>
+                <Link to="/contact" className="btn btn-primary btn-lg">Start a project <IconArrowRight /></Link>
               </Magnetic>
               <a href={`tel:${BRAND.contactPhone}`} className="btn btn-ghost btn-lg">
                 <IconPhone /> {BRAND.contactPhoneDisplay}

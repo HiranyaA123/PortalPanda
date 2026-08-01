@@ -98,7 +98,7 @@ export default function Pricing() {
             </p>
             <div className="hero__actions page-hero__actions">
               <Link to="/contact" className="btn btn-primary btn-lg">
-                Discuss my brief <IconArrowRight />
+                Start a project <IconArrowRight />
               </Link>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function Pricing() {
             </a>
             <div className="cta-band__actions quote-panel__actions">
               <Link to="/contact" className="btn btn-primary btn-lg">
-                Send a build brief <IconArrowRight />
+                Start a project <IconArrowRight />
               </Link>
             </div>
           </Reveal>

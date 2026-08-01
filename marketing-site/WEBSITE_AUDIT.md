@@ -1,9 +1,11 @@
 # CentralPass website audit
 
+> **Implementation update, 1 August 2026:** This document records the pre-fix site reviewed during the audit. The homepage and shared commercial UI have since been rebuilt around the findings below using a modern SaaS visual system, earlier real-product proof, clearer project language, output-folder logo assets, and stronger mobile/accessibility behaviour. It remains here as the decision record and before-state reference.
+
 **Audit date:** 1 August 2026  
 **Audited product:** the current local React/Vite redesign in this working tree  
 **Public comparison:** [centralpass.au](https://www.centralpass.au/)  
-**Purpose:** improve commercial credibility, homepage appeal, lead conversion, accessibility, and search readiness without turning CentralPass into a generic SaaS site
+**Purpose:** improve commercial credibility, homepage appeal, lead conversion, accessibility, and search readiness while retaining CentralPass's venue-specific context
 
 ## Executive verdict
 
@@ -522,4 +524,3 @@ Compare these by device and landing page. Do not claim that a visual change “c
 - No customer claims or permissions were independently verified.
 - Competitor numbers are their own published marketing claims.
 - A source/build/browser review is not a substitute for production Lighthouse, real-user Core Web Vitals, security testing, legal review, or observed conversion data.
-

@@ -56,7 +56,7 @@ export function applySeo(pathname) {
   };
   const canonicalPath = SEO[pathname] ? pathname : '/';
   const canonicalUrl = `${BRAND.siteUrl}${canonicalPath === '/' ? '/' : canonicalPath}`;
-  const socialImage = `${BRAND.siteUrl}/og.png`;
+  const socialImage = `${BRAND.siteUrl}/centralpass-og-saas.png`;
 
   document.title = entry.title;
   upsertMeta('name', 'description', entry.description);
