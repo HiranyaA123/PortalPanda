@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
 import ScrollThread from '../components/ScrollThread.jsx';
@@ -57,26 +58,37 @@ const COMMITMENTS = [
   ['Launch support', 'Real-service testing, team training and ongoing support after go-live.'],
 ];
 
-function ProjectScreen({ src, alt, label, className = '' }) {
+function ProjectScreen({ src, alt, label, className = '', isActive = false, onActivate }) {
+  const interactive = typeof onActivate === 'function';
+  const Tag = interactive ? 'button' : 'figure';
+
   return (
-    <figure className={`cp-screen ${className}`.trim()}>
+    <Tag
+      className={`cp-screen ${interactive ? 'cp-screen--interactive' : ''} ${isActive ? 'is-active' : 'is-inactive'} ${className}`.trim()}
+      type={interactive ? 'button' : undefined}
+      aria-label={interactive ? `Bring ${label.toLowerCase()} preview to the front` : undefined}
+      aria-pressed={interactive ? isActive : undefined}
+      onClick={onActivate}
+    >
       <div className="cp-screen__bar" aria-hidden="true">
         <span /><span /><span />
         <small>{label}</small>
       </div>
       <img src={src} alt={alt} loading="lazy" decoding="async" />
-    </figure>
+    </Tag>
   );
 }
 
 export default function Home() {
+  const [activeHeroScreen, setActiveHeroScreen] = useState('staff');
+
   return (
     <main id="main" className="cp-home">
       <ScrollThread />
       <section className="cp-hero">
         <div className="container cp-hero__grid">
           <div className="cp-hero__copy">
-            <span className="cp-kicker"><i /> Custom restaurant and cafe software</span>
+            <span className="cp-kicker" data-scroll-thread="left"><i /> Custom restaurant and cafe software</span>
             <h1>One custom system for your <em>whole venue.</em></h1>
             <p className="cp-hero__lead">
               CentralPass designs the website, direct ordering, kitchen, staff
@@ -99,12 +111,16 @@ export default function Home() {
           <div className="cp-hero__stage" aria-label="CentralPass work for Caffe Primo Firle">
             <ProjectScreen
               className="cp-screen--hero"
+              isActive={activeHeroScreen === 'customer'}
+              onActivate={() => setActiveHeroScreen('customer')}
               src="/live/venue-home.webp"
               alt="Caffe Primo Firle customer website designed and built by CentralPass"
               label="Customer website"
             />
             <ProjectScreen
               className="cp-screen--floating"
+              isActive={activeHeroScreen === 'staff'}
+              onActivate={() => setActiveHeroScreen('staff')}
               src="/live/staff-orders.webp"
               alt="Caffe Primo Firle live order board built by CentralPass"
               label="Staff operations"
@@ -136,11 +152,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-case-study" aria-labelledby="case-study-title" data-scroll-thread="right">
+      <section className="section cp-case-study" aria-labelledby="case-study-title">
         <div className="container">
           <div className="cp-case-study__head">
             <div>
-              <span className="eyebrow">Proof, not a product mock-up</span>
+              <span className="eyebrow" data-scroll-thread="right">Proof, not a product mock-up</span>
               <h2 id="case-study-title">A real venue running one connected build.</h2>
             </div>
             <div>
@@ -187,11 +203,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-outcomes" aria-labelledby="outcomes-title" data-scroll-thread="left">
+      <section className="section cp-outcomes" aria-labelledby="outcomes-title">
         <div className="container">
           <div className="section-head section-head--split">
             <div>
-              <span className="eyebrow">Why venues come to us</span>
+              <span className="eyebrow" data-scroll-thread="left">Why venues come to us</span>
               <h2 id="outcomes-title">Less software patchwork. More control.</h2>
             </div>
             <p>
@@ -212,10 +228,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-modules" aria-labelledby="modules-title" data-scroll-thread="right">
+      <section className="section cp-modules" aria-labelledby="modules-title">
         <div className="container cp-modules__layout">
           <div className="cp-modules__intro">
-            <span className="eyebrow">A connected starting point</span>
+            <span className="eyebrow" data-scroll-thread="right">A connected starting point</span>
             <h2 id="modules-title">Choose what you need. Add what is missing.</h2>
             <p>
               Start with proven CentralPass capabilities, then adapt the system
@@ -237,11 +253,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section cp-process" aria-labelledby="process-title" data-scroll-thread="left">
+      <section className="section cp-process" aria-labelledby="process-title">
         <div className="container">
           <div className="cp-process__top">
             <div>
-              <span className="eyebrow">Custom, without the mystery</span>
+              <span className="eyebrow" data-scroll-thread="left">Custom, without the mystery</span>
               <h2 id="process-title">From the messy brief to a working service.</h2>
             </div>
             <p>

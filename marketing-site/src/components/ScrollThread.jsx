@@ -4,8 +4,16 @@ const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
 const pointOnCurve = (start, end, t) => {
   const inverse = 1 - t;
-  const controlOne = { x: start.x, y: start.y + (end.y - start.y) * 0.42 };
-  const controlTwo = { x: end.x, y: start.y + (end.y - start.y) * 0.58 };
+  const deltaX = end.x - start.x;
+  const deltaY = end.y - start.y;
+  const controlOne = {
+    x: start.x + deltaX * 0.18,
+    y: start.y + deltaY * 0.34,
+  };
+  const controlTwo = {
+    x: end.x - deltaX * 0.24,
+    y: start.y + deltaY * 0.7,
+  };
 
   return {
     x: inverse ** 3 * start.x
@@ -19,28 +27,35 @@ const pointOnCurve = (start, end, t) => {
   };
 };
 
-function buildThreadPoints(nodes, pageWidth) {
-  const mobile = pageWidth <= 640;
-  const sideInset = clamp(pageWidth * 0.075, 70, 118);
-  const anchors = nodes.map((node, index) => {
+function buildThreadPoints(nodes, home, pageWidth) {
+  const compact = pageWidth <= 640;
+  const homeRect = home.getBoundingClientRect();
+  const edgeInset = compact ? 12 : 24;
+  const anchorGap = compact ? 14 : 28;
+  const anchors = nodes.map((node) => {
     const rect = node.getBoundingClientRect();
+    const markerRect = node.querySelector('i')?.getBoundingClientRect();
     const side = node.dataset.scrollThread === 'left' ? 'left' : 'right';
     const isTarget = node.dataset.scrollThread === 'target';
-    const mobileTrack = side === 'left'
-      ? clamp(pageWidth * 0.3, 92, pageWidth * 0.38)
-      : clamp(pageWidth * 0.78, pageWidth * 0.67, pageWidth - 52);
+    const relativeLeft = rect.left - homeRect.left;
+    const relativeRight = rect.right - homeRect.left;
+
     return {
-      // On small screens, use the semantic left/right anchors to make a broad
-      // weave. The thread stays behind the content, but no longer resembles a
-      // fixed rail along the right edge.
-      x: isTarget
-        ? rect.left + rect.width / 2
-        : mobile
-          ? mobileTrack
-          : side === 'left' ? sideInset : pageWidth - sideInset,
-      y: isTarget
-        ? rect.top + window.scrollY + rect.height / 2
-        : rect.top + window.scrollY + clamp(rect.height * 0.3, 120, 290),
+      // Every point is tied to the real label/button, rather than a viewport
+      // percentage. That keeps the thread stable through zoom and reflow.
+      x: clamp(
+        isTarget
+          ? relativeLeft + rect.width / 2
+          : markerRect
+            ? markerRect.left - homeRect.left + markerRect.width / 2
+          : side === 'left' ? relativeLeft - anchorGap : relativeRight + anchorGap,
+        edgeInset,
+        pageWidth - edgeInset,
+      ),
+      y: markerRect
+        ? markerRect.top - homeRect.top + markerRect.height / 2
+        : rect.top - homeRect.top + rect.height / 2,
+      isTarget,
     };
   });
 
@@ -66,17 +81,17 @@ function buildThreadPoints(nodes, pageWidth) {
   return { anchors, points: measured, total };
 }
 
-function traceToDistance(context, points, distance, scrollY) {
+function traceToDistance(context, points, distance) {
   if (!points.length) return null;
   context.beginPath();
-  context.moveTo(points[0].x, points[0].y - scrollY);
+  context.moveTo(points[0].x, points[0].y);
   let lead = points[0];
 
   for (let index = 1; index < points.length; index += 1) {
     const point = points[index];
     const previous = points[index - 1];
     if (point.distance <= distance) {
-      context.lineTo(point.x, point.y - scrollY);
+      context.lineTo(point.x, point.y);
       lead = point;
       continue;
     }
@@ -88,7 +103,7 @@ function traceToDistance(context, points, distance, scrollY) {
       y: previous.y + (point.y - previous.y) * ratio,
       distance,
     };
-    context.lineTo(lead.x, lead.y - scrollY);
+    context.lineTo(lead.x, lead.y);
     break;
   }
 
@@ -109,39 +124,43 @@ export default function ScrollThread() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let thread = { anchors: [], points: [], total: 0 };
     let frame = 0;
+    let resizeFrame = 0;
     let pixelRatio = 1;
+    let targetReached = false;
 
     const resize = () => {
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(window.innerWidth * pixelRatio);
-      canvas.height = Math.round(window.innerHeight * pixelRatio);
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
+      const width = home.clientWidth;
+      const height = home.scrollHeight;
+      const safeRatio = Math.min(16384 / Math.max(width, 1), 16384 / Math.max(height, 1));
+      pixelRatio = Math.max(0.75, Math.min(window.devicePixelRatio || 1, 1.25, safeRatio));
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-      thread = buildThreadPoints(nodes, window.innerWidth);
+      thread = buildThreadPoints(nodes, home, width);
       draw();
     };
 
-    const drawNodes = (activeDistance, scrollY) => {
+    const drawNodes = (activeDistance) => {
       thread.anchors.forEach((anchor) => {
+        if (anchor.isTarget) return;
         const closest = thread.points.reduce((best, point) => (
           Math.abs(point.y - anchor.y) < Math.abs(best.y - anchor.y) ? point : best
         ), thread.points[0]);
         if (!closest || closest.distance > activeDistance + 12) return;
-        const y = anchor.y - scrollY;
-        if (y < -30 || y > window.innerHeight + 30) return;
 
         context.save();
         context.shadowBlur = 18;
         context.shadowColor = '#75e4e8';
         context.fillStyle = 'rgba(117, 228, 232, 0.22)';
         context.beginPath();
-        context.arc(anchor.x, y, 10, 0, Math.PI * 2);
+        context.arc(anchor.x, anchor.y, 10, 0, Math.PI * 2);
         context.fill();
         context.shadowBlur = 0;
         context.fillStyle = '#b9f8fa';
         context.beginPath();
-        context.arc(anchor.x, y, 3.25, 0, Math.PI * 2);
+        context.arc(anchor.x, anchor.y, 3.25, 0, Math.PI * 2);
         context.fill();
         context.restore();
       });
@@ -152,19 +171,23 @@ export default function ScrollThread() {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const scrollY = window.scrollY;
-      context.clearRect(0, 0, width, height);
+      const canvasWidth = home.clientWidth;
+      const canvasHeight = home.scrollHeight;
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
       if (!thread.points.length || !thread.total) return;
 
       const startY = thread.points[0].y;
       const endY = thread.points[thread.points.length - 1].y;
-      const homeRect = home.getBoundingClientRect();
-      if (homeRect.bottom < 0 || homeRect.top > height) return;
+      const homePageTop = home.getBoundingClientRect().top + scrollY;
 
-      const probe = scrollY + height * 0.74;
+      const probe = scrollY + height * 0.74 - homePageTop;
       const progress = clamp((probe - startY) / Math.max(endY - startY, 1), 0, 1);
       const activeDistance = reduceMotion ? thread.total : thread.total * progress;
-      target?.classList.toggle('is-thread-reached', !reduceMotion && progress >= 0.985);
-      const gradient = context.createLinearGradient(0, 0, width, height);
+      if (!reduceMotion && !targetReached && progress >= 0.985) {
+        targetReached = true;
+        target?.classList.add('is-thread-reached');
+      }
+      const gradient = context.createLinearGradient(0, startY, canvasWidth, endY);
       gradient.addColorStop(0, '#7578ff');
       gradient.addColorStop(0.55, '#8c8eff');
       gradient.addColorStop(1, '#71e1e6');
@@ -172,7 +195,7 @@ export default function ScrollThread() {
       context.save();
       context.lineCap = 'round';
       context.lineJoin = 'round';
-      traceToDistance(context, thread.points, thread.total, scrollY);
+      traceToDistance(context, thread.points, thread.total);
       context.strokeStyle = 'rgba(112, 117, 240, 0.12)';
       context.lineWidth = 1.2;
       context.stroke();
@@ -182,7 +205,7 @@ export default function ScrollThread() {
         context.save();
         context.lineCap = 'round';
         context.lineJoin = 'round';
-        const lead = traceToDistance(context, thread.points, activeDistance, scrollY);
+        const lead = traceToDistance(context, thread.points, activeDistance);
         context.strokeStyle = 'rgba(104, 111, 255, 0.17)';
         context.lineWidth = 13;
         context.shadowBlur = 22;
@@ -196,40 +219,48 @@ export default function ScrollThread() {
         context.restore();
 
         if (lead) {
-          const leadY = lead.y - scrollY;
-          if (leadY > -30 && leadY < height + 30) {
-            const glow = context.createRadialGradient(lead.x, leadY, 0, lead.x, leadY, 19);
-            glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
-            glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
-            glow.addColorStop(1, 'rgba(91, 93, 240, 0)');
-            context.fillStyle = glow;
-            context.beginPath();
-            context.arc(lead.x, leadY, 19, 0, Math.PI * 2);
-            context.fill();
-          }
+          const glow = context.createRadialGradient(lead.x, lead.y, 0, lead.x, lead.y, 19);
+          glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
+          glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
+          glow.addColorStop(1, 'rgba(91, 93, 240, 0)');
+          context.fillStyle = glow;
+          context.beginPath();
+          context.arc(lead.x, lead.y, 19, 0, Math.PI * 2);
+          context.fill();
         }
       }
 
-      drawNodes(activeDistance, scrollY);
+      drawNodes(activeDistance);
     };
 
     const requestDraw = () => {
       if (!frame) frame = window.requestAnimationFrame(draw);
     };
 
+    const requestResize = () => {
+      if (resizeFrame) return;
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = 0;
+        resize();
+      });
+    };
+
     const observer = typeof ResizeObserver === 'undefined'
       ? null
-      : new ResizeObserver(resize);
+      : new ResizeObserver(requestResize);
     observer?.observe(home);
     nodes.forEach((node) => observer?.observe(node));
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', requestResize);
+    window.visualViewport?.addEventListener('resize', requestResize);
     window.addEventListener('scroll', requestDraw, { passive: true });
     resize();
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
       observer?.disconnect();
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', requestResize);
+      window.visualViewport?.removeEventListener('resize', requestResize);
       window.removeEventListener('scroll', requestDraw);
       target?.classList.remove('is-thread-reached');
     };
