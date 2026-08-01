@@ -236,6 +236,16 @@ function PrimoProject() {
                 <span>Service operations</span>
                 <span>Owner controls</span>
               </div>
+              <div className="selected-project__actions">
+                <a
+                  href="https://caffeprimofirle.com.au/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-primary"
+                >
+                  Visit live website <IconArrowRight />
+                </a>
+              </div>
             </div>
 
             <a

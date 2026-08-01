@@ -139,5 +139,6 @@ live in [`src/seo.js`](src/seo.js). The production hostname is set in
 [`src/brand.js`](src/brand.js) and is also used by `robots.txt` and
 `sitemap.xml`; update all three if the public domain changes.
 
-The reusable SVG/PNG logo files live in `public/`. The PNG logo variants can be
-regenerated from the vector identity with `python scripts/render_logo.py`.
+The reusable SVG/PNG logo files live in `public/`. Treat
+`public/centralpass-mark.svg` as the source-of-truth mark; the checked-in PNG,
+favicon and app-icon variants are exported from that supplied vector artwork.
