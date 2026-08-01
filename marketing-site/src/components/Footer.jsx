@@ -20,21 +20,21 @@ export default function Footer() {
           </div>
 
           <div className="footer__col">
-            <h4>Product</h4>
+            <h3>Product</h3>
             <Link to="/platform">Platform</Link>
             <Link to="/pricing">Pricing</Link>
             <Link to="/live">Our work</Link>
           </div>
 
           <div className="footer__col">
-            <h4>Company</h4>
+            <h3>Company</h3>
             <Link to="/contact">Start a project</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms</Link>
           </div>
 
           <div className="footer__col">
-            <h4>Get in touch</h4>
+            <h3>Get in touch</h3>
             <a href={`tel:${BRAND.contactPhone}`}>{BRAND.contactPhoneDisplay}</a>
             <a className="footer__email" href={`mailto:${BRAND.contactEmail}`}>{BRAND.contactEmail}</a>
             <p>{BRAND.location}</p>

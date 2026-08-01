@@ -1,4 +1,5 @@
 import { BRAND } from './brand.js';
+import { PRICING_FAQ } from './content/faq.js';
 
 const DEFAULT_DESCRIPTION =
   'CentralPass builds custom restaurant and cafe websites, online ordering, CRM, bookings, kitchen and staff software for independent Australian venues.';
@@ -48,31 +49,46 @@ const upsertMeta = (attribute, key, content) => {
   node.setAttribute('content', content);
 };
 
-export function applySeo(pathname) {
+// Pure description of a route's metadata - no DOM access. Both the client-side
+// applySeo() below and the build-time prerenderer consume this, so a page's
+// rendered <head> and its prerendered <head> cannot drift apart.
+export function getSeoData(pathname) {
   const entry = SEO[pathname] || {
     title: `Page not found | ${BRAND.name}`,
     description: DEFAULT_DESCRIPTION,
     noIndex: true,
   };
   const canonicalPath = SEO[pathname] ? pathname : '/';
-  const canonicalUrl = `${BRAND.siteUrl}${canonicalPath === '/' ? '/' : canonicalPath}`;
-  const socialImage = `${BRAND.siteUrl}/centralpass-og-saas.png`;
 
-  document.title = entry.title;
-  upsertMeta('name', 'description', entry.description);
-  upsertMeta('name', 'robots', entry.noIndex ? 'noindex, nofollow' : 'index, follow');
+  return {
+    title: entry.title,
+    description: entry.description,
+    robots: entry.noIndex ? 'noindex, nofollow' : 'index, follow',
+    canonicalUrl: `${BRAND.siteUrl}${canonicalPath === '/' ? '/' : canonicalPath}`,
+    socialImage: `${BRAND.siteUrl}/centralpass-og-saas.png`,
+    socialImageAlt: 'CentralPass custom venue software for independent restaurants and cafes',
+    schema: buildSchema(pathname),
+  };
+}
+
+export function applySeo(pathname) {
+  const seo = getSeoData(pathname);
+
+  document.title = seo.title;
+  upsertMeta('name', 'description', seo.description);
+  upsertMeta('name', 'robots', seo.robots);
   upsertMeta('property', 'og:type', 'website');
   upsertMeta('property', 'og:locale', 'en_AU');
   upsertMeta('property', 'og:site_name', BRAND.name);
-  upsertMeta('property', 'og:title', entry.title);
-  upsertMeta('property', 'og:description', entry.description);
-  upsertMeta('property', 'og:url', canonicalUrl);
-  upsertMeta('property', 'og:image', socialImage);
-  upsertMeta('property', 'og:image:alt', 'CentralPass custom venue software for independent restaurants and cafes');
+  upsertMeta('property', 'og:title', seo.title);
+  upsertMeta('property', 'og:description', seo.description);
+  upsertMeta('property', 'og:url', seo.canonicalUrl);
+  upsertMeta('property', 'og:image', seo.socialImage);
+  upsertMeta('property', 'og:image:alt', seo.socialImageAlt);
   upsertMeta('name', 'twitter:card', 'summary_large_image');
-  upsertMeta('name', 'twitter:title', entry.title);
-  upsertMeta('name', 'twitter:description', entry.description);
-  upsertMeta('name', 'twitter:image', socialImage);
+  upsertMeta('name', 'twitter:title', seo.title);
+  upsertMeta('name', 'twitter:description', seo.description);
+  upsertMeta('name', 'twitter:image', seo.socialImage);
 
   let canonical = document.head.querySelector('link[rel="canonical"]');
   if (!canonical) {
@@ -80,7 +96,7 @@ export function applySeo(pathname) {
     canonical.setAttribute('rel', 'canonical');
     document.head.appendChild(canonical);
   }
-  canonical.setAttribute('href', canonicalUrl);
+  canonical.setAttribute('href', seo.canonicalUrl);
 
   let schema = document.head.querySelector('#centralpass-schema');
   if (!schema) {
@@ -89,17 +105,37 @@ export function applySeo(pathname) {
     schema.type = 'application/ld+json';
     document.head.appendChild(schema);
   }
-  schema.textContent = JSON.stringify({
+  schema.textContent = JSON.stringify(seo.schema);
+}
+
+function buildSchema(pathname) {
+  return {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Organization',
+        // ProfessionalService is a LocalBusiness subtype. Plain Organization
+        // carries no locality signal, which is the wrong shape for a business
+        // selling to venues in one city.
+        //
+        // Deliberately NOT included: geo, openingHours and priceRange. Real
+        // values for those are not known, and inventing them would be both
+        // dishonest and a structured-data violation. Add them only with actual
+        // figures - especially priceRange, which is exactly the thing the
+        // Pricing page declines to state.
+        '@type': ['Organization', 'ProfessionalService'],
         '@id': `${BRAND.siteUrl}/#organization`,
         name: BRAND.name,
         url: BRAND.siteUrl,
         logo: `${BRAND.siteUrl}/centralpass-mark-512.png`,
+        image: `${BRAND.siteUrl}/centralpass-og-saas.png`,
         email: BRAND.contactEmail,
         telephone: `+61${BRAND.contactPhone.slice(1)}`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Adelaide',
+          addressRegion: 'SA',
+          addressCountry: 'AU',
+        },
         areaServed: 'Australia',
       },
       {
@@ -121,6 +157,19 @@ export function applySeo(pathname) {
         description: DEFAULT_DESCRIPTION,
         provider: { '@id': `${BRAND.siteUrl}/#organization` },
       },
+      // Only emitted on /pricing, where these exact questions and answers are
+      // visible on the page. Google requires the marked-up answer to match the
+      // rendered one, so both come from src/content/faq.js.
+      ...(pathname === '/pricing' ? [{
+        '@type': 'FAQPage',
+        '@id': `${BRAND.siteUrl}/pricing#faq`,
+        inLanguage: 'en-AU',
+        mainEntity: PRICING_FAQ.map(({ q, a }) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      }] : []),
     ],
-  });
+  };
 }

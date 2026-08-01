@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import Reveal from '../components/Reveal.jsx';
+import Shot from '../components/Shot.jsx';
 import { Magnetic, CountUp } from '../components/motion.jsx';
 import { IconArrowRight, IconPhone, IconSparkle, IconStore } from '../components/icons.jsx';
 
@@ -168,7 +169,7 @@ function VenueCard({ venue, selected, onSelect }) {
       onClick={() => onSelect(venue.id)}
     >
       <span className={`venue-card__visual ${isWip ? 'is-wip' : ''}`}>
-        <img src={venue.cover} alt={venue.coverAlt} loading="lazy" decoding="async" />
+        <Shot src={venue.cover} alt={venue.coverAlt} sizes="(max-width: 760px) 92vw, 31vw" />
         {isWip && <span className="wip-watermark">Preview blurred</span>}
       </span>
       <span className="venue-card__body">
@@ -200,12 +201,11 @@ function ScreenshotCard({ screen, priority = false }) {
           <b>Open full image</b>
         </div>
         <div className="live-shot__image">
-          <img
+          <Shot
             src={screen.src}
             alt={screen.alt}
-            loading={priority ? 'eager' : 'lazy'}
-            fetchpriority={priority ? 'high' : 'auto'}
-            decoding="async"
+            priority={priority}
+            sizes="(max-width: 760px) 92vw, (max-width: 1100px) 46vw, 33vw"
           />
         </div>
         <div className="live-shot__caption">
@@ -260,12 +260,11 @@ function PrimoProject() {
                 <em>caffeprimofirle.com.au</em>
                 <b>Live build</b>
               </div>
-              <img
+              <Shot
                 src={CUSTOMER_SCREENS[0].src}
                 alt={CUSTOMER_SCREENS[0].alt}
-                loading="eager"
-                fetchpriority="high"
-                decoding="async"
+                priority
+                sizes="(max-width: 980px) 92vw, 52vw"
               />
             </a>
           </div>
@@ -401,7 +400,7 @@ function WorkInProgressProject({ venue }) {
                 <b>Private preview</b>
               </div>
               <div className="wip-shot__image">
-                <img src={screen.src} alt={screen.alt} loading="lazy" decoding="async" draggable="false" />
+                <Shot src={screen.src} alt={screen.alt} draggable="false" sizes="(max-width: 760px) 92vw, 46vw" />
                 <span className="wip-shot__overlay"><i /> Work in progress</span>
               </div>
               <div className="wip-shot__caption">
@@ -426,11 +425,27 @@ export default function Live() {
   const [activeVenueId, setActiveVenueId] = useState('primo');
   const location = useLocation();
   const activeVenue = VENUES.find((venue) => venue.id === activeVenueId) || VENUES[0];
+  const detailsRef = useRef(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     const venueId = VENUE_HASHES[location.hash];
     if (venueId) setActiveVenueId(venueId);
   }, [location.hash]);
+
+  // Switching venue swaps ~2,700 characters of content. This used to sit in an
+  // aria-live region, so the whole project section was read aloud in one
+  // uninterruptible burst. Instead, move focus to the top of the new content -
+  // the correct pattern for a user-initiated swap - and let the short live
+  // region below carry the announcement. Skipped on first render so arriving
+  // at the page does not yank focus out of the header.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    detailsRef.current?.focus({ preventScroll: true });
+  }, [activeVenueId]);
 
   return (
     <main id="main">
@@ -496,7 +511,14 @@ export default function Live() {
         </div>
       </section>
 
-      <div id="venue-project-details" className="venue-project-details" aria-live="polite">
+      <p className="sr-only" role="status">Now viewing {activeVenue.name}.</p>
+
+      <div
+        id="venue-project-details"
+        className="venue-project-details"
+        ref={detailsRef}
+        tabIndex={-1}
+      >
         {activeVenue.id === 'primo'
           ? <PrimoProject />
           : <WorkInProgressProject venue={activeVenue} />}

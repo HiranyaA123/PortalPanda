@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal.jsx';
+import Shot from '../components/Shot.jsx';
 import ScrollThread from '../components/ScrollThread.jsx';
 import {
   IconArrowRight,
@@ -58,13 +59,13 @@ const COMMITMENTS = [
   ['Launch support', 'Real-service testing, team training and ongoing support after go-live.'],
 ];
 
-function ProjectScreen({ src, alt, label, className = '', isActive = false, onActivate, priority = false }) {
+function ProjectScreen({ src, alt, label, className = '', isActive = false, onActivate, priority = false, sizes }) {
   const interactive = typeof onActivate === 'function';
   const Tag = interactive ? 'button' : 'figure';
 
   return (
     <Tag
-      className={`cp-screen ${interactive ? 'cp-screen--interactive' : ''} ${isActive ? 'is-active' : 'is-inactive'} ${className}`.trim()}
+      className={['cp-screen', interactive && 'cp-screen--interactive', isActive ? 'is-active' : 'is-inactive', className].filter(Boolean).join(' ')}
       type={interactive ? 'button' : undefined}
       aria-label={interactive ? `Bring ${label.toLowerCase()} preview to the front` : undefined}
       aria-pressed={interactive ? isActive : undefined}
@@ -74,13 +75,7 @@ function ProjectScreen({ src, alt, label, className = '', isActive = false, onAc
         <span /><span /><span />
         <small>{label}</small>
       </div>
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? 'eager' : 'lazy'}
-        fetchpriority={priority ? 'high' : 'auto'}
-        decoding="async"
-      />
+      <Shot src={src} alt={alt} sizes={sizes} priority={priority} />
     </Tag>
   );
 }
@@ -117,6 +112,7 @@ export default function Home() {
             <ProjectScreen
               className="cp-screen--hero"
               priority
+              sizes="(max-width: 900px) 96vw, 41vw"
               isActive={activeHeroScreen === 'customer'}
               onActivate={() => setActiveHeroScreen('customer')}
               src="/live/venue-home.webp"
@@ -126,6 +122,7 @@ export default function Home() {
             <ProjectScreen
               className="cp-screen--floating"
               priority
+              sizes="(max-width: 900px) 72vw, 28vw"
               isActive={activeHeroScreen === 'staff'}
               onActivate={() => setActiveHeroScreen('staff')}
               src="/live/staff-orders.webp"
@@ -186,18 +183,21 @@ export default function Home() {
               src="/live/ordering-mobile.webp"
               alt="Mobile customer ordering menu for Caffe Primo Firle"
               label="Direct ordering"
+              sizes="(max-width: 900px) 80vw, 14vw"
             />
             <ProjectScreen
               className="cp-screen--wide"
               src="/live/staff-orders.webp"
               alt="Staff order management screen for Caffe Primo Firle"
               label="Order operations"
+              sizes="(max-width: 900px) 80vw, 27vw"
             />
             <ProjectScreen
               className="cp-screen--wide"
               src="/live/admin-analytics.webp"
               alt="Owner analytics dashboard for Caffe Primo Firle"
               label="Owner dashboard"
+              sizes="(max-width: 900px) 80vw, 27vw"
             />
           </div>
 

@@ -77,6 +77,14 @@ main { padding-top: 73px; }
 
 img,
 svg { max-width: 100%; display: block; }
+/* Required now that images carry intrinsic width/height attributes. Without it,
+   max-width:100% shrinks the width while the height attribute stays fixed and
+   every image renders distorted. With it, the attributes only supply the
+   aspect ratio the browser needs to reserve space before decode (CLS).
+   Rules that deliberately set an explicit height - .live-shot__image img,
+   .venue-card__visual img, .live-hero__window > img - are more specific and
+   still win. */
+img { height: auto; }
 
 h1, h2, h3, h4 {
   margin: 0;
@@ -141,6 +149,23 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   transition: transform 0.18s ease;
 }
 .skip-link:focus { transform: translateY(0); }
+
+/* Announced by screen readers, invisible on screen. Used for short status
+   messages that should not also be rendered visually. */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* A container that only exists to receive programmatic focus should not draw
+   a ring - the heading inside it is what the user is being sent to. */
+.venue-project-details:focus { outline: none; }
 
 .on-dark {
   background: var(--ink);
@@ -807,11 +832,19 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   color: var(--text);
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
+/* Mouse/touch focus gets the subtle treatment; keyboard focus keeps the real
+   ring. The previous rule used a bare :focus with `outline: none`, which
+   overrode the global :focus-visible ring and left a 1px border colour change
+   as the only indicator on the site's one conversion surface. */
 .field input:focus,
 .field textarea:focus {
-  outline: none;
   border-color: var(--violet);
   background: var(--surface);
+}
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .field textarea { resize: vertical; min-height: 120px; }
 .hp-field { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -1245,7 +1278,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .footer__grid > * { min-width: 0; }
 .footer .logomark { color: #fff; }
 .footer__desc { color: rgba(255, 255, 255, 0.6); margin-top: 18px; max-width: 34ch; }
-.footer__col h4 {
+.footer__col h3 {
   font-family: 'Instrument Sans', sans-serif;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -1297,6 +1330,29 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 /* ============================================================
    Scroll reveal
    ============================================================ */
+/* Paired with components/Reveal.jsx, which toggles .is-visible via
+   IntersectionObserver. Both class names are pinned in the KEEP list in
+   scripts/audit-css-usage.mjs - do not let --fix strip them again. */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+/* If the observer never fires (no JS, old browser, failed hydration) the
+   content must still be readable rather than invisible. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
 
 /* ============================================================
    Responsive
@@ -1596,10 +1652,32 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 
 @media (max-width: 900px) {
   .explorer { grid-template-columns: 1fr; gap: 20px; }
+  /* The tab strip becomes a horizontal scroller here, and at 390px only ~2.5 of
+     the 6 modules fit. Without an affordance the remaining modules are simply
+     invisible, so a third of the product surface goes undiscovered. The fade
+     below signals "more to the right"; JS keeps aria-orientation in step with
+     the axis actually rendered. */
+  .explorer__rail { position: relative; }
+  .explorer__rail::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    width: 44px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), var(--bg) 78%);
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+  /* Hidden once the strip is scrolled to the end. */
+  .explorer__rail.is-scroll-end::after { opacity: 0; }
   .explorer__tabs {
     flex-direction: row;
     overflow-x: auto;
     padding: 2px 2px 8px;
+    /* Leaves a sliver of the next tab visible at the cut, so the strip reads as
+       scrollable even before the fade is noticed. */
+    padding-right: 40px;
     scroll-padding-inline: 2px;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
@@ -1972,18 +2050,22 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .cp-case-study__facts span { display: block; margin-top: 8px; color: var(--text-soft); font-size: 0.8rem; line-height: 1.35; }
 .cp-case-study__facts > p { display: flex; align-items: center; color: var(--text-muted); font-size: 0.73rem; line-height: 1.45; border-right: 0; }
 
-.cp-outcomes { color: #fff; background: linear-gradient(135deg, #5052e2, #6d5fe8 58%, #4e48c9); }
+/* Gradient darkened and text opacities raised to clear WCAG AA. The old ramp
+   peaked at #6d5fe8, against which the 0.7-opacity body copy measured 2.97:1
+   (AA needs 4.5:1). Contrast is governed by the LIGHTEST stop - #5049ce here -
+   so check any future colour change against that value, not the endpoints. */
+.cp-outcomes { color: #fff; background: linear-gradient(135deg, #4a45c8, #5049ce 58%, #423cb0); }
 .cp-outcomes h2,
 .cp-outcomes h3 { color: #fff; }
 .cp-outcomes .eyebrow { color: #c9f8fa; }
-.cp-outcomes .section-head p { color: rgba(244, 246, 255, 0.74); }
+.cp-outcomes .section-head p { color: rgba(244, 246, 255, 0.9); }
 .cp-outcome-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(239, 241, 255, 0.3); }
 .cp-outcome { min-height: 310px; padding: 30px; border-right: 1px solid rgba(239, 241, 255, 0.22); }
 .cp-outcome:last-child { border-right: 0; }
-.cp-outcome__number { color: rgba(239, 241, 255, 0.5); font-size: 0.68rem; letter-spacing: 0.14em; }
+.cp-outcome__number { color: rgba(239, 241, 255, 0.9); font-size: 0.68rem; letter-spacing: 0.14em; }
 .cp-outcome > svg { width: 31px; height: 31px; margin: 62px 0 20px; color: #c9f8fa; }
 .cp-outcome h3 { max-width: 15ch; font-size: 1.5rem; }
-.cp-outcome p { max-width: 35ch; margin-top: 14px; color: rgba(244, 246, 255, 0.7); font-size: 0.93rem; }
+.cp-outcome p { max-width: 35ch; margin-top: 14px; color: rgba(244, 246, 255, 0.88); font-size: 0.93rem; }
 
 .cp-modules { color: #fff; background: var(--ink); }
 .cp-modules__layout { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); gap: 92px; align-items: start; }
@@ -2194,3 +2276,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   .cp-screen--floating { transform: none; }
   .cp-scroll-thread { opacity: 0.3; }
 }
+
+
+

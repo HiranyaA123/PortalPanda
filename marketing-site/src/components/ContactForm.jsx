@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { BRAND } from '../brand.js';
 
-const EMPTY = { name: '', venue: '', phone: '', email: '', message: '', website: '' };
+const EMPTY = { name: '', venue: '', phone: '', email: '', message: '', cpHpCheck: '' };
 
 export default function ContactForm() {
   const [values, setValues] = useState(EMPTY);
@@ -13,7 +13,15 @@ export default function ContactForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (values.website) {
+    // Honeypot. A bot fills every field it finds; a human never sees this one.
+    // It is NOT named "website" any more - password managers and autofill
+    // extensions happily populate a field with that name even when it is
+    // visually clipped, which silently discarded a real enquiry while showing
+    // the visitor a success message. Log the rejection so a false positive is
+    // at least discoverable instead of invisible.
+    if (values.cpHpCheck) {
+      // eslint-disable-next-line no-console
+      console.warn('[CentralPass] Enquiry rejected by spam check.');
       setStatus('success');
       setValues(EMPTY);
       return;
@@ -56,14 +64,18 @@ export default function ContactForm() {
       ) : (
         <form onSubmit={handleSubmit} noValidate={false}>
           <div className="hp-field" aria-hidden="true">
-            <label htmlFor="cf-website">Website</label>
+            <label htmlFor="cf-hp-check">Leave this field empty</label>
             <input
-              id="cf-website"
+              id="cf-hp-check"
+              name="cp_hp_check"
               type="text"
               tabIndex="-1"
               autoComplete="off"
-              value={values.website}
-              onChange={update('website')}
+              data-lpignore="true"
+              data-1p-ignore=""
+              data-form-type="other"
+              value={values.cpHpCheck}
+              onChange={update('cpHpCheck')}
             />
           </div>
 
