@@ -1,7 +1,7 @@
 const ASSETS = {
-  mark: '/brand/centralpass-mark.png',
+  mark: '/centralpass-mark.svg',
   wordmark: '/brand/centralpass-wordmark.png',
-  lockup: '/brand/centralpass-lockup.png',
+  lockup: '/centralpass-logo.svg',
 };
 
 export default function Logo({ variant = 'brand', className = '' }) {

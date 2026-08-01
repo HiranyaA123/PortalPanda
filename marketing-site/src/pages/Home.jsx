@@ -148,8 +148,8 @@ export default function Home() {
                 staffing and owner controls needed to run service.
               </p>
               <div className="cp-inline-actions">
-                <a href="https://caffeprimofirle.com.au/" target="_blank" rel="noreferrer" className="textlink">
-                  Visit the live venue <IconArrowRight />
+                <a href="https://caffeprimofirle.com.au/" target="_blank" rel="noreferrer" className="btn btn-dark">
+                  Visit Caffe Primo Firle <IconArrowRight />
                 </a>
                 <Link to="/live" className="textlink">View the full project</Link>
               </div>
