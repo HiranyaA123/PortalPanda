@@ -1829,7 +1829,7 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .cp-hero__copy { padding: 18px 0; }
 .cp-hero h1 {
   max-width: 9.6ch;
-  margin-top: 26px;
+  margin-top: 0;
   color: #fff;
   font-size: clamp(3.55rem, 6.15vw, 6.6rem);
   line-height: 0.93;
@@ -1850,9 +1850,16 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .cp-final-cta .btn-ghost { color: #f6f7ff; border-color: rgba(229, 233, 255, 0.35); }
 .cp-hero .btn-ghost:hover,
 .cp-final-cta .btn-ghost:hover { color: var(--ink); background: #fff; border-color: #fff; }
-.cp-hero__assurances { display: grid; gap: 10px; margin-top: 32px; color: rgba(229, 233, 255, 0.6); font-size: 0.84rem; }
-.cp-hero__assurances li { display: flex; align-items: center; gap: 9px; }
-.cp-hero__assurances svg { width: 17px; height: 17px; color: var(--cyan); }
+.cp-hero__assurances {
+  display: grid;
+  gap: 14px;
+  margin-top: 36px;
+  color: rgba(239, 242, 255, 0.82);
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  font-weight: 620;
+}
+.cp-hero__assurances li { display: flex; align-items: center; gap: 12px; line-height: 1.35; }
+.cp-hero__assurances svg { width: 22px; height: 22px; color: var(--cyan); flex: 0 0 22px; }
 
 .cp-hero__stage { position: relative; min-height: 555px; }
 .cp-screen--interactive {

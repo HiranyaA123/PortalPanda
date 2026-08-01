@@ -94,7 +94,6 @@ export default function Home() {
       <section className="cp-hero">
         <div className="container cp-hero__grid">
           <div className="cp-hero__copy">
-            <span className="cp-kicker" data-scroll-thread="left"><i /> Custom restaurant and cafe software</span>
             <h1>One custom system for your <em>whole venue.</em></h1>
             <p className="cp-hero__lead">
               CentralPass designs the website, direct ordering, kitchen, staff
