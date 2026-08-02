@@ -41,6 +41,16 @@
       rel="stylesheet"
     />
     <title>Restaurant Website, CRM &amp; Venue Software | CentralPass</title>
+    <!-- Pages are prerendered, so real content now ships in the HTML - including
+         .reveal blocks, which start at opacity:0 and are revealed by an
+         IntersectionObserver. If scripting is unavailable that observer never
+         runs and the content would stay invisible, which is worse than having
+         shipped nothing. This forces it visible when JS is off. -->
+    <noscript>
+      <style>
+        .reveal { opacity: 1 !important; transform: none !important; }
+      </style>
+    </noscript>
     <!-- Organization schema: tells Google which image is the brand logo and
          ties the name, site and contact details into one entity. Every value
          here is a real, verifiable detail — no ratings or review markup. -->
