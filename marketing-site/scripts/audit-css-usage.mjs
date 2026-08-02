@@ -12,7 +12,7 @@ const fix = process.argv.includes('--fix');
 // express in a way the AST walker below does not model. `--fix` will never
 // remove these. Add to this list rather than loosening the walker.
 const KEEP = new Set([
-  'reveal', 'is-visible', 'is-active', 'is-inactive', 'is-selected',
+  'is-active', 'is-inactive', 'is-selected', 'is-scroll-end',
   'is-wip', 'is-thread-reached', 'menu-open', 'nav--open', 'header--scrolled',
 ]);
 

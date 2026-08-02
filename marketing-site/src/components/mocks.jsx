@@ -37,7 +37,7 @@ export function MockOrder() {
             <span className="mk-order__add">+</span>
           </div>
         ))}
-        <div className="mk-order__cta">2 items · $22.50 — Checkout</div>
+        <div className="mk-order__cta">2 items · $22.50 · Checkout</div>
       </div>
     </Frame>
   );
@@ -78,7 +78,7 @@ export function MockDashboard() {
           <div className="mk-dash__stats">
             <div className="mk-stat"><i>Today</i><b>$1,284</b><em className="up">▲ 12%</em></div>
             <div className="mk-stat"><i>Orders</i><b>63</b><em className="up">▲ 8%</em></div>
-            <div className="mk-stat"><i>Avg</i><b>$20.4</b><em>—</em></div>
+            <div className="mk-stat"><i>Avg</i><b>$20.4</b><em>/</em></div>
           </div>
           <div className="mk-chart">
             {[42, 60, 38, 72, 55, 83, 68].map((h, i) => (

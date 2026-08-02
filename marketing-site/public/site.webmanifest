@@ -4,8 +4,8 @@
   "description": "One connected, commission-free system for independent venues.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0B1020",
-  "theme_color": "#5B5DF0",
+  "background_color": "#101823",
+  "theme_color": "#0B5CA8",
   "icons": [
     { "src": "/centralpass-mark-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "/centralpass-mark-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }

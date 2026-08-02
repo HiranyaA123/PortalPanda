@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Reveal from '../components/Reveal.jsx';
 import Shot from '../components/Shot.jsx';
 import ScrollThread from '../components/ScrollThread.jsx';
 import {
@@ -47,7 +46,7 @@ const MODULES = [
 ];
 
 const PROCESS = [
-  ['01', 'Map the real service', 'We learn the customer journey, kitchen hand-offs, staff roles and current software.'],
+  ['01', 'Map the real service', 'We learn how customers order, kitchen hand-offs, staff roles and current software.'],
   ['02', 'Design the whole system', 'You see the customer and team experience before the build is locked in.'],
   ['03', 'Build, launch and evolve', 'We test the complete flow, train the team and keep improving it after launch.'],
 ];
@@ -222,14 +221,13 @@ export default function Home() {
               customer experience and daily operation so fewer things fall between systems.
             </p>
           </div>
-          <div className="cp-outcome-grid">
-            {OUTCOMES.map(({ Icon, title, body }, index) => (
-              <Reveal className="cp-outcome" key={title}>
-                <span className="cp-outcome__number">0{index + 1}</span>
-                <Icon />
+          <div className="cp-outcome-list">
+            {OUTCOMES.map(({ Icon, title, body }) => (
+              <div className="cp-outcome" key={title}>
+                <span className="cp-outcome__icon" aria-hidden="true"><Icon /></span>
                 <h3>{title}</h3>
                 <p>{body}</p>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -249,9 +247,8 @@ export default function Home() {
             </Link>
           </div>
           <div className="cp-module-list">
-            {MODULES.map(([Icon, title, body], index) => (
+            {MODULES.map(([Icon, title, body]) => (
               <div className="cp-module" key={title}>
-                <span>{String(index + 1).padStart(2, '0')}</span>
                 <Icon />
                 <div><h3>{title}</h3><p>{body}</p></div>
               </div>

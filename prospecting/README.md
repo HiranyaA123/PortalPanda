@@ -108,8 +108,22 @@ Be clear about this before planning around the output:
   website". 1,339 of 1,835 venues are unknown. This is the biggest gap.
 - **There is no size signal.** OSM has no ratings or review counts. `footprint_m2`
   is populated only for venues mapped as building polygons, and it's weak.
-- **Coverage is incomplete.** OSM has ~2,300 named Adelaide venues; the real
+- **Coverage is incomplete.** OSM has ~2,500 named Adelaide venues; the real
   number is higher. Newer and smaller venues are the most likely to be missing.
+- **Some venues in this list are permanently closed.** OSM has no
+  closed-business field. Someone has to notice a venue has shut and edit the
+  map, and across all 2,558 Adelaide venues exactly *one* is tagged as disused —
+  so in practice closures are never recorded. The median record was last touched
+  2 years ago and 588 haven't been edited in 5+ years.
+
+  `last_edit` and `last_edit_years` surface this. Treat it as a weak signal:
+  an 8-year-old record might be a shop that closed in 2019, or a 40-year-old
+  institution nobody needed to update. Sort by it and sanity-check the oldest
+  on Google before driving out. Run `node check-staleness.mjs` to see the
+  current age distribution.
+
+  Google Places `business_status` returns `CLOSED_PERMANENTLY` explicitly and is
+  the only real fix.
 
 All three are what Google Places fixes in phase 2 — `websiteUri`,
 `userRatingCount` and `priceLevel` fill exactly these gaps, and at ~200 calls

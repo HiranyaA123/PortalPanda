@@ -91,6 +91,24 @@ public/
   site.webmanifest
 ```
 
+## Design system
+
+Direction: technical / instrumentation.
+
+- **One brand hue.** `--accent: #0B5CA8` (azure, 209deg), extended only by tint
+  and shade. Semantic colours (`--signal-live`, `--signal-wip`, `--signal-error`)
+  sit outside the brand ramp so a status colour is never mistaken for a brand one.
+- **Two typefaces.** Archivo for display, Public Sans for body. Display is for
+  headings and large numerals only.
+- **Spacing** on 8px steps (`--sp-1` to `--sp-8`), 4px as the half step.
+- **Radius** is a role-assigned scale. Nested corners use `inner = outer - padding`.
+- **Surfaces** are never pure white: `--surface` is `#FBFCFD` on `--paper` `#F4F6F8`.
+- **Motion is a budget.** The hero entrance and the ScrollThread canvas are it.
+  There is deliberately no blanket scroll-reveal.
+
+Contrast is measured, not eyeballed. When changing any colour, check it against
+the *lightest* stop of whatever gradient it sits on, not the endpoints.
+
 ## Brand and contact details
 
 Update `src/brand.js` when the business name, public URL, phone number, email address or location changes. Route metadata is defined in `src/seo.js`.
@@ -111,11 +129,11 @@ npm run audit:css:fix
 
 Always run the production build and responsive browser checks after using `--fix`.
 
-> **History worth knowing.** `--fix` once silently deleted the entire scroll-reveal
-> block. `Reveal.jsx` built its class as `` `reveal …`.trim() ``, and the scanner
-> only walked a call expression's *arguments* — never `callee.object` — so the
-> template literal holding `reveal` was never read and the class looked unused.
-> The walker now handles that, a `KEEP` allowlist pins runtime-toggled state
+> **History worth knowing.** `--fix` once silently deleted a whole block of live
+> rules. The class was built as `` `name …`.trim() ``, and the scanner only
+> walked a call expression's *arguments*, never `callee.object`, so the template
+> literal holding the name was never read and the class looked unused. The
+> walker now handles that, a `KEEP` allowlist pins runtime-toggled state
 > classes, and `--fix` prints every class it is about to delete. Add to `KEEP`
 > rather than loosening the walker.
 
