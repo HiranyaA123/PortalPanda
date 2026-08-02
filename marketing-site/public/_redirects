@@ -1,1 +1,9 @@
-/*    /index.html   200
+# Every route is prerendered to its own index.html at build time, so there is
+# nothing left for an SPA fallback to do. The old rule here was
+#   /*    /index.html   200
+# which turned every mistyped URL into a soft 404: HTTP 200, carrying the
+# homepage's title and "index, follow". Serving the real 404 document with a
+# real 404 status is what stops crawlers indexing junk URLs.
+#
+# Static files and prerendered directories are matched before this rule.
+/*    /404.html   404

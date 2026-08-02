@@ -5,3 +5,6 @@ dist
 .playwright-cli/
 *.log
 output/**/chrome-render-*/
+
+# Build-time-only SSR bundle (deleted by scripts/prerender.mjs)
+.ssr-build/

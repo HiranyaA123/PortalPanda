@@ -6,29 +6,40 @@ import { BRAND } from '../src/brand.js';
 const serverDirectory = resolve('dist/server');
 await mkdir(serverDirectory, { recursive: true });
 
-// Static-host fallback. Unknown paths must return the SPA shell with a real 404
-// status - returning 200 makes every mistyped URL a soft 404 that crawlers will
-// happily index. The prerendered 404.html is preferred when present.
+// Resolution order, matching the other hosting configs:
+//   1. exact asset
+//   2. <path>/index.html   - the prerendered route document
+//   3. /404.html with a real 404 status
+//
+// Every route is prerendered, so there is no SPA fallback any more. The old
+// worker rewrote everything to /index.html and returned whatever status that
+// fetch produced (200), which made every mistyped URL a soft 404 carrying the
+// homepage's title and "index, follow". Directory-index resolution is done
+// explicitly rather than relying on the ASSETS binding to infer it.
 await writeFile(
   resolve(serverDirectory, 'index.js'),
-  `export default {
+  `const withStatus = (response, status) =>
+  new Response(response.body, { status, headers: response.headers });
+
+export default {
   async fetch(request, env) {
-    const response = await env.ASSETS.fetch(request);
-    if (response.status !== 404) return response;
+    const direct = await env.ASSETS.fetch(request);
+    if (direct.status !== 404) return direct;
 
     const url = new URL(request.url);
-    url.pathname = '/404.html';
-    const notFound = await env.ASSETS.fetch(new Request(url, request));
-    if (notFound.status === 200) {
-      return new Response(notFound.body, {
-        status: 404,
-        headers: notFound.headers,
-      });
+
+    // Prerendered route: /platform -> /platform/index.html
+    if (!url.pathname.includes('.')) {
+      const indexUrl = new URL(url);
+      indexUrl.pathname = \`\${url.pathname.replace(/\\/$/, '')}/index.html\`;
+      const page = await env.ASSETS.fetch(new Request(indexUrl, request));
+      if (page.status === 200) return page;
     }
 
-    url.pathname = '/index.html';
-    const shell = await env.ASSETS.fetch(new Request(url, request));
-    return new Response(shell.body, { status: 404, headers: shell.headers });
+    const notFoundUrl = new URL(url);
+    notFoundUrl.pathname = '/404.html';
+    const notFound = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+    return withStatus(notFound, 404);
   },
 };
 `,

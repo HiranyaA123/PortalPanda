@@ -29,6 +29,20 @@ export default function Reveal({ as: Tag = 'div', className = '', children, ...r
     );
 
     observer.observe(node);
+
+    // Safety net. Pages are prerendered now, so this content ships in the HTML
+    // at opacity:0 and is only revealed by the observer above - if the observer
+    // never reports, the copy stays permanently invisible. Anything already at
+    // or above the fold on mount (restored scroll position, deep link to an
+    // anchor, or an element scrolled past before hydration finished) is
+    // revealed immediately rather than waiting for an intersection that has
+    // already happened.
+    const rect = node.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      setVisible(true);
+      observer.unobserve(node);
+    }
+
     return () => observer.disconnect();
   }, []);
 
