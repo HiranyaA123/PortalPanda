@@ -196,3 +196,37 @@ export const IconChat = () => (
     <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
   </svg>
 );
+
+// Menu-item icons for the coded ordering mockup. Deliberately SVG rather than
+// emoji: emoji render differently on every platform, cannot inherit currentColor,
+// and read as a placeholder on a page whose whole argument is that we ship real
+// software.
+export const IconCoffee = () => (
+  <svg {...base}>
+    <path d="M5 9h11v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9Z" />
+    <path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16" />
+    <path d="M8 3v2M12 3v2" />
+  </svg>
+);
+
+export const IconBowl = () => (
+  <svg {...base}>
+    <path d="M3.5 11h17" />
+    <path d="M4.5 11a7.5 7.5 0 0 0 15 0" />
+    <path d="M8 7.5c1-1.5 3-2 4-2s3 .5 4 2" />
+  </svg>
+);
+
+export const IconEgg = () => (
+  <svg {...base}>
+    <path d="M12 4c3.2 0 4.7 2.3 6.1 3.8S20.6 12 18.8 14.8 14.3 19 11.6 19s-6.4-1.4-7.3-3.7.4-5.2 1.8-6.6S8.8 4 12 4Z" />
+    <circle cx="12" cy="12" r="2.8" />
+  </svg>
+);
+
+export const IconPastry = () => (
+  <svg {...base}>
+    <path d="M4 14a8 8 0 0 1 16 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3Z" />
+    <path d="M9.5 18V9.2M14.5 18V9.2" />
+  </svg>
+);

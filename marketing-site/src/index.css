@@ -31,6 +31,9 @@
   --text-muted: #5b6879;
   --line: #d5dde5;
   --line-strong: #a9b6c4;
+  /* Border for outlined controls. --line-strong is a divider tone and measures
+     only 1.91:1 on paper; a button edge needs 3:1. */
+  --line-control: #7b8b9e;
   --line-dark: rgba(226, 236, 245, 0.18);
 
   /* Brand hue. One hue, extended only by tint and shade. */
@@ -308,13 +311,13 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .btn-dark {
   background: transparent;
   color: var(--text);
-  border-color: var(--line-strong);
+  border-color: var(--line-control);
 }
 .btn-dark:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
 .btn-ghost {
   background: transparent;
   color: var(--text);
-  border-color: var(--line-strong);
+  border-color: var(--line-control);
 }
 .btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: #fff; }
 .on-dark .btn-primary {
@@ -1058,17 +1061,31 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .venue-card__visual img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.45s var(--ease); }
 .venue-card:hover .venue-card__visual img { transform: scale(1.025); }
 .venue-card__visual.is-wip img {
-  filter: blur(10px) saturate(0.72) brightness(0.72);
+  /* blur() is what actually protects the unreleased work - at this display
+     width 10px makes any text unreadable. The brightness knock-down is only
+     for legibility of the badge on top, so keep it light or the card reads as
+     a black box rather than a blurred design. */
+  filter: blur(10px) saturate(0.85) brightness(0.92);
   transform: scale(1.08);
 }
 .venue-card:hover .venue-card__visual.is-wip img { transform: scale(1.1); }
+/* Translucent scrim, not an opaque fill. This used to be a solid
+   var(--surface-2), which covered the blurred screenshot completely - so the
+   card showed a blank grey rectangle while the badge on top of it read
+   "Preview blurred". The blur on the image is what protects the unreleased
+   work; the scrim only needs to knock it back and give the badge something to
+   sit on. */
 .venue-card__visual.is-wip::after,
 .wip-shot__image::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: var(--surface-2);
+  background: linear-gradient(
+    to bottom,
+    rgba(16, 24, 35, 0.14),
+    rgba(16, 24, 35, 0.42)
+  );
 }
 .wip-watermark {
   position: absolute;
@@ -1403,7 +1420,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .mk-order__e { width: 30px; height: 30px; flex-shrink: 0; border: 1px solid var(--line); background-color: var(--surface-2); background-image: repeating-linear-gradient(-45deg, transparent 0 5px, rgba(23,21,15,0.07) 5px 6px); }
 .mk-order__n { flex: 1; font-weight: 600; font-size: 0.85rem; display: flex; flex-direction: column; }
 .mk-order__n i { font-style: normal; color: var(--text-muted); font-weight: 500; font-size: 0.75rem; }
-.mk-order__add { width: 24px; height: 24px; border-radius: 0; background: var(--grad-brand); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
 .mk-order__cta { margin-top: 8px; text-align: center; padding: 8px; border-radius: 0; color: #fff; background: var(--ink); font-weight: 600; font-size: 0.85rem; }
 /* Kitchen mock */
 .mk-kitchen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -1428,10 +1444,6 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .mk-stat em.up { color: #146c35; }
 .mk-chart { display: flex; align-items: flex-end; gap: 8px; height: 74px; padding: 8px 16px; border: 1px solid var(--line); border-radius: 0; margin-bottom: 8px; }
 .mk-chart span { flex: 1; border-radius: 0; background: var(--grad-brand); opacity: 0.85; }
-.mk-rows { display: flex; flex-direction: column; gap: 8px; }
-.mk-rows span { height: 12px; border-radius: 0; background: var(--paper-2); }
-.mk-rows span:nth-child(2) { width: 80%; }
-.mk-rows span:nth-child(3) { width: 62%; }
 /* Bookings mock */
 .mk-book { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .mk-book__col { display: flex; flex-direction: column; gap: 8px; }
@@ -1893,6 +1905,20 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
 .cp-hero__assurances li { display: flex; align-items: center; gap: 16px; line-height: 1.45; }
 .cp-hero__assurances svg { width: 22px; height: 22px; color: var(--accent-ondark); flex: 0 0 22px; }
 .cp-hero__stage { position: relative; min-height: 555px; }
+/* There was no base .cp-screen rule at all - only the --interactive, --hero and
+   --floating variants - so the case-study figures rendered as bare screenshots
+   with a chrome bar floating above them and no frame. On a light page the
+   screenshot edge simply dissolved into the background. This gives every screen
+   a real window: surface, border, radius and elevation, with the chrome bar
+   clipped inside it. */
+.cp-screen {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
 .cp-screen--interactive {
   padding: 0;
   color: inherit;
@@ -2250,3 +2276,141 @@ button { font-family: inherit; color: inherit; background: none; border: none; }
   .cp-screen--floating { transform: none; }
   .cp-scroll-thread { opacity: 0.3; }
 }
+
+/* ============================================================
+   Interactive product mockups
+   ============================================================ */
+/* The mocks are demonstrations, not the product, so each frame carries a
+   visible "Demo" marker and a one-line hint naming the data as sample. Every
+   control is a real <button>, so what follows is state and affordance styling
+   rather than anything that fakes interactivity. */
+.mk__demo {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-wash);
+  color: var(--accent);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.mk--dark .mk__demo { background: rgba(127, 184, 232, 0.16); color: var(--accent-ondark); }
+.mk__hint {
+  margin: 0;
+  padding: 8px 16px 12px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  border-top: 1px solid var(--line);
+}
+.mk--dark .mk__hint { color: rgba(255, 255, 255, 0.6); border-top-color: var(--line-dark); }
+
+/* Ordering site */
+.mk-order__list { list-style: none; margin: 0; padding: 0; }
+.mk-order__e {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  background-image: none;
+  color: var(--accent);
+}
+.mk-order__e svg { width: 18px; height: 18px; }
+.mk-order__row.is-in-cart .mk-order__e { background: var(--accent-wash); border-color: var(--accent); }
+.mk-order__qty { display: inline-flex; align-items: center; gap: 4px; }
+.mk-order__qty b {
+  min-width: 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.mk-order__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 32px, not the 44px the rest of the site uses. These sit inside a miniature
+     product mockup; a 44px stepper would be taller than the menu row it belongs
+     to and would break the "this is a scaled-down app" read. 32px with 4px
+     spacing clears WCAG 2.5.8 (24px minimum) comfortably and stays tappable. */
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-control);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.mk-order__step:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.mk-order__step--add { background: var(--accent); border-color: var(--accent); color: #fff; }
+.mk-order__step--add:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
+.mk-order__step:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Kitchen board */
+.mk-tkt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.mk-tkt:hover { transform: translateY(-2px); }
+.mk-tkt__next {
+  display: block;
+  margin-top: 8px;
+  color: var(--accent-ondark);
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+/* Dashboard */
+.mk-dash__nav { display: flex; flex-direction: column; gap: 4px; padding-top: 4px; }
+.mk-dash__navitem {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-soft);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.mk-dash__navitem:hover { border-color: var(--accent); color: var(--accent); }
+.mk-dash__navitem.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Bookings */
+.mk-book__chip { cursor: pointer; font: inherit; transition: background 0.15s ease, color 0.15s ease; }
+
+/* Delivery */
+.mk-deliv__go {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--accent-ondark);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--accent-ondark);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.mk-deliv__go:hover { background: var(--accent-ondark); color: var(--ink); }
+
+/* Staff portal */
+.mk-staff__clock { cursor: pointer; font: inherit; transition: background 0.15s ease, color 0.15s ease; }
