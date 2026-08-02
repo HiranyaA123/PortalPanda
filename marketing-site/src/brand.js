@@ -15,10 +15,13 @@ export const BRAND = {
   location: 'Adelaide, South Australia',
 
   // Keep these values in sync with the tokens in src/index.css.
+  // One brand hue (azure, 209deg) plus ink. The previous accent was #5B5DF0,
+  // which sits at 239deg in the indigo/violet zone; cyan and coral were dropped
+  // as brand hues and survive only as semantic status colours.
   colors: {
-    ink: '#0B1020',
-    violet: '#5B5DF0',
-    coral: '#FF6B5E',
-    cyan: '#4AD8DF',
+    ink: '#101823',
+    accent: '#0B5CA8',
+    accentDeep: '#083F73',
+    paper: '#F4F6F8',
   },
 };

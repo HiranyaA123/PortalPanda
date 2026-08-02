@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
 import { PRICING_FAQ } from '../content/faq.js';
-import Reveal from '../components/Reveal.jsx';
 import { IconArrowRight, IconPhone, IconSparkle } from '../components/icons.jsx';
 
 // Three tiers that all read "Tailored quote" tell a buyer nothing and look
@@ -12,13 +11,13 @@ const PHASES = [
     n: '01',
     name: 'Discovery',
     time: 'Week 1',
-    body: 'We sit down with how your venue actually runs — service flow, roles, the tools you already pay for and the jobs nobody wants to do twice.',
+    body: 'We sit down with how your venue actually runs: service flow, roles, the tools you already pay for and the jobs nobody wants to do twice.',
     out: 'A written brief and scope you approve before anything is designed.',
   },
   {
     n: '02',
     name: 'Design',
-    time: 'Weeks 1–2',
+    time: 'Weeks 1 to 2',
     body: 'Your customer experience and your team’s screens, designed around your brand rather than dropped into a theme.',
     out: 'Designs for every screen your customers and staff will touch.',
   },
@@ -26,7 +25,7 @@ const PHASES = [
     n: '03',
     name: 'Build',
     time: 'The bulk of the project',
-    body: 'We build the system — ordering, dashboard, staff and kitchen tooling, plus any capability we agreed to scope for you.',
+    body: 'We build the system: ordering, dashboard, staff and kitchen tooling, plus any capability we agreed to scope for you.',
     out: 'A working system on your own domain, tested against real service.',
   },
   {
@@ -102,7 +101,7 @@ export default function Pricing() {
 
           <ol className="phases">
             {PHASES.map((p) => (
-              <Reveal className="phase" key={p.n} as="li">
+              <li className="phase" key={p.n}>
                 <span className="phase__n">{p.n}</span>
                 <div className="phase__main">
                   <div className="phase__head">
@@ -112,7 +111,7 @@ export default function Pricing() {
                   <p>{p.body}</p>
                 </div>
                 <p className="phase__out"><span>You get</span>{p.out}</p>
-              </Reveal>
+              </li>
             ))}
           </ol>
 
@@ -137,29 +136,28 @@ export default function Pricing() {
           </div>
 
           <div className="cost-drivers">
-            {COST_DRIVERS.map(([title, body], index) => (
-              <Reveal className="cost-driver" key={title}>
-                <span className="cost-driver__num">{String(index + 1).padStart(2, '0')}</span>
+            {COST_DRIVERS.map(([title, body]) => (
+              <div className="cost-driver" key={title}>
                 <div>
                   <h3>{title}</h3>
                   <p>{body}</p>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
 
-          <Reveal className="commitments">
+          <div className="commitments">
             <strong>What does not change</strong>
             <ul>
               {COMMITMENTS.map((item) => <li key={item}>{item}</li>)}
             </ul>
-          </Reveal>
+          </div>
         </div>
       </section>
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="quote-panel">
+          <div className="quote-panel">
             <span className="eyebrow quote-panel__eyebrow">
               <IconSparkle /> Start with a conversation
             </span>
@@ -177,7 +175,7 @@ export default function Pricing() {
                 Start a project <IconArrowRight />
               </Link>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -189,10 +187,10 @@ export default function Pricing() {
           </div>
           <div className="faq-list">
             {FAQ.map((item) => (
-              <Reveal className="bento__cell faq-item" key={item.q}>
+              <div className="bento__cell faq-item" key={item.q}>
                 <h3>{item.q}</h3>
                 <p>{item.a}</p>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>

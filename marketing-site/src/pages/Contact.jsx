@@ -1,6 +1,5 @@
 import { BRAND } from '../brand.js';
 import ContactForm from '../components/ContactForm.jsx';
-import Reveal from '../components/Reveal.jsx';
 import { IconPhone, IconMail } from '../components/icons.jsx';
 
 // Sets expectations for the enquiry. Every step here reflects a commitment the
@@ -30,7 +29,7 @@ export default function Contact() {
               <div className="contact-brief" aria-label="What to include in your enquiry">
                 <strong>Useful details to include</strong>
                 <ul>
-                  <li>Your customer journey and service model</li>
+                  <li>How customers order, and your service model</li>
                   <li>The systems or manual steps causing friction</li>
                   <li>Any new feature, workflow or integration you want</li>
                 </ul>
@@ -66,11 +65,11 @@ export default function Contact() {
           </div>
           <div className="steps next-steps">
             {NEXT_STEPS.map(([num, title, body]) => (
-              <Reveal className="step" key={num}>
+              <div className="step" key={num}>
                 <span className="step__num">{num}</span>
                 <h3>{title}</h3>
                 <p>{body}</p>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>

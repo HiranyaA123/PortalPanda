@@ -1,2 +1,3 @@
 output/
 .geocode-cache.json
+.env

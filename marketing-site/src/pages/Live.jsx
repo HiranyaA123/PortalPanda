@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BRAND } from '../brand.js';
-import Reveal from '../components/Reveal.jsx';
 import Shot from '../components/Shot.jsx';
 import { Magnetic, CountUp } from '../components/motion.jsx';
 import { IconArrowRight, IconPhone, IconSparkle, IconStore } from '../components/icons.jsx';
@@ -11,7 +10,7 @@ const CUSTOMER_SCREENS = [
     src: '/live/venue-home.webp',
     label: 'Customer website',
     title: 'A storefront designed for the Primo brand.',
-    body: 'A custom home page brings ordering and table bookings into one polished customer journey.',
+    body: 'A custom home page brings ordering and table bookings into one polished path from landing to checkout.',
     alt: 'Caffe Primo Firle website home page with ordering and booking calls to action',
     className: 'live-shot--wide',
   },
@@ -89,7 +88,7 @@ const WIP_SCREENS = {
     },
     {
       src: '/live/beach-road-wip-2.webp',
-      label: 'Menu showcase direction',
+      label: 'Menu presentation direction',
       alt: 'Intentionally blurred work-in-progress menu preview for Beach Road Pizza',
     },
     {
@@ -118,7 +117,7 @@ const VENUES = [
     location: 'Aberfoyle Park, South Australia',
     status: 'Work in progress',
     statusKind: 'wip',
-    scope: 'Branded website and ordering journey',
+    scope: 'Branded website and ordering flow',
     description: 'A bold, mobile-first pizza experience being shaped around the Needa Pizza brand and service flow.',
     cover: '/live/needa-pizza-wip.webp',
     coverAlt: 'Intentionally blurred work-in-progress Needa Pizza website preview',
@@ -187,7 +186,7 @@ function VenueCard({ venue, selected, onSelect }) {
 
 function ScreenshotCard({ screen, priority = false }) {
   return (
-    <Reveal className={`live-shot ${screen.className || ''}`}>
+    <div className={`live-shot ${screen.className || ''}`}>
       <a
         className="live-shot__link"
         href={screen.src}
@@ -214,7 +213,7 @@ function ScreenshotCard({ screen, priority = false }) {
           <p>{screen.body}</p>
         </div>
       </a>
-    </Reveal>
+    </div>
   );
 }
 
@@ -330,7 +329,7 @@ function PrimoProject() {
 
       <section className="section on-dark">
         <div className="container">
-          <Reveal className="live-proof">
+          <div className="live-proof">
             <span className="eyebrow">Built in a real service environment</span>
             <h2>Designed around the rush, not a slide deck.</h2>
             <p>
@@ -344,7 +343,7 @@ function PrimoProject() {
               <li>Staff time and availability tools</li>
               <li>Owner reporting and menu control</li>
             </ul>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -356,12 +355,12 @@ function PrimoProject() {
           </div>
           <div className="stats-row">
             {STATS.map((stat) => (
-              <Reveal className="stat-tile" key={stat.label}>
+              <div className="stat-tile" key={stat.label}>
                 <div className="stat-tile__num">
                   {stat.count ? <CountUp to={stat.count} suffix={stat.suffix || ''} /> : stat.num}
                 </div>
                 <div className="stat-tile__label">{stat.label}</div>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -393,7 +392,7 @@ function WorkInProgressProject({ venue }) {
 
         <div className={`wip-gallery ${screens.length === 1 ? 'wip-gallery--single' : ''}`}>
           {screens.map((screen) => (
-            <Reveal className="wip-shot" key={screen.src}>
+            <div className="wip-shot" key={screen.src}>
               <div className="live-shot__chrome" aria-hidden="true">
                 <span><i /><i /><i /></span>
                 <em>{screen.label}</em>
@@ -407,7 +406,7 @@ function WorkInProgressProject({ venue }) {
                 <strong>{screen.label}</strong>
                 <span>Intentionally blurred while the customer build is in development.</span>
               </div>
-            </Reveal>
+            </div>
           ))}
         </div>
 
@@ -526,9 +525,9 @@ export default function Live() {
 
       <section className="section section--tight">
         <div className="container">
-          <Reveal className="cta-band">
+          <div className="cta-band">
             <h2>What should your venue system look like?</h2>
-            <p>Bring us your customer journey, staff workflow and owner wish list. We will scope a custom build around them.</p>
+            <p>Bring us your service flow, staff workflow and owner wish list. We will scope a custom build around them.</p>
             <div className="cta-band__actions">
               <Magnetic>
                 <Link to="/contact" className="btn btn-primary btn-lg">Start a project <IconArrowRight /></Link>
@@ -537,7 +536,7 @@ export default function Live() {
                 <IconPhone /> {BRAND.contactPhoneDisplay}
               </a>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>

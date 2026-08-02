@@ -27,7 +27,7 @@ const BOX = `${S},${W},${N},${E}`;
 
 const VENUE_COLS = ['tier', 'strip_rank', 'strip', 'strip_size', 'nearest_strip', 'nearest_strip_m', 'name', 'type', 'cuisine', 'suburb', 'street',
   'address', 'website_class', 'website', 'website_note', 'phone', 'opening_hours', 'outdoor_seating',
-  'takeaway', 'delivery', 'footprint_m2', 'lat', 'lon', 'osm_url', 'google_url', 'status', 'notes'];
+  'takeaway', 'delivery', 'last_edit', 'last_edit_years', 'footprint_m2', 'lat', 'lon', 'osm_url', 'google_url', 'status', 'notes'];
 
 // --- Overpass ---------------------------------------------------------------
 
@@ -85,7 +85,7 @@ const venueQuery = `
   nwr["amenity"~"^(${AMENITIES.join('|')})$"]["name"](${BOX});
   nwr["shop"~"^(${SHOPS.join('|')})$"]["name"](${BOX});
 );
-out center tags;`;
+out center tags meta;`;
 
 // Malls come back with full geometry so we can test whether a venue sits inside
 // one, rather than guessing from a hardcoded list of centre names.
@@ -160,6 +160,17 @@ function classifyWebsite(url) {
 // what we know, and parks everything unknown in the middle for Google to settle.
 const PRIORITY = { 'marketplace-only': 1, 'social-only': 2, 'diy-builder': 3, unknown: 4, 'has-site': 5 };
 
+// OSM has no "permanently closed" field, and across all of Adelaide exactly one
+// venue is tagged disused - so closures are essentially never recorded. How long
+// ago the record was last touched is the only free signal available.
+//
+// Treat it as weak: a venue untouched for 8 years may be a closed shop nobody
+// updated, or a 40-year-old institution nobody needed to. It's worth surfacing
+// so old records can be sanity-checked on Google before a drive, but it is not
+// evidence of closure. Google Places business_status is the real answer.
+const YEAR_MS = 365 * 24 * 3600 * 1000;
+const yearsSince = (ts) => (ts ? +((Date.now() - Date.parse(ts)) / YEAR_MS).toFixed(1) : '');
+
 // --- Main -------------------------------------------------------------------
 
 console.log(`Adelaide metro bbox ${BOX}`);
@@ -227,6 +238,8 @@ for (const el of rawVenues) {
     takeaway: tags.takeaway || '',
     delivery: tags.delivery || '',
     footprint_m2: el.type === 'way' && el.geometry ? polygonAreaM2(el.geometry) : '',
+    last_edit: el.timestamp ? el.timestamp.slice(0, 10) : '',
+    last_edit_years: yearsSince(el.timestamp),
     lat, lon,
     osm_url: `https://www.openstreetmap.org/${el.type}/${el.id}`,
     google_url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${tags.name} ${street} ${suburb} SA`)}`,
@@ -282,6 +295,7 @@ kept.sort((a, b) =>
   (a.strip || '').localeCompare(b.strip || '') ||
   ((a.nearest_strip_m || 0) - (b.nearest_strip_m || 0)) ||
   (PRIORITY[a.website_class] - PRIORITY[b.website_class]) ||
+  ((a.last_edit_years || 99) - (b.last_edit_years || 99)) ||
   a.name.localeCompare(b.name));
 
 const summarise = (c, tier) => ({
@@ -334,6 +348,8 @@ Web presence (per OSM):`);
 for (const [k, n] of Object.entries(byClass).sort((a, b) => PRIORITY[a[0]] - PRIORITY[b[0]])) {
   console.log(`  ${k.padEnd(16)} ${n}`);
 }
+const stale = kept.filter((v) => v.last_edit_years >= 5).length;
+const fresh = kept.filter((v) => v.last_edit_years < 1).length;
 const inStrips = strips.reduce((s, c) => s + c.size, 0);
 const inPockets = pockets.reduce((s, c) => s + c.size, 0);
 const nearSingles = singles.filter((v) => v.nearest_strip_m <= 1500).length;
@@ -344,6 +360,10 @@ How the ${kept.length} venues group:
         of those, ${absorbed} were absorbed from within ${ABSORB_RADIUS_M}m of a strip
   ${String(inPockets).padStart(4)}  in ${pockets.length} pockets  (${POCKET_MIN_VENUES}-${STRIP_MIN_VENUES - 1} venues - a worthwhile stop)
   ${String(singles.length).padStart(4)}  on their own  (${nearSingles} of them within 1.5km of a strip)
+
+Record freshness (OSM has no closed-business flag):
+  ${String(fresh).padStart(4)}  edited in the last year
+  ${String(stale).padStart(4)}  untouched 5+ years - check these on Google before driving
 
   #   venues  walk   strip`);
 for (const s of strips.slice(0, 15)) {

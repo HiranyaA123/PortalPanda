@@ -262,10 +262,14 @@ export default function ScrollThread() {
       thread = buildThreadPoints(nodes, home, width);
       const startY = thread.points[0]?.y ?? 0;
       const endY = thread.points[thread.points.length - 1]?.y ?? height;
+      // Single-hue azure ramp. This used to run #7578ff -> #8c8eff -> #71e1e6,
+      // a purple-to-cyan sweep: the most recognisable generated-UI gradient
+      // there is. A gradient earns its place by giving depth within one hue,
+      // not by travelling across the wheel.
       threadGradient = context.createLinearGradient(0, startY, width, endY);
-      threadGradient.addColorStop(0, '#7578ff');
-      threadGradient.addColorStop(0.55, '#8c8eff');
-      threadGradient.addColorStop(1, '#71e1e6');
+      threadGradient.addColorStop(0, '#0b5ca8');
+      threadGradient.addColorStop(0.55, '#1f77c9');
+      threadGradient.addColorStop(1, '#4b9bdd');
       draw();
     };
 
@@ -277,13 +281,13 @@ export default function ScrollThread() {
 
         context.save();
         context.shadowBlur = 18;
-        context.shadowColor = '#75e4e8';
-        context.fillStyle = 'rgba(117, 228, 232, 0.22)';
+        context.shadowColor = '#4b9bdd';
+        context.fillStyle = 'rgba(75, 155, 221, 0.22)';
         context.beginPath();
         context.arc(anchor.x, anchor.y, 10, 0, Math.PI * 2);
         context.fill();
         context.shadowBlur = 0;
-        context.fillStyle = '#b9f8fa';
+        context.fillStyle = '#cfe6f8';
         context.beginPath();
         context.arc(anchor.x, anchor.y, 3.25, 0, Math.PI * 2);
         context.fill();
@@ -333,7 +337,7 @@ export default function ScrollThread() {
       context.lineJoin = 'round';
       const visiblePath = traceDistanceRange(context, thread.points, visibleStartDistance, visibleEndDistance);
       if (visiblePath) {
-        context.strokeStyle = 'rgba(112, 117, 240, 0.12)';
+        context.strokeStyle = 'rgba(11, 92, 168, 0.12)';
         context.lineWidth = 1.2;
         context.stroke();
       }
@@ -348,10 +352,10 @@ export default function ScrollThread() {
           context.lineCap = 'round';
           context.lineJoin = 'round';
           traceDistanceRange(context, thread.points, visibleStartDistance, activeEndDistance);
-          context.strokeStyle = 'rgba(104, 111, 255, 0.17)';
+          context.strokeStyle = 'rgba(11, 92, 168, 0.15)';
           context.lineWidth = 13;
           context.shadowBlur = thread.compact ? 12 : 18;
-          context.shadowColor = '#676cff';
+          context.shadowColor = '#0b5ca8';
           context.stroke();
 
           context.shadowBlur = thread.compact ? 4 : 7;
@@ -365,9 +369,9 @@ export default function ScrollThread() {
           canvas.dataset.threadLeadViewportY = `${Math.round(lead.y + homePageTop - scrollY)}`;
           if (lead.y >= dirtyTop - 20 && lead.y <= dirtyBottom + 20) {
             const glow = context.createRadialGradient(lead.x, lead.y, 0, lead.x, lead.y, 19);
-            glow.addColorStop(0, 'rgba(220, 252, 255, 0.95)');
-            glow.addColorStop(0.22, 'rgba(117, 228, 232, 0.8)');
-            glow.addColorStop(1, 'rgba(91, 93, 240, 0)');
+            glow.addColorStop(0, 'rgba(235, 246, 255, 0.95)');
+            glow.addColorStop(0.22, 'rgba(75, 155, 221, 0.8)');
+            glow.addColorStop(1, 'rgba(11, 92, 168, 0)');
             context.fillStyle = glow;
             context.beginPath();
             context.arc(lead.x, lead.y, 19, 0, Math.PI * 2);

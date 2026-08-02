@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { BRAND } from '../brand.js';
-import Reveal from '../components/Reveal.jsx';
 import ModuleExplorer from '../components/ModuleExplorer.jsx';
 import { Magnetic } from '../components/motion.jsx';
 import {
@@ -169,11 +168,11 @@ export default function Platform() {
           </div>
           <div className="bento">
             {EXTRAS.map(({ Icon, title, body }) => (
-              <Reveal className="bento__cell bento__cell--span2 bento__cell--dark" key={title}>
+              <div className="bento__cell bento__cell--span2 bento__cell--dark" key={title}>
                 <span className="bento__icon"><Icon /></span>
                 <h3>{title}</h3>
                 <p>{body}</p>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -181,7 +180,7 @@ export default function Platform() {
 
       <section className="section">
         <div className="container">
-          <Reveal className="cta-band">
+          <div className="cta-band">
             <h2>Bring us the workflow, not a shopping list.</h2>
             <p>We will show you a live build, learn what your venue needs and map a practical system of your own.</p>
             <div className="cta-band__actions">
@@ -192,7 +191,7 @@ export default function Platform() {
                 <IconPhone /> {BRAND.contactPhoneDisplay}
               </a>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>
